@@ -1,0 +1,29 @@
+// Tailwind init styles
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+// import file
+@import './zindex';
+@import './mixin';
+@import './fonts';
+@import './grid';
+
+// reset tailwindcss
+img,
+svg {
+  display: inline-block;
+  vertical-align: top;
+}
+*,
+*:focus,
+button:focus {
+  outline: 0;
+}
+
+// browser reset
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}

@@ -1,0 +1,17 @@
+.grid__container {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-template-rows: auto;
+  gap: 0 15px;
+  margin-left: 15px;
+  margin-right: 15px;
+  max-width: 1240px;
+  @media screen and (min-width: 768px) {
+    gap: 0 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+  @media screen and (min-width: 1280px) {
+    margin: 0 auto;
+  }
+}
