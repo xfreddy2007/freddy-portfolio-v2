@@ -17,7 +17,7 @@ const Loading: React.FC = () => {
   }, []);
 
   // get dark mode
-  const { isDarkMode } = useDarkMode();
+  const { isDarkMode, switchMode } = useDarkMode();
 
   return (
     <div className={classNames('loading__z-index bg-white dark:bg-black', style.root)}>
@@ -25,11 +25,12 @@ const Loading: React.FC = () => {
       <div className={style.block} />
       <div className={style.block}>
         <Lottie animationData={isDarkMode ? heartBeatLoaderDark : heartBeatLoader} loop className={style.animation} />
-        <div className="font-raleway w-[100px] tracking-[0.04em] dark:text-white">{`Loading ${[
-          ...Array((loadingTextState % 4) + 1),
-        ]
-          .map(() => '. ')
-          .join('')}`}</div>
+        <div className="font-raleway w-[100px] tracking-[0.04em] dark:text-white">
+          {`Loading ${[...Array((loadingTextState % 4) + 1)].map(() => '. ').join('')}`}
+          <div className="text-3xl dark:text-white" onClick={switchMode}>
+            switch
+          </div>
+        </div>
       </div>
       <div className={style.block} />
       <div className={style.block} />
