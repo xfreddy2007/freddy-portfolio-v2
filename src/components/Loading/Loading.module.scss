@@ -1,3 +1,9 @@
 .root {
-  width: 100%;
+  @apply h-screen w-screen;
+}
+.block {
+  @apply flex h-[20%] items-center justify-center;
+}
+.animation {
+  @apply mr-2 w-[40px];
 }
