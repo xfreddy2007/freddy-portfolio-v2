@@ -6,7 +6,11 @@ import heartBeatLoaderDark from '../../assets/LottieAnimation/heartbeat-ecg-load
 import useDarkMode from '@/src/utils/hooks/useDarkMode';
 import style from './Loading.module.scss';
 
-const Loading: React.FC = () => {
+type LoadingProps = {
+  isLoaded: boolean;
+};
+
+const Loading: React.FC<LoadingProps> = ({ isLoaded }) => {
   // Loading text change animation
   const [loadingTextState, setLoadingTextState] = useState(1);
   useEffect(() => {

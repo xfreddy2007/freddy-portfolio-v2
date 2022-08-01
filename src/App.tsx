@@ -12,12 +12,10 @@ const App: React.FC = () => {
     return () => clearTimeout(loading);
   }, []);
 
-  // dark mode toggle
-
   return (
-    <Suspense fallback={<Loading />}>
-      {/* {!isLoaded && <Loading />} */}
-      {true && <Loading />}
+    <Suspense fallback={<Loading isLoaded={isLoaded} />}>
+      {!isLoaded && <Loading isLoaded={isLoaded} />}
+      {/* {true && <Loading isLoaded={isLoaded} />} */}
       {useRoutes(routes)}
     </Suspense>
   );
