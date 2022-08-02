@@ -4,13 +4,8 @@ import Lottie from 'lottie-react';
 import heartBeatLoader from '../../assets/LottieAnimation/heartbeat-ecg-loader.json';
 import heartBeatLoaderDark from '../../assets/LottieAnimation/heartbeat-ecg-loader-dark.json';
 import useDarkMode from '@/src/utils/hooks/useDarkMode';
-import style from './Loading.module.scss';
 
-type LoadingProps = {
-  isLoaded: boolean;
-};
-
-const Loading: React.FC<LoadingProps> = ({ isLoaded }) => {
+const Loading: React.FC = () => {
   // Loading text change animation
   const [loadingTextState, setLoadingTextState] = useState(1);
   useEffect(() => {
@@ -21,23 +16,28 @@ const Loading: React.FC<LoadingProps> = ({ isLoaded }) => {
   }, []);
 
   // get dark mode
-  const { isDarkMode, switchMode } = useDarkMode();
+  const { isDarkMode } = useDarkMode();
+
+  // deal fade out animation
+  const [isTextOut, setIsTextOut] = useState(false);
+  useEffect(() => {
+    const textFade = setTimeout(() => setIsTextOut(true), 1500);
+    return () => clearTimeout(textFade);
+  }, []);
 
   return (
-    <div className={classNames('loading__z-index bg-white dark:bg-black', style.root)}>
-      <div className={style.block} />
-      <div className={style.block} />
-      <div className={style.block}>
-        <Lottie animationData={isDarkMode ? heartBeatLoaderDark : heartBeatLoader} loop className={style.animation} />
+    <div className="loading__z-index h-screen w-screen bg-white dark:bg-black">
+      <div
+        className={classNames(
+          'flex h-full w-full items-center justify-center transition-opacity duration-500 ease-in',
+          isTextOut && 'opacity-0',
+        )}
+      >
+        <Lottie animationData={isDarkMode ? heartBeatLoaderDark : heartBeatLoader} loop className="mr-2 w-[40px]" />
         <div className="font-raleway w-[100px] tracking-[0.04em] dark:text-white">
           {`Loading ${[...Array((loadingTextState % 4) + 1)].map(() => '. ').join('')}`}
-          <div className="text-3xl dark:text-white" onClick={switchMode}>
-            switch
-          </div>
         </div>
       </div>
-      <div className={style.block} />
-      <div className={style.block} />
     </div>
   );
 };
