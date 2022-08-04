@@ -1,0 +1,32 @@
+.root {
+  @apply fixed flex h-[48px] w-full items-center justify-between px-4;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border-bottom: 1px solid rgba(50, 50, 50, 0.6);
+  @include lg {
+    @apply h-[60px] px-10;
+  }
+}
+.hambugerOne {
+  @apply mb-2 h-[3px] w-[32px] bg-black;
+  transition: all 0.5s ease-in;
+  &.open {
+    transform: rotate(45deg) translateY(5px);
+    width: 24px;
+  }
+}
+.hambugerTwo {
+  @apply mb-2 h-[3px] w-[32px] bg-black;
+  transition: all 0.5s ease-in;
+  &.open {
+    opacity: 0;
+  }
+}
+.hambugerThree {
+  @apply h-[3px] w-[32px] bg-black;
+  transition: all 0.5s ease-in;
+  &.open {
+    transform: rotate(-45deg) translateY(-5px);
+    width: 24px;
+  }
+}

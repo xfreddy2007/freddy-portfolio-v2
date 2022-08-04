@@ -17,6 +17,7 @@ const Welcome: React.FC = () => {
     }, 2000);
     const welcome = setTimeout(() => setIsWelcomed(true), 5250);
     return () => {
+      clearTimeout(startAnimation);
       clearTimeout(welcome);
     };
   }, []);

@@ -12,5 +12,10 @@ export default defineConfig({
       generateScopedName: '[name]__[local]___[hash:base64:5]',
       hashPrefix: 'prefix',
     },
+    preprocessorOptions: {
+      scss: {
+        additionalData: `@import 'src/styles/mixin.scss';`,
+      },
+    },
   },
 });
