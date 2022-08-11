@@ -5,6 +5,8 @@ import Header from './components/Header';
 import Loading from './components/Loading';
 import Welcome from './components/Welcome';
 
+import useDarkMode from './utils/hooks/useDarkMode';
+
 import routes from '~react-pages';
 
 const App: React.FC = () => {
@@ -19,6 +21,9 @@ const App: React.FC = () => {
       clearTimeout(welcome);
     };
   }, []);
+
+  const { isDarkMode } = useDarkMode();
+  useEffect(() => console.log(isDarkMode, 'App.js'), [isDarkMode]);
 
   return (
     <Suspense fallback={<Loading />}>

@@ -1,4 +1,18 @@
 .avatar {
   @apply bg-gray-200 p-2;
-  box-shadow: 0 0 8px 8px white inset;
+  box-shadow: 0 0 8px 8px var(--dark-mode-text-color) inset;
+  &[data-dark-mode='true'] {
+    box-shadow: 0 0 8px 8px var(--light-mode-text-color) inset;
+  }
+  svg {
+    @apply h-[168px] w-[158.4px];
+  }
+  @include xl {
+    svg {
+      @apply h-[280px] w-[264px];
+    }
+  }
+}
+.intro {
+  @apply font-source-code h4 flex items-center;
 }

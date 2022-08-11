@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 
 type ThemeMode = 'light' | 'dark';
 
@@ -7,30 +7,39 @@ type UseDarkModeTypes = {
   switchMode: () => void;
 };
 
-export default function useDarkMode(): UseDarkModeTypes {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+const root = document.documentElement;
 
-  const switchMode = () => {
-    if (localStorage.getItem('theme') === 'dark') {
-      localStorage.setItem('theme', 'light');
+const addDarkModeClass = (mode: ThemeMode) => {
+  if (mode === 'light') {
+    localStorage.setItem('theme', 'light');
+    root.classList.remove('dark');
+    root.classList.add('light');
+  } else {
+    localStorage.setItem('theme', 'dark');
+    root.classList.remove('light');
+    root.classList.add('dark');
+  }
+};
+
+export default function useDarkMode(): UseDarkModeTypes {
+  const [theme, setTheme] = useState<ThemeMode>((localStorage.getItem('theme') as ThemeMode) || 'light');
+  const localTheme =
+    localStorage.getItem('theme') ||
+    (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+
+  const switchMode = useCallback(() => {
+    if (root.classList.contains('dark')) {
+      setTheme('light');
+      addDarkModeClass('light');
     } else {
-      localStorage.setItem('theme', 'dark');
+      setTheme('dark');
+      addDarkModeClass('dark');
     }
-    setIsDarkMode((prev) => !prev);
-  };
+  }, []);
 
   useEffect(() => {
-    if (
-      localStorage.getItem('theme') === 'dark' ||
-      (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
-    ) {
-      setIsDarkMode(true);
-      document.documentElement.classList.add('dark');
-    } else {
-      setIsDarkMode(false);
-      document.documentElement.classList.remove('dark');
-    }
-  }, [isDarkMode]);
+    root.classList.add(localTheme);
+  }, []);
 
-  return { isDarkMode, switchMode };
+  return { isDarkMode: theme === 'dark', switchMode };
 }

@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React from 'react';
 import classNames from 'classnames';
 import useDarkMode from '../../utils/hooks/useDarkMode';
 import style from './DarkModeSwitch.module.scss';
@@ -7,15 +7,9 @@ const DarkModeSwitch: React.FC = () => {
   // get dark mode
   const { isDarkMode, switchMode } = useDarkMode();
 
-  const checkBoxRef = useRef<HTMLInputElement>(null);
-
-  const toggleDarkMode = useCallback(() => {
-    switchMode();
-  }, []);
-
   return (
     <div className={style.root} onClick={switchMode}>
-      <input className={style.checkbox} ref={checkBoxRef} checked={isDarkMode} type="checkbox" />
+      <input className={style.checkbox} checked={isDarkMode} type="checkbox" data-mode={isDarkMode} />
       <label className={classNames(style.label, 'dark:bg-purple-800')}>
         <span className={classNames(style.switch, 'dark:bg-black')}>
           {isDarkMode ? (
