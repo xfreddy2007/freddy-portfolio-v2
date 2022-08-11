@@ -1,1 +1,0 @@
-export const SWITCH_THEME_MODE = 'SWITCH_THEME_MODE';

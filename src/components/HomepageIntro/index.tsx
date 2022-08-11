@@ -1,15 +1,17 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import classNames from 'classnames';
-import useDarkMode from '../../utils/hooks/useDarkMode';
+import { useAppSelector } from '@/src/store/hooks';
 import { ReactComponent as Avatar } from '../../assets/avatar-cute-freddy.svg';
 import style from './HomepageIntro.module.scss';
 
 const HomepageIntro: React.FC = () => {
-  const { isDarkMode } = useDarkMode();
-  useEffect(() => console.log(isDarkMode, 'HomepageIntro.js'), [isDarkMode]);
+  // redux tookit: dark mode
+  const mode = useAppSelector((state) => state.switchThemeMode.mode);
+  const isDarkMode = mode === 'dark';
+
   return (
     <div className="flex w-full justify-center gap-x-4 pt-16 lg:pt-20">
-      <div className={style.avatar} data-mode={isDarkMode}>
+      <div className={style.avatar} data-dark-mode={isDarkMode}>
         <Avatar />
       </div>
       <div className={classNames('dark:text-white', style.intro)}>

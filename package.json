@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^1.8.4",
     "@tailwindcss/aspect-ratio": "^0.4.0",
     "axios": "^0.27.2",
     "classnames": "^2.3.1",
@@ -21,14 +22,17 @@
     "react-router-dom": "^6.3.0",
     "react-spring": "^9.5.2",
     "redux": "^4.2.0",
+    "redux-thunk": "^2.4.1",
     "sass": "^1.54.0",
     "swiper": "^8.3.2",
     "tailwindcss": "^3.1.6"
   },
   "devDependencies": {
+    "@redux-devtools/core": "^3.13.1",
     "@types/react": "^18.0.15",
     "@types/react-dom": "^18.0.6",
     "@types/react-helmet": "^6.1.5",
+    "@types/react-redux": "^7.1.24",
     "@typescript-eslint/eslint-plugin": "^5.31.0",
     "@typescript-eslint/parser": "^5.31.0",
     "@vitejs/plugin-react": "^2.0.0",

@@ -1,13 +1,14 @@
 import React, { useState, useCallback } from 'react';
 import classNames from 'classnames';
-import useDarkMode from '@/src/utils/hooks/useDarkMode';
 import DarkModeSwitch from '../DarkModeSwitch';
 import NavigationList from './NavigationList';
 import style from './Header.module.scss';
+import { useAppSelector } from '@/src/store/hooks';
 
 const Header: React.FC = () => {
-  // get dark mode
-  const { isDarkMode } = useDarkMode();
+  // redux tookit: dark mode
+  const mode = useAppSelector((state) => state.switchThemeMode.mode);
+  const isDarkMode = mode === 'dark';
 
   const [isOpen, setIsOpen] = useState(false);
   const toggleHambugerIcon = useCallback(() => setIsOpen((prev) => !prev), []);

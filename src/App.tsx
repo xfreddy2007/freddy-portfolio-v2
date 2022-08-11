@@ -4,8 +4,7 @@ import { useRoutes } from 'react-router-dom';
 import Header from './components/Header';
 import Loading from './components/Loading';
 import Welcome from './components/Welcome';
-
-import useDarkMode from './utils/hooks/useDarkMode';
+import { useAppSelector } from '@/src/store/hooks';
 
 import routes from '~react-pages';
 
@@ -22,8 +21,27 @@ const App: React.FC = () => {
     };
   }, []);
 
-  const { isDarkMode } = useDarkMode();
-  useEffect(() => console.log(isDarkMode, 'App.js'), [isDarkMode]);
+  // initial add dark mode class
+  const mode = useAppSelector((state) => state.switchThemeMode.mode);
+  useEffect(() => {
+    document.documentElement.classList.add(mode);
+  }, [mode]);
+
+  // session for loading and welcome show
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (sessionStorage.getItem('visited') === 'true') {
+      setIsLoaded(true);
+      setIsWelcomed(true);
+    } else {
+      timer = setTimeout(() => {
+        sessionStorage.setItem('visited', 'true');
+        setIsWelcomed(true);
+      }, 6000);
+    }
+
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <Suspense fallback={<Loading />}>
@@ -36,8 +54,8 @@ const App: React.FC = () => {
         />
         <link href="/src/assets/favicon.png" rel="icon" />
       </Helmet>
-      {/* {!isLoaded && <Loading />} */}
-      {/* {!isWelcomed && <Welcome />} */}
+      {!isLoaded && <Loading />}
+      {!isWelcomed && <Welcome />}
       <Header />
       {useRoutes(routes)}
     </Suspense>

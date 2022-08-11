@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import classNames from 'classnames';
 import Lottie from 'lottie-react';
-import useDarkMode from '../../utils/hooks/useDarkMode';
+import { useAppSelector } from '@/src/store/hooks';
 import welcome from '../../assets/LottieAnimation/welcome.json';
 import welcomeDark from '../../assets/LottieAnimation/welcome-dark.json';
 
 const Welcome: React.FC = () => {
-  const { isDarkMode } = useDarkMode();
+  // redux tookit: dark mode
+  const mode = useAppSelector((state) => state.switchThemeMode.mode);
+  const isDarkMode = mode === 'dark';
 
   const welcomeRef = useRef(null);
   const [isWelcomed, setIsWelcomed] = useState(false);

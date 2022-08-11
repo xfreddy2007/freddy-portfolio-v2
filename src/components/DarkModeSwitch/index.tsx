@@ -1,14 +1,18 @@
 import React from 'react';
 import classNames from 'classnames';
-import useDarkMode from '../../utils/hooks/useDarkMode';
 import style from './DarkModeSwitch.module.scss';
 
+import { useAppDispatch, useAppSelector } from '@/src/store/hooks';
+import { switchThemeMode } from '@/src/feature/switchThemeMode';
+
 const DarkModeSwitch: React.FC = () => {
-  // get dark mode
-  const { isDarkMode, switchMode } = useDarkMode();
+  // redux tookit: dark mode
+  const mode = useAppSelector((state) => state.switchThemeMode.mode);
+  const dispatch = useAppDispatch();
+  const isDarkMode = mode === 'dark';
 
   return (
-    <div className={style.root} onClick={switchMode}>
+    <div className={style.root} onClick={() => dispatch(switchThemeMode())}>
       <input className={style.checkbox} checked={isDarkMode} type="checkbox" data-mode={isDarkMode} />
       <label className={classNames(style.label, 'dark:bg-purple-800')}>
         <span className={classNames(style.switch, 'dark:bg-black')}>

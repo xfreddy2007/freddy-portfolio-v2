@@ -3,9 +3,13 @@ import classNames from 'classnames';
 import Lottie from 'lottie-react';
 import heartBeatLoader from '../../assets/LottieAnimation/heartbeat-ecg-loader.json';
 import heartBeatLoaderDark from '../../assets/LottieAnimation/heartbeat-ecg-loader-dark.json';
-import useDarkMode from '@/src/utils/hooks/useDarkMode';
+import { useAppSelector } from '@/src/store/hooks';
 
 const Loading: React.FC = () => {
+  // redux tookit: dark mode
+  const mode = useAppSelector((state) => state.switchThemeMode.mode);
+  const isDarkMode = mode === 'dark';
+
   // Loading text change animation
   const [loadingTextState, setLoadingTextState] = useState(1);
   useEffect(() => {
@@ -14,9 +18,6 @@ const Loading: React.FC = () => {
     }, 300);
     return () => clearInterval(textChange);
   }, []);
-
-  // get dark mode
-  const { isDarkMode } = useDarkMode();
 
   // deal fade out animation
   const [isTextOut, setIsTextOut] = useState(false);
