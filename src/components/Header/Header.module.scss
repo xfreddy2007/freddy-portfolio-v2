@@ -1,5 +1,7 @@
+@import '../../styles/animation';
+
 .root {
-  @apply fixed flex h-[48px] w-full items-center justify-between px-4;
+  @apply fixed flex h-[48px] w-full items-center justify-between bg-white px-4;
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
   border-bottom: 1px solid rgba(50, 50, 50, 0.6);
@@ -9,7 +11,7 @@
 }
 .hambugerOne {
   @apply mb-2 h-[3px] w-[32px] bg-black;
-  transition: all 0.5s ease-in;
+  transition: transform 0.5s ease, width 0.5s ease;
   &.open {
     transform: rotate(45deg) translateY(5px);
     width: 24px;
@@ -17,16 +19,49 @@
 }
 .hambugerTwo {
   @apply mb-2 h-[3px] w-[32px] bg-black;
-  transition: all 0.5s ease-in;
+  transition: opacity 0.5s ease;
   &.open {
     opacity: 0;
   }
 }
 .hambugerThree {
   @apply h-[3px] w-[32px] bg-black;
-  transition: all 0.5s ease-in;
+  transition: transform 0.5s ease, width 0.5s ease;
   &.open {
     transform: rotate(-45deg) translateY(-5px);
     width: 24px;
+  }
+}
+
+// header title typing animation
+.title {
+  @apply font-source-code w-[185px];
+  @include md {
+    @apply w-[230px];
+  }
+  @include xl {
+    @apply w-[344px];
+  }
+}
+.animateText {
+  @apply h5 relative block h-[24px] w-full whitespace-nowrap font-bold;
+  &:before {
+    @apply absolute top-0 bottom-0 right-0 h-full w-[0px] bg-white;
+    content: '';
+    border-left: 1px solid var(--light-mode-text-color);
+    animation: typewriter 2s steps(23), blink 0.5s steps(23) infinite;
+  }
+  &[data-dark-mode='true'] {
+    &:before {
+      @apply bg-black;
+      border-left: 1px solid var(--dark-mode-text-color);
+      animation: typewriter 2s steps(23), blink-dark-mode 0.5s steps(23) infinite;
+    }
+  }
+  @include md {
+    @apply h-[25px];
+  }
+  @include xl {
+    @apply h-[38px];
   }
 }

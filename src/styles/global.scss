@@ -8,6 +8,7 @@
 @import './mixin';
 @import './fonts';
 @import './grid';
+@import './animation';
 
 // reset tailwindcss
 img,
@@ -26,4 +27,10 @@ button:focus {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+// dark mode text color default
+:root {
+  --dark-mode-text-color: white;
+  --light-mode-text-color: black;
 }

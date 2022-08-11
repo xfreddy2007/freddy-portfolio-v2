@@ -21,7 +21,7 @@ module.exports = {
         '.font-robot': { 'font-family': "'Roboto', 'Helvetica Neue', Arial, sans-serif" },
         '.font-arial': { 'font-family': 'Arial, Helvetica, sans-serif' },
         '.font-raleway': { 'font-family': "'Raleway', 'Helvetica Neue', Arial, sans-serif" },
-        '.font-source-code': { 'font-family': "'Source Code Pro', monospace, sans-serif'" },
+        '.font-source-code': { 'font-family': "'Source Code Pro', monospace, sans-serif" },
 
         // dark mode transition
         '.dark-transition': {

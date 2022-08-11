@@ -1,0 +1,55 @@
+@keyframes mask-fade-in {
+  from {
+    mask: linear-gradient(90deg, #000 25%, #000000e6 50%, #00000000) 150% 0 / 400% no-repeat;
+    opacity: 0.2;
+  }
+  to {
+    mask: linear-gradient(90deg, #000 25%, #000000e6 50%, #00000000) 0 / 400% no-repeat;
+    opacity: 1;
+  }
+}
+
+@keyframes mask-fade-out {
+  from {
+    mask: linear-gradient(90deg, #000 25%, #000000e6 50%, #00000000) 0 / 400% no-repeat;
+    opacity: 1;
+  }
+  to {
+    mask: linear-gradient(90deg, #000 25%, #000000e6 50%, #00000000) 150% 0 / 400% no-repeat;
+    opacity: 0.2;
+  }
+}
+
+@keyframes typewriter {
+  // 40%,
+  // 75% {
+  //   width: 0;
+  // }
+  // 10%,
+  // 100% {
+  //   width: 100%;
+  // }
+  0% {
+    width: 100%;
+  }
+  100% {
+    width: 0;
+  }
+}
+
+@keyframes blink {
+  from {
+    border-left: 1px solid var(--light-mode-text-color);
+  }
+  to {
+    border-left: 1px solid transparent;
+  }
+}
+@keyframes blink-dark-mode {
+  from {
+    border-left: 1px solid var(--dark-mode-text-color);
+  }
+  to {
+    border-left: 1px solid transparent;
+  }
+}

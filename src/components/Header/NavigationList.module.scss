@@ -1,0 +1,54 @@
+@import '../../styles/animation';
+
+.root {
+  @apply absolute left-0 bottom-0 w-screen;
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+  transition: opacity 0.2s linear;
+}
+.show {
+  opacity: 1;
+  height: calc(100vh - 48px);
+  @include lg {
+    height: calc(100vh - 60px);
+  }
+}
+.tab {
+  @apply relative flex h-[25%] w-full cursor-pointer items-center justify-center font-black uppercase;
+  pointer-events: none;
+  transition: all 0.5s;
+  & > .text:hover {
+    transform: scale(110%);
+    background: linear-gradient(to right, #ffffff 100%, #9ca3af 0%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  & > .text {
+    pointer-events: auto;
+  }
+  &:hover ~ .colorBackground {
+    width: 100%;
+  }
+  &:hover ~ .imgBackground {
+    background-image: url('/src//assets//profile-pic.jpeg');
+    opacity: 1;
+    animation: mask-fade-in 0.75s;
+  }
+}
+.text {
+  background: linear-gradient(to right, #ffffff 50%, #9ca3af 50%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: all 0.5s ease;
+}
+.colorBackground {
+  @apply absolute top-0 left-0 z-[3000] h-full w-1/2;
+  transition: all 0.25s ease;
+}
+// image hover apply
+.imgBackground {
+  @apply absolute top-0 left-0 z-[3500] h-full w-full bg-cover bg-no-repeat opacity-0;
+  background-position: center 30%;
+  animation: mask-fade-out 0.75s;
+}
