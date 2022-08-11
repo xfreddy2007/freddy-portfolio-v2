@@ -1,5 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
+import HomepageIntro from '../components/HomepageIntro';
+import HomepageCarousell from '../components/HomepageCarousell';
 
 const HomePage: React.FC = () => {
   return (
@@ -10,7 +12,8 @@ const HomePage: React.FC = () => {
         <meta property="og:url" content="https://www.freddyliu.io/" />
         <link rel="canonical" href="https://www.freddyliu.io/" />
       </Helmet>
-      Hello world!
+      <HomepageIntro />
+      <HomepageCarousell />
     </div>
   );
 };
