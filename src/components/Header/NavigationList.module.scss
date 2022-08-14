@@ -1,7 +1,7 @@
 @import '../../styles/animation';
 
 .root {
-  @apply absolute left-0 bottom-0 w-screen;
+  @apply fixed left-0 bottom-0 w-screen;
   opacity: 0;
   height: 0;
   overflow: hidden;

@@ -2,6 +2,7 @@ import React, { Suspense, useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { useRoutes } from 'react-router-dom';
 import Header from './components/Header';
+import Footer from './components/Footer';
 import Loading from './components/Loading';
 import Welcome from './components/Welcome';
 import { useAppSelector } from '@/src/store/hooks';
@@ -58,6 +59,7 @@ const App: React.FC = () => {
       {!isWelcomed && <Welcome />}
       <Header />
       {useRoutes(routes)}
+      <Footer />
     </Suspense>
   );
 };

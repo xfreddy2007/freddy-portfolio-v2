@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import classNames from 'classnames';
 import style from './NavigationList.module.scss';
 
@@ -7,6 +7,14 @@ type NavigationListProps = {
 };
 
 const NavigationList: React.FC<NavigationListProps> = ({ isOpen }) => {
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+  }, [isOpen]);
+
   return (
     <div className={classNames('navigation-list__z-index bg-white dark:bg-black', isOpen && style.show, style.root)}>
       <div className={classNames('navigation-list__z-index font-raleway h1 dark:text-white', style.tab)}>
@@ -30,7 +38,7 @@ const NavigationList: React.FC<NavigationListProps> = ({ isOpen }) => {
         </span>
       </div>
       {/* background Animaiton */}
-      <div className={classNames('bg-pink-900 dark:bg-pink-700', style.colorBackground)} />
+      <div className={classNames('bg-amber-900 dark:bg-amber-700', style.colorBackground)} />
       <div className={style.imgBackground}></div>
     </div>
   );

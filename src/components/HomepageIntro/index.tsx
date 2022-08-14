@@ -10,13 +10,13 @@ const HomepageIntro: React.FC = () => {
   const isDarkMode = mode === 'dark';
 
   return (
-    <div className="flex w-full justify-center gap-x-4 pt-16 lg:pt-20">
+    <div className={style.root}>
       <div className={style.avatar} data-dark-mode={isDarkMode}>
         <Avatar />
       </div>
       <div className={classNames('dark:text-white', style.intro)}>
         Hey! Take a look at this playground! <br />
-        You may find amazing thing!
+        You may find amazing things!
       </div>
     </div>
   );

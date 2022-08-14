@@ -1,0 +1,27 @@
+.root {
+  @apply flex w-full flex-col items-center justify-center p-4 text-white;
+  @include md {
+    @apply p-8;
+  }
+  @include xl {
+    @apply p-16;
+  }
+}
+.iconContainer {
+  @apply flex gap-4;
+  svg {
+    @apply h-[32px] w-[32px];
+  }
+  @include md {
+    @apply gap-8;
+    svg {
+      @apply h-[40px] w-[40px];
+    }
+  }
+  @include xl {
+    @apply gap-12;
+    svg {
+      @apply h-[48px] w-[48px];
+    }
+  }
+}

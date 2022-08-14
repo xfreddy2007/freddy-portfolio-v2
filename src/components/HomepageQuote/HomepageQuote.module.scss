@@ -1,0 +1,142 @@
+@import '/src//styles/animation';
+
+@keyframes typewriter-repeat {
+  // round 1
+  0%,
+  3% {
+    width: 100%;
+  }
+  13%,
+  25% {
+    width: 0;
+  }
+  33% {
+    width: 100%;
+  }
+  // round 2
+  36% {
+    width: 100%;
+  }
+  46%,
+  58% {
+    width: 21%;
+  }
+  66% {
+    width: 100%;
+  }
+  // round 3
+  69% {
+    width: 100%;
+  }
+  79%,
+  91% {
+    width: 11%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+// moveup for homepage
+@keyframes moveup-mobile {
+  0% {
+    top: 0;
+  }
+  100% {
+    top: -72px;
+  }
+}
+@keyframes moveup-tablet {
+  0% {
+    top: 0;
+  }
+  100% {
+    top: -84px;
+  }
+}
+@keyframes moveup-desktop {
+  0% {
+    top: 0;
+  }
+  100% {
+    top: -108px;
+  }
+}
+
+// arrow moving animation
+@keyframes arrow-moving {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(15%);
+  }
+}
+
+.root {
+  @apply flex w-full flex-col justify-center;
+}
+
+// typewriter animation
+.textContainer {
+  @apply font-source-code h5 relative mx-auto flex h-[24px] w-[328px] overflow-hidden font-bold;
+  @include md {
+    @apply h-[28px] w-[408px];
+  }
+  @include xl {
+    @apply h-[36px] w-[608px];
+  }
+}
+.dynamicTextWrapper {
+  @apply relative top-0 ml-2 flex flex-col text-amber-900;
+  animation: moveup-mobile 12s steps(3) infinite;
+  &[data-dark-mode='true'] {
+    @apply text-amber-700;
+  }
+  @include md {
+    animation-name: moveup-tablet;
+  }
+  @include xl {
+    animation-name: moveup-desktop;
+  }
+}
+.dynamicText {
+  @apply relative whitespace-nowrap;
+  &:before {
+    @apply absolute top-0 bottom-0 right-0 h-full w-[0px] bg-white;
+    content: '';
+    border-left: 1px solid var(--light-mode-text-color);
+    animation: typewriter-repeat 12s steps(23) infinite, blink 0.5s steps(23) infinite;
+  }
+  &[data-dark-mode='true'] {
+    &:before {
+      @apply bg-black;
+      border-left: 1px solid var(--dark-mode-text-color);
+      animation: typewriter-repeat 12s steps(23) infinite, blink-dark-mode 0.5s steps(23) infinite;
+    }
+  }
+}
+
+.arrow {
+  @apply my-4 flex flex-col items-center;
+  animation: arrow-moving 0.5s infinite;
+  svg {
+    @apply h-[8px] w-[16px];
+    fill: #000;
+  }
+  &[data-dark-mode='true'] {
+    svg {
+      fill: #fff;
+    }
+  }
+  @include md {
+    svg {
+      @apply h-[10px] w-[20px];
+    }
+  }
+  @include xl {
+    svg {
+      @apply h-[12px] w-[24px];
+    }
+  }
+}

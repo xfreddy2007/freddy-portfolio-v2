@@ -10,6 +10,12 @@
 @import './grid';
 @import './animation';
 
+// swiper
+@import 'swiper/css';
+@import 'swiper/css/navigation';
+@import 'swiper/css/pagination';
+@import 'swiper/css/scrollbar';
+
 // reset tailwindcss
 img,
 svg {
