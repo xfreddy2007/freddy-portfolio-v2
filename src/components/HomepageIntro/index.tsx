@@ -14,10 +14,10 @@ const HomepageIntro: React.FC = () => {
       <div className={style.avatar} data-dark-mode={isDarkMode}>
         <Avatar />
       </div>
-      <div className={classNames('dark:text-white', style.intro)}>
+      <h1 className={classNames('dark:text-white', style.intro)}>
         Hey! Take a look at this playground! <br />
         You may find amazing things!
-      </div>
+      </h1>
     </div>
   );
 };

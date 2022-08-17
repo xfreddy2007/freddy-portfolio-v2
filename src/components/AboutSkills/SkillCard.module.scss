@@ -1,0 +1,41 @@
+.root {
+  @apply w-full p-4;
+  @include md {
+    @apply w-1/2 p-8;
+  }
+  @include xl {
+    @apply p-12;
+  }
+}
+.blood {
+  &[data-score='1'] {
+    @apply w-[10%];
+  }
+  &[data-score='2'] {
+    @apply w-[20%];
+  }
+  &[data-score='3'] {
+    @apply w-[30%];
+  }
+  &[data-score='4'] {
+    @apply w-[40%];
+  }
+  &[data-score='5'] {
+    @apply w-[50%];
+  }
+  &[data-score='6'] {
+    @apply w-[60%];
+  }
+  &[data-score='7'] {
+    @apply w-[70%];
+  }
+  &[data-score='8'] {
+    @apply w-[80%];
+  }
+  &[data-score='9'] {
+    @apply w-[90%];
+  }
+  &[data-score='10'] {
+    @apply w-[100%];
+  }
+}
