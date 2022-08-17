@@ -1,0 +1,9 @@
+.root {
+  @apply font-raleway mt-4 px-4 pb-8;
+  @include md {
+    @apply px-8 pb-12;
+  }
+  @include xl {
+    @apply px-16 pb-16;
+  }
+}

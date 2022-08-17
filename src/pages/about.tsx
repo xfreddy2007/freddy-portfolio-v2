@@ -2,6 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import AboutIntro from '../components/AboutIntro';
 import AboutSkills from '../components/AboutSkills';
+import AboutCertification from '../components/AboutCertification/Index';
 
 const AboutPage: React.FC = () => {
   return (
@@ -17,6 +18,7 @@ const AboutPage: React.FC = () => {
       </div>
       <AboutIntro />
       <AboutSkills />
+      <AboutCertification />
     </div>
   );
 };
