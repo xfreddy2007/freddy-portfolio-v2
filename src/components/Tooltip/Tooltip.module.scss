@@ -1,0 +1,47 @@
+.root {
+  @apply fixed z-[9999] box-border max-w-[320px] py-4 px-6 text-left opacity-0;
+  background: #1a1a1a;
+  color: #f0f0f0;
+  width: calc(100% - 20px);
+  border-radius: 4px;
+  visibility: hidden;
+  transition: opacity 0.35s, visibility 0.35s;
+  --arrow-left: 0;
+  box-shadow: 0 0 5px 0px black;
+  &[data-light='true'] {
+    background: #fff;
+    color: #000;
+    &[data-direction='top']:after {
+      border-color: transparent transparent #fff transparent;
+    }
+    &[data-direction='bottom']:after {
+      border-color: #fff transparent transparent transparent;
+    }
+  }
+  &[data-active='true'] {
+    visibility: visible;
+    opacity: 1;
+  }
+  &:after {
+    @apply absolute h-0 w-0;
+    content: '';
+    border: 10px solid;
+    left: var(--arrow-left);
+  }
+  &[data-direction='top'] {
+    transform: translate(0, -100px);
+    &:after {
+      border-color: transparent transparent #1a1a1a transparent;
+      top: -20px;
+      margin-left: -10px;
+    }
+  }
+  &[data-direction='bottom'] {
+    transform: translate(0, 100px);
+    &:after {
+      border-color: #1a1a1a transparent transparent transparent;
+      bottom: -20px;
+      margin-left: -10px;
+    }
+  }
+}

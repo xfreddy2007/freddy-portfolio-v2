@@ -9,7 +9,7 @@ const AboutCertification: React.FC = () => {
       <h2 className="h2 font-bold text-amber-900 dark:text-amber-700">Certification</h2>
       <div className="my-4 flex flex-col gap-y-3 md:my-6 xl:my-8">
         {certifications.map((certifications) => {
-          return <CertificationCard {...certifications} />;
+          return <CertificationCard key={certifications.name} {...certifications} />;
         })}
       </div>
     </div>

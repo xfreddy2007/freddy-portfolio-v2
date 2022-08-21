@@ -1,0 +1,51 @@
+.root {
+  @apply my-6 flex w-full flex-col items-center;
+  @include md {
+    @apply my-10;
+  }
+  @include xl {
+    @apply my-16;
+  }
+}
+.input {
+  @apply flex items-center gap-1;
+  svg {
+    @apply h-[24px] w-[24px];
+    fill: #000;
+  }
+  input {
+    @apply h5 h-[32px] w-[150px] rounded border-2 border-solid border-amber-900 px-2 py-1;
+  }
+  &[data-dark-mode='true'] {
+    svg {
+      fill: #fff;
+    }
+    input {
+      @apply border-amber-700 bg-black;
+    }
+  }
+
+  @include md {
+    @apply gap-2;
+    svg {
+      @apply h-[28px] w-[28px];
+    }
+    input {
+      @apply h-[40px] w-[180px] px-3;
+    }
+  }
+  @include xl {
+    svg {
+      @apply h-[32px] w-[32px];
+    }
+    input {
+      @apply h-[44px] w-[210px];
+    }
+  }
+}
+.categoryContainer {
+  @apply mt-4 flex max-w-[250px] flex-wrap justify-center gap-2;
+  @include md {
+    @apply max-w-none gap-3;
+  }
+}

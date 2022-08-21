@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import switchThemeModeReducer from '../feature/switchThemeMode';
+import projectDisplayReducer from '../feature/projectDisplay';
 
 export const store = configureStore({
   reducer: {
     switchThemeMode: switchThemeModeReducer,
+    projectDisplay: projectDisplayReducer,
   },
 });
 

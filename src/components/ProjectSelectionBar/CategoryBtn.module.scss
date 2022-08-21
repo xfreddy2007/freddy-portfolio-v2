@@ -1,0 +1,21 @@
+.root {
+  @apply flex items-center gap-1 rounded border-2 border-solid border-amber-900 p-2;
+  svg {
+    @apply h-[12px] w-[12px];
+    fill: #fff;
+  }
+  &[data-is-selected='true'] {
+    @apply bg-amber-900 text-white;
+  }
+  &[data-dark-mode='true'] {
+    @apply border-amber-700;
+    &[data-is-selected='true'] {
+      @apply bg-amber-700;
+    }
+  }
+  @include xl {
+    svg {
+      @apply h-[16px] w-[16px];
+    }
+  }
+}

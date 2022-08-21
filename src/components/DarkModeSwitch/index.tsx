@@ -13,7 +13,15 @@ const DarkModeSwitch: React.FC = () => {
 
   return (
     <div className={style.root} onClick={() => dispatch(switchThemeMode())}>
-      <input className={style.checkbox} checked={isDarkMode} type="checkbox" data-mode={isDarkMode} />
+      <input
+        className={style.checkbox}
+        checked={isDarkMode}
+        type="checkbox"
+        data-mode={isDarkMode}
+        onChange={() => {
+          return;
+        }}
+      />
       <label className={classNames(style.label, 'dark:bg-purple-800')}>
         <span className={classNames(style.switch, 'dark:bg-black')}>
           {isDarkMode ? (

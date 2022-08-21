@@ -31,7 +31,7 @@ const Header: React.FC = () => {
         </a>
         <DarkModeSwitch />
       </div>
-      <NavigationList isOpen={isOpen} />
+      <NavigationList isOpen={isOpen} setIsOpen={setIsOpen} />
     </>
   );
 };
