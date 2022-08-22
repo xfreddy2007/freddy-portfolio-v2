@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet';
 // import ReactDOMServer from 'react-dom/server';
 // import Tooltip from '../components/Tooltip';
 import ProjectSelectionBar from '../components/ProjectSelectionBar';
+import ProjectTemplate from '../components/ProjectTemplate';
 
 const ProjectPage: React.FC = () => {
   return (
@@ -15,7 +16,7 @@ const ProjectPage: React.FC = () => {
       </Helmet>
       <h1 className="font-ralway h1 text-center font-black">Projects</h1>
       <ProjectSelectionBar />
-      <div className=""></div>
+      <ProjectTemplate />
     </div>
   );
 };

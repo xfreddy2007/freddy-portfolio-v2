@@ -1,10 +1,12 @@
-const debounce = (callback: () => void, time: number) => {
-  let timer: NodeJS.Timeout | null = null;
-  return () => {
-    if (timer) {
+const debounce = (callback: (...args: any[]) => void, time: number) => {
+  let timer: NodeJS.Timeout;
+  return (...args: any[]) => {
+    const later = () => {
       clearTimeout(timer);
-    }
-    timer = setTimeout(callback, time);
+      callback(...args);
+    };
+    clearTimeout(timer);
+    timer = setTimeout(later, time);
   };
 };
 

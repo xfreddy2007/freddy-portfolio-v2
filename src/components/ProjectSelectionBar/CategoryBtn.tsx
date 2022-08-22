@@ -6,7 +6,7 @@ import style from './CategoryBtn.module.scss';
 
 type CategoryBtnProps = {
   category: string;
-  categoryId: string;
+  categoryId: 'featureProjects' | 'frontEnd' | 'backEnd' | 'fullStack';
 };
 
 const CategoryBtn: React.FC<CategoryBtnProps> = ({ category, categoryId }) => {
@@ -25,7 +25,7 @@ const CategoryBtn: React.FC<CategoryBtnProps> = ({ category, categoryId }) => {
       data-is-selected={isSelected}
       onClick={() => dispatch(switchCategorySelection(categoryId))}
     >
-      <span className="p w-fit whitespace-nowrap">{category}</span>
+      <span className="whitespace-nowra p w-fit font-bold">{category}</span>
       {isSelected && <CloseIcon />}
     </button>
   );

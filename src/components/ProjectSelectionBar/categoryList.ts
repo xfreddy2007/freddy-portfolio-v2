@@ -1,5 +1,5 @@
 type CategoryType = {
-  id: string;
+  id: 'featureProjects' | 'frontEnd' | 'backEnd' | 'fullStack';
   title: string;
 };
 

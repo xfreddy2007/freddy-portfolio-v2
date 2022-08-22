@@ -1,0 +1,17 @@
+.root {
+  @apply relative grid auto-cols-fr grid-flow-dense auto-rows-fr grid-cols-1;
+  div {
+    @apply col-span-1 row-span-1 aspect-1 bg-red-500;
+  }
+  @include md {
+    @apply grid-cols-4;
+    div {
+      &[data-occupation='2'] {
+        @apply col-span-2 row-span-2;
+      }
+    }
+  }
+  @include xl {
+    @apply mx-auto max-w-[1240px] grid-cols-5;
+  }
+}

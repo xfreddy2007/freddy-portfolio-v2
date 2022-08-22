@@ -2,11 +2,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface ProjectDisplayState {
-  categoryList: string[];
+  categoryList: Array<'featureProjects' | 'frontEnd' | 'backEnd' | 'fullStack'>;
+  searchText: string;
 }
 
 const initialState: ProjectDisplayState = {
   categoryList: [],
+  searchText: '',
 };
 
 const projectDisplaySlice = createSlice({
@@ -21,8 +23,11 @@ const projectDisplaySlice = createSlice({
         state.categoryList = state.categoryList.filter((item) => item !== action.payload);
       }
     },
+    searchProject(state, action: PayloadAction<string>) {
+      state.searchText = action.payload;
+    },
   },
 });
 
-export const { switchCategorySelection } = projectDisplaySlice.actions;
+export const { switchCategorySelection, searchProject } = projectDisplaySlice.actions;
 export default projectDisplaySlice.reducer;

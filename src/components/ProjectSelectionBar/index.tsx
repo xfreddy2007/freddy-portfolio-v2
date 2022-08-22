@@ -1,14 +1,15 @@
-import React, { useEffect } from 'react';
+import React, { SyntheticEvent, useCallback, useEffect } from 'react';
 import CategoryBtn from './CategoryBtn';
 import { useSearchParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@/src/store/hooks';
-import { switchCategorySelection } from '@/src/feature/projectDisplay';
+import { switchCategorySelection, searchProject } from '@/src/feature/projectDisplay';
 import { ReactComponent as SearchIcon } from '@/src/assets/icon-search.svg';
 import categorySelection from './categoryList';
+import debounce from '@/src/utils/debounce';
 import style from './ProjectSelectionBar.module.scss';
 
 const ProjectSelectionBar: React.FC = () => {
-  // redux tookit: selection list
+  // redux tookit: selection list & search
   const dispatch = useAppDispatch();
   // redux tookit: dark mode
   const mode = useAppSelector((state) => state.switchThemeMode.mode);
@@ -22,13 +23,23 @@ const ProjectSelectionBar: React.FC = () => {
       query.forEach((key: string) => {
         dispatch(switchCategorySelection(key));
       });
-  }, [searchParams, dispatch]);
+  }, [searchParams]);
+
+  const searchTextHandler = useCallback(
+    debounce((text: string) => dispatch(searchProject(text)), 500),
+    [debounce],
+  );
+
+  const onChangeHandler = useCallback((e: SyntheticEvent) => {
+    const target = e.target as HTMLInputElement;
+    searchTextHandler(target.value);
+  }, []);
 
   return (
     <div className={style.root}>
       <div className={style.input} data-dark-mode={isDarkMode}>
         <SearchIcon />
-        <input className={style.input} type="text" placeholder="Search" />
+        <input className={style.input} type="text" placeholder="Search" onChange={onChangeHandler} />
       </div>
       <div className={style.categoryContainer}>
         {categorySelection.map((selection) => {
