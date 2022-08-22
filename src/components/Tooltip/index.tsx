@@ -67,7 +67,10 @@ const Tooltip: React.FC<TooltipProps> = (props: TooltipProps) => {
   useEffect(() => {
     const { current } = rootElementRef;
     const showTipHandler = (e: MouseEvent | TouchEvent) => {
-      const { tip } = (e.target as HTMLElement).dataset;
+      const { tip, occupation } = (e.target as HTMLElement).dataset;
+      if (occupation) {
+        current?.setAttribute('data-occupation', occupation);
+      }
       if (tip) {
         setText(tip);
         requestAnimationFrame(() => {

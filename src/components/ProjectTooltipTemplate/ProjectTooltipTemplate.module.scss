@@ -1,0 +1,30 @@
+.root {
+  @apply font-source-code w-[280px] p-3 text-black;
+}
+.title {
+  @apply mb-2 text-center text-base font-black;
+}
+.image {
+  @apply w-full;
+}
+.description {
+  @apply mt-2 text-sm;
+}
+.genreContainer {
+  @apply mt-2 flex flex-wrap gap-1;
+}
+.linkContainer {
+  @apply mt-2 flex flex-wrap gap-2;
+}
+.githubLink {
+  @apply rounded border-[1px] border-solid border-amber-900 p-1 leading-5;
+  svg {
+    @apply h-[20px] w-[20px] align-text-bottom;
+    fill: #78350f;
+  }
+  &[data-dark-mode='true'] {
+    svg {
+      fill: #b45309;
+    }
+  }
+}

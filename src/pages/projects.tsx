@@ -1,13 +1,11 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-// import ReactDOMServer from 'react-dom/server';
-// import Tooltip from '../components/Tooltip';
 import ProjectSelectionBar from '../components/ProjectSelectionBar';
 import ProjectTemplate from '../components/ProjectTemplate';
 
 const ProjectPage: React.FC = () => {
   return (
-    <div className="mx-auto max-w-[1920px] bg-white pt-16 dark:bg-black dark:text-white md:pt-20 xl:pt-28">
+    <div className="mx-auto max-w-[1920px] bg-white pt-16 pb-32 dark:bg-black dark:text-white md:pt-20 md:pb-40 xl:py-28 xl:pb-56">
       <Helmet>
         <title>Projects - Freddy Liu</title>
         <meta property="og:title" content="Projects - Freddy Liu" />

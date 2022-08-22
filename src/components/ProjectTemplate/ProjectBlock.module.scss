@@ -1,0 +1,18 @@
+@import '../../styles/animation';
+
+.root {
+  @apply relative aspect-1;
+  &:hover {
+    & > .coverModal {
+      @apply flex opacity-100;
+      animation: mask-fade-in 0.75s;
+    }
+  }
+}
+.image {
+  @apply h-full;
+}
+.coverModal {
+  @apply font-source-code absolute top-0 left-0 z-[2] hidden h-full w-full items-center justify-center font-black text-white opacity-0;
+  background-color: rgba(0, 0, 0, 0.7);
+}

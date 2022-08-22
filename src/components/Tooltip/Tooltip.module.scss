@@ -35,13 +35,33 @@
       top: -20px;
       margin-left: -10px;
     }
+    &[data-occupation='2'] {
+      transform: translate(0, -100px);
+    }
   }
   &[data-direction='bottom'] {
-    transform: translate(0, 100px);
+    transform: translate(0, -200px);
     &:after {
       border-color: #1a1a1a transparent transparent transparent;
       bottom: -20px;
       margin-left: -10px;
+    }
+    &[data-occupation='2'] {
+      transform: translate(0, -310px);
+    }
+  }
+  @include xl {
+    &[data-direction='top'] {
+      transform: translate(0, -50px);
+      &[data-occupation='2'] {
+        transform: translate(0, -150px);
+      }
+    }
+    &[data-direction='bottom'] {
+      transform: translate(0, -150px);
+      &[data-occupation='2'] {
+        transform: translate(0, -310px);
+      }
     }
   }
 }

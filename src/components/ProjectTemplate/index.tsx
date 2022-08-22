@@ -1,7 +1,8 @@
 import React from 'react';
 import projectData from '@/src/assets/projectData/projectData';
 import ProjectBlock from './ProjectBlock';
-import { useAppDispatch, useAppSelector } from '@/src/store/hooks';
+import Tooltip from '@/src/components/Tooltip';
+import { useAppSelector } from '@/src/store/hooks';
 import style from './ProjectTemplate.module.scss';
 
 const ProjectTemplate: React.FC = () => {
@@ -27,12 +28,13 @@ const ProjectTemplate: React.FC = () => {
         return (
           <ProjectBlock
             key={project.id}
-            id={project.id}
             imgSrc={project.squareProfilePic}
             isFeatured={!!project.category.find((item) => item === 'featureProjects')}
+            {...project}
           />
         );
       })}
+      <Tooltip mode="light" />
     </div>
   );
 };
