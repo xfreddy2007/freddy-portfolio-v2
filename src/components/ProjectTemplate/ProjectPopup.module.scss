@@ -1,0 +1,14 @@
+.root {
+  @apply fixed left-0 bottom-0 z-10 flex w-full translate-y-0 justify-center border-2 border-black bg-white;
+  transition: transform 0.75s cubic-bezier(0.19, 1, 0.22, 1);
+  &[data-show='false'] {
+    @apply translate-y-full;
+  }
+}
+.closeBtn {
+  @apply absolute top-2 right-2 z-20 cursor-pointer;
+  svg {
+    @apply h-[20px] w-[20px];
+    fill: #000;
+  }
+}

@@ -1,7 +1,9 @@
 import React from 'react';
 import projectData from '@/src/assets/projectData/projectData';
 import ProjectBlock from './ProjectBlock';
+import ProjectPopup from './ProjectPopup';
 import Tooltip from '@/src/components/Tooltip';
+import useMediaMatch from '@/src/utils/hooks/useMediaMatch';
 import { useAppSelector } from '@/src/store/hooks';
 import style from './ProjectTemplate.module.scss';
 
@@ -22,6 +24,13 @@ const ProjectTemplate: React.FC = () => {
     });
     return keywordCondition && isInCategory;
   });
+  // redux tookit: onClick select project id
+  const selectedId = useAppSelector((state) => state.projectDisplay.selectedProjectId);
+  const selectedProject = projectData.find((itme) => itme.id === selectedId);
+
+  // desktop media
+  const isDesktop = useMediaMatch('(min-width: 1024px)');
+
   return (
     <div className={style.root}>
       {filteredProjectData.map((project) => {
@@ -34,6 +43,7 @@ const ProjectTemplate: React.FC = () => {
           />
         );
       })}
+      {!isDesktop && <ProjectPopup {...selectedProject} />}
       <Tooltip mode="light" />
     </div>
   );

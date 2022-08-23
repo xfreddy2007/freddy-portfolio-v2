@@ -10,7 +10,7 @@
   }
 }
 .image {
-  @apply h-full;
+  @apply pointer-events-none h-full;
 }
 .coverModal {
   @apply font-source-code absolute top-0 left-0 z-[2] hidden h-full w-full items-center justify-center font-black text-white opacity-0;
