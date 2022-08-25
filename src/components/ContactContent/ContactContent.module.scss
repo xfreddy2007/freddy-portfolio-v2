@@ -1,0 +1,19 @@
+.root {
+}
+.contact {
+  @apply flex items-center;
+  svg {
+    @apply h-[32px] w-[32px];
+    fill: #78350f;
+  }
+  &[data-dark-mode='true'] {
+    svg {
+      fill: #b45309;
+    }
+  }
+  @include md {
+    svg {
+      @apply h-[40px] w-[40px];
+    }
+  }
+}

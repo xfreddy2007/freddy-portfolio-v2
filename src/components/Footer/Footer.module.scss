@@ -11,6 +11,7 @@
   @apply flex gap-4;
   svg {
     @apply h-[32px] w-[32px];
+    fill: #fff;
   }
   @include md {
     @apply gap-8;
