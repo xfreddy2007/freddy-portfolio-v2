@@ -13,6 +13,6 @@
   @apply pointer-events-none h-full;
 }
 .coverModal {
-  @apply font-source-code absolute top-0 left-0 z-[2] hidden h-full w-full items-center justify-center font-black text-white opacity-0;
+  @apply font-source-code absolute top-0 left-0 z-[2] hidden h-full w-full items-center justify-center px-3 text-center font-black text-white opacity-0;
   background-color: rgba(0, 0, 0, 0.7);
 }

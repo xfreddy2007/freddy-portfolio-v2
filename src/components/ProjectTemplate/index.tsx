@@ -5,6 +5,7 @@ import ProjectPopup from './ProjectPopup';
 import Tooltip from '@/src/components/Tooltip';
 import useMediaMatch from '@/src/utils/hooks/useMediaMatch';
 import { useAppSelector } from '@/src/store/hooks';
+import shuffle from '@/src/utils/shuffle';
 import style from './ProjectTemplate.module.scss';
 
 const ProjectTemplate: React.FC = () => {
@@ -13,7 +14,7 @@ const ProjectTemplate: React.FC = () => {
   const keyword = useAppSelector((state) => state.projectDisplay.searchText);
   const filteredProjectData = projectData.filter((project) => {
     const keywordCondition =
-      project.name.includes(keyword) ||
+      project.name.toLowerCase().includes(keyword) ||
       project.genre.find((item) => item === keyword) ||
       project.category.find((item) => item.toLowerCase() === keyword);
     let isInCategory = !(selectedCategory.length > 0);
@@ -33,12 +34,16 @@ const ProjectTemplate: React.FC = () => {
 
   return (
     <div className={style.root}>
-      {filteredProjectData.map((project) => {
+      {shuffle(filteredProjectData).map((project) => {
         return (
           <ProjectBlock
             key={project.id}
             imgSrc={project.squareProfilePic}
-            isFeatured={!!project.category.find((item) => item === 'featureProjects')}
+            isFeatured={
+              !!project.category.find(
+                (item: 'featureProjects' | 'frontEnd' | 'backEnd' | 'fullStack') => item === 'featureProjects',
+              )
+            }
             {...project}
           />
         );

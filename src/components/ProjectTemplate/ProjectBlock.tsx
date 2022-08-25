@@ -51,7 +51,7 @@ const ProjectBlock: React.FC<ProjectBlockProps> = ({
       data-occupation={isFeatured ? '2' : '1'}
       data-tip={isDesktop ? ReactDOMServer.renderToString(<div>{tooltip}</div>) : undefined}
     >
-      <img src={imgSrc} loading="lazy" alt={id} className={style.image} data-occupation={isFeatured ? '2' : '1'} />
+      <img src={imgSrc} loading="lazy" alt={id} className={style.image} />
       <div className={style.coverModal}>{name}</div>
     </div>
   );
