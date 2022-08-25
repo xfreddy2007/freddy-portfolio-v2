@@ -34,7 +34,7 @@ const ProjectTemplate: React.FC = () => {
 
   return (
     <div className={style.root}>
-      {shuffle(filteredProjectData).map((project) => {
+      {filteredProjectData.map((project) => {
         return (
           <ProjectBlock
             key={project.id}

@@ -47,7 +47,7 @@ const ProjectBlock: React.FC<ProjectBlockProps> = ({
   return (
     <div
       className={style.root}
-      onClick={() => dispatch(onClickSelectProject(id))}
+      onClick={!isDesktop ? () => dispatch(onClickSelectProject(id)) : undefined}
       data-occupation={isFeatured ? '2' : '1'}
       data-tip={isDesktop ? ReactDOMServer.renderToString(<div>{tooltip}</div>) : undefined}
     >
