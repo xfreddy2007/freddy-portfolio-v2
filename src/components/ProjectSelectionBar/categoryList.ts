@@ -1,5 +1,7 @@
+import { CategoryOptionType } from '@/src/assets/projectData/projectData';
+
 type CategoryType = {
-  id: 'featureProjects' | 'frontEnd' | 'backEnd' | 'fullStack';
+  id: CategoryOptionType;
   title: string;
 };
 

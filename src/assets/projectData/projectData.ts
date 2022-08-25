@@ -1,9 +1,11 @@
+export type CategoryOptionType = 'featureProjects' | 'frontEnd' | 'backEnd' | 'fullStack';
+
 type ProjectDataTypes = {
   id: string;
   name: string;
   profilePic: string;
   squareProfilePic: string;
-  category: Array<'featureProjects' | 'frontEnd' | 'backEnd' | 'fullStack'>;
+  category: Array<CategoryOptionType>;
   genre: string[];
   description: string;
   link?: string;

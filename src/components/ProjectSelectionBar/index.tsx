@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from '@/src/store/hooks';
 import { switchCategorySelection, searchProject } from '@/src/feature/projectDisplay';
 import { ReactComponent as SearchIcon } from '@/src/assets/icon-search.svg';
 import categorySelection from './categoryList';
+import { CategoryOptionType } from '@/src/assets/projectData/projectData';
 import debounce from '@/src/utils/debounce';
 import style from './ProjectSelectionBar.module.scss';
 
@@ -18,9 +19,9 @@ const ProjectSelectionBar: React.FC = () => {
   // query params pre select
   const [searchParams, _] = useSearchParams();
   useEffect(() => {
-    const query = searchParams.get('category')?.split(',');
+    const query = searchParams.get('category')?.split(',') as CategoryOptionType[];
     query &&
-      query.forEach((key: string) => {
+      query.forEach((key) => {
         dispatch(switchCategorySelection(key));
       });
   }, [searchParams]);

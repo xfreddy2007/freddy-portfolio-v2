@@ -1,8 +1,9 @@
 // Duck pattern
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { CategoryOptionType } from '@/src/assets/projectData/projectData';
 
 interface ProjectDisplayState {
-  categoryList: Array<'featureProjects' | 'frontEnd' | 'backEnd' | 'fullStack'>;
+  categoryList: Array<CategoryOptionType>;
   searchText: string;
   selectedProjectId: string;
 }
@@ -17,7 +18,7 @@ const projectDisplaySlice = createSlice({
   name: 'projectDisplay',
   initialState,
   reducers: {
-    switchCategorySelection(state, action: PayloadAction<'featureProjects' | 'frontEnd' | 'backEnd' | 'fullStack'>) {
+    switchCategorySelection(state, action: PayloadAction<CategoryOptionType>) {
       const idx = state.categoryList.findIndex((item) => item === action.payload);
       if (idx === -1) {
         state.categoryList.push(action.payload);

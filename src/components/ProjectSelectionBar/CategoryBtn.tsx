@@ -1,12 +1,13 @@
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '@/src/store/hooks';
 import { switchCategorySelection } from '@/src/feature/projectDisplay';
+import { CategoryOptionType } from '@/src/assets/projectData/projectData';
 import { ReactComponent as CloseIcon } from '@/src/assets/icon-close.svg';
 import style from './CategoryBtn.module.scss';
 
 type CategoryBtnProps = {
   category: string;
-  categoryId: 'featureProjects' | 'frontEnd' | 'backEnd' | 'fullStack';
+  categoryId: CategoryOptionType;
 };
 
 const CategoryBtn: React.FC<CategoryBtnProps> = ({ category, categoryId }) => {

@@ -1,11 +1,10 @@
 import React from 'react';
-import projectData from '@/src/assets/projectData/projectData';
+import projectData, { CategoryOptionType } from '@/src/assets/projectData/projectData';
 import ProjectBlock from './ProjectBlock';
 import ProjectPopup from './ProjectPopup';
 import Tooltip from '@/src/components/Tooltip';
 import useMediaMatch from '@/src/utils/hooks/useMediaMatch';
 import { useAppSelector } from '@/src/store/hooks';
-import shuffle from '@/src/utils/shuffle';
 import style from './ProjectTemplate.module.scss';
 
 const ProjectTemplate: React.FC = () => {
@@ -39,11 +38,7 @@ const ProjectTemplate: React.FC = () => {
           <ProjectBlock
             key={project.id}
             imgSrc={project.squareProfilePic}
-            isFeatured={
-              !!project.category.find(
-                (item: 'featureProjects' | 'frontEnd' | 'backEnd' | 'fullStack') => item === 'featureProjects',
-              )
-            }
+            isFeatured={!!project.category.find((item: CategoryOptionType) => item === 'featureProjects')}
             {...project}
           />
         );
