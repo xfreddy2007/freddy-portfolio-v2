@@ -1,5 +1,5 @@
 const debounce = (callback: (...args: any[]) => void, time: number) => {
-  let timer: NodeJS.Timeout;
+  let timer: any;
   return (...args: any[]) => {
     const later = () => {
       clearTimeout(timer);
