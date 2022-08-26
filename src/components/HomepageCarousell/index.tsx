@@ -2,12 +2,13 @@ import React from 'react';
 import { useAppSelector } from '@/src/store/hooks';
 import { Pagination, Autoplay } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { Link } from 'react-router-dom';
 import style from './HomepageCarousell.module.scss';
 
 type carousellImageData = {
   id: string;
   imgSrc: string;
-  link?: string;
+  link: string;
 };
 
 // image production path
@@ -53,13 +54,11 @@ const HomepageCarousell: React.FC = () => {
           return (
             <SwiperSlide key={data.id}>
               <div className="w-full">
-                {data.link ? (
-                  <a href={data.link || ''} target="_blank" rel="noreferrer">
+                {
+                  <a href={data.link} target="_blank" rel="noreferrer">
                     <img src={data.imgSrc} alt={data.id} />
                   </a>
-                ) : (
-                  <img src={data.imgSrc} alt={data.id} />
-                )}
+                }
               </div>
             </SwiperSlide>
           );
@@ -67,9 +66,9 @@ const HomepageCarousell: React.FC = () => {
       </Swiper>
       <p className="font-raleway h4 mt-4 text-center font-bold">
         And More to go, find them here in{' '}
-        <a href="/projects" target="_self" className="text-amber-900 underline dark:text-amber-700">
+        <Link to="/projects" className="text-amber-900 underline dark:text-amber-700">
           Projects.
-        </a>
+        </Link>
       </p>
     </div>
   );

@@ -2,6 +2,7 @@ import React, { useState, useCallback } from 'react';
 import classNames from 'classnames';
 import DarkModeSwitch from '../DarkModeSwitch';
 import NavigationList from './NavigationList';
+import { Link } from 'react-router-dom';
 import style from './Header.module.scss';
 import { useAppSelector } from '@/src/store/hooks';
 
@@ -22,13 +23,13 @@ const Header: React.FC = () => {
           <div className={classNames(style.hambugerThree, 'dark:bg-white', isOpen && style.open)} />
         </div>
         {/* typing animation */}
-        <a href="/" className="absolute left-1/2 -translate-x-1/2" target="_self">
+        <Link to="/" className="absolute left-1/2 -translate-x-1/2" target="_self">
           <div className={classNames('dark:text-white', style.title)}>
             <span className={style.animateText} data-dark-mode={isDarkMode}>
               Freddy's Playground
             </span>
           </div>
-        </a>
+        </Link>
         <DarkModeSwitch />
       </div>
       <NavigationList isOpen={isOpen} setIsOpen={setIsOpen} />
