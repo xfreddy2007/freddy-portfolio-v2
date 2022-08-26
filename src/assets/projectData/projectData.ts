@@ -12,12 +12,66 @@ type ProjectDataTypes = {
   github: string;
 };
 
+// image production path
+const civiltoolsPath = new URL('./projectprofilepic/civil-tools.png', import.meta.url).href;
+const civiltoolsRectPath = new URL('./projectprofilepic/civil-tools-rect.png', import.meta.url).href;
+const burgerBuilderPath = new URL('./projectprofilepic/burger-builder.png', import.meta.url).href;
+const burgerBuilderRectPath = new URL('./projectprofilepic/burger-builder-rect.png', import.meta.url).href;
+const roadRacePath = new URL('./projectprofilepic/road-race.png', import.meta.url).href;
+const roadRaceRectPath = new URL('./projectprofilepic/road-race-rect.png', import.meta.url).href;
+const smartBrainPath = new URL('./projectprofilepic/smart-brain.png', import.meta.url).href;
+const smartBrainRectPath = new URL('./projectprofilepic/smart-brain-rect.png', import.meta.url).href;
+const roboFriendsPath = new URL('./projectprofilepic/robo-friends.png', import.meta.url).href;
+const roboFriendsRectPath = new URL('./projectprofilepic/robo-friends-rect.png', import.meta.url).href;
+const pongGamePath = new URL('./projectprofilepic/pong-game.png', import.meta.url).href;
+const pongGameRectPath = new URL('./projectprofilepic/pong-game-rect.png', import.meta.url).href;
+const paintClonePath = new URL('./projectprofilepic/paint-clone.png', import.meta.url).href;
+const paintCloneRectPath = new URL('./projectprofilepic/paint-clone-rect.png', import.meta.url).href;
+const calculatorPath = new URL('./projectprofilepic/calculator.png', import.meta.url).href;
+const calculatorRectPath = new URL('./projectprofilepic/calculator-rect.png', import.meta.url).href;
+const dragNDropBoardPath = new URL('./projectprofilepic/drag-n-drop-board.png', import.meta.url).href;
+const dragNDropBoardRectPath = new URL('./projectprofilepic/drag-n-drop-board-rect.png', import.meta.url).href;
+const mathSprintGamePath = new URL('./projectprofilepic/math-sprint-game.png', import.meta.url).href;
+const mathSprintGameRectPath = new URL('./projectprofilepic/math-sprint-game-rect.png', import.meta.url).href;
+const nasaAstronomyPictureOfTheDayPath = new URL(
+  './projectprofilepic/nasa-astronomy-picture-of-the-day.png',
+  import.meta.url,
+).href;
+const nasaAstronomyPictureOfTheDayRectPath = new URL(
+  './projectprofilepic/nasa-astronomy-picture-of-the-day-rect.png',
+  import.meta.url,
+).href;
+const spockRockGamePath = new URL('./projectprofilepic/spock-rock-game.png', import.meta.url).href;
+const spockRockGameRectPath = new URL('./projectprofilepic/spock-rock-game-rect.png', import.meta.url).href;
+const formValidatorPath = new URL('./projectprofilepic/form-validator.png', import.meta.url).href;
+const formValidatorRectPath = new URL('./projectprofilepic/form-validator-rect.png', import.meta.url).href;
+const videoPlayerPath = new URL('./projectprofilepic/video-player.png', import.meta.url).href;
+const videoPlayerRectPath = new URL('./projectprofilepic/video-player-rect.png', import.meta.url).href;
+const bookmarksPath = new URL('./projectprofilepic/bookmarks.png', import.meta.url).href;
+const bookmarksRectPath = new URL('./projectprofilepic/bookmarks-rect.png', import.meta.url).href;
+const customCountdownPath = new URL('./projectprofilepic/custom-countdown.png', import.meta.url).href;
+const customCountdownRectPath = new URL('./projectprofilepic/custom-countdown-rect.png', import.meta.url).href;
+const musicPlayerPath = new URL('./projectprofilepic/music-player.png', import.meta.url).href;
+const musicPlayerRectPath = new URL('./projectprofilepic/music-player-rect.png', import.meta.url).href;
+const animatedNavigationPath = new URL('./projectprofilepic/animated-navigation.png', import.meta.url).href;
+const animatedNavigationRectPath = new URL('./projectprofilepic/animated-navigation-rect.png', import.meta.url).href;
+const lightDarkModePath = new URL('./projectprofilepic/light-dark-mode.png', import.meta.url).href;
+const lightDarkModeRectPath = new URL('./projectprofilepic/light-dark-mode-rect.png', import.meta.url).href;
+const pictureInPicturePath = new URL('./projectprofilepic/picture-in-picture.png', import.meta.url).href;
+const pictureInPictureRectPath = new URL('./projectprofilepic/picture-in-picture-rect.png', import.meta.url).href;
+const infiniteScrollPath = new URL('./projectprofilepic/infinite-scroll.png', import.meta.url).href;
+const infiniteScrollRectPath = new URL('./projectprofilepic/infinite-scroll-rect.png', import.meta.url).href;
+const quoteGeneratorPath = new URL('./projectprofilepic/quote-generator.png', import.meta.url).href;
+const quoteGeneratorRectPath = new URL('./projectprofilepic/quote-generator-rect.png', import.meta.url).href;
+const jokeTellerPath = new URL('./projectprofilepic/joke-teller.png', import.meta.url).href;
+const jokeTellerRectPath = new URL('./projectprofilepic/joke-teller-rect.png', import.meta.url).href;
+
 const projectData: ProjectDataTypes[] = [
   {
     id: 'civil-tools',
     name: 'Civil & Structural tools',
-    profilePic: '/src/assets/projectData/projectprofilepic/civil-tools-rect.png',
-    squareProfilePic: '/src/assets/projectData/projectprofilepic/civil-tools.png',
+    profilePic: civiltoolsRectPath,
+    squareProfilePic: civiltoolsPath,
     category: ['featureProjects', 'frontEnd'],
     genre: ['typescript', 'next.js', 'tailwind', 'reacthooks', 'css-in-js'],
     description: 'A place where has a bunch of helper calculation tools for civil and structural engineers.',
@@ -27,8 +81,8 @@ const projectData: ProjectDataTypes[] = [
   {
     id: 'burger-builder',
     name: 'Burger builder',
-    profilePic: '/src/assets/projectData/projectprofilepic/burger-builder-rect.png',
-    squareProfilePic: '/src/assets/projectData/projectprofilepic/burger-builder.png',
+    profilePic: burgerBuilderRectPath,
+    squareProfilePic: burgerBuilderPath,
     category: ['featureProjects', 'frontEnd'],
     genre: ['javascript', 'redux', 'reacthooks', 'firebase'],
     description: 'A burger builder which you can order your customized burgers and sent orders to the backend.',
@@ -38,8 +92,8 @@ const projectData: ProjectDataTypes[] = [
   {
     id: 'road-race',
     name: 'Road Race game',
-    profilePic: '/src/assets/projectData/projectprofilepic/road-race-rect.png',
-    squareProfilePic: '/src/assets/projectData/projectprofilepic/road-race.png',
+    profilePic: roadRaceRectPath,
+    squareProfilePic: roadRacePath,
     category: ['featureProjects', 'backEnd'],
     genre: ['rust'],
     description: 'A road dodging simple game made of Rust programming laguage and Rusty game engine.',
@@ -48,8 +102,8 @@ const projectData: ProjectDataTypes[] = [
   {
     id: 'smart-brain',
     name: 'Smart Brain Detector',
-    profilePic: '/src/assets/projectData/projectprofilepic/smart-brain-rect.png',
-    squareProfilePic: '/src/assets/projectData/projectprofilepic/smart-brain.png',
+    profilePic: smartBrainRectPath,
+    squareProfilePic: smartBrainPath,
     category: ['featureProjects', 'fullStack'],
     genre: ['javascript', 'react', 'node.js', 'postgresql'],
     description: 'An App which you can detect your face within an image.',
@@ -59,8 +113,8 @@ const projectData: ProjectDataTypes[] = [
   {
     id: 'robo-friends',
     name: 'Robo Friends',
-    profilePic: '/src/assets/projectData/projectprofilepic/robo-friends-rect.png',
-    squareProfilePic: '/src/assets/projectData/projectprofilepic/robo-friends.png',
+    profilePic: roboFriendsRectPath,
+    squareProfilePic: roboFriendsPath,
     category: ['frontEnd'],
     genre: ['javascript', 'react'],
     description: 'An App which you can search your favorite robot friend.',
@@ -70,8 +124,8 @@ const projectData: ProjectDataTypes[] = [
   {
     id: 'pong-game',
     name: 'Pong Game',
-    profilePic: '/src/assets/projectData/projectprofilepic/pong-game-rect.png',
-    squareProfilePic: '/src/assets/projectData/projectprofilepic/pong-game.png',
+    profilePic: pongGameRectPath,
+    squareProfilePic: pongGamePath,
     category: ['frontEnd'],
     genre: ['html', 'css', 'javascript'],
     description: 'A web base ping-pong game.',
@@ -81,8 +135,8 @@ const projectData: ProjectDataTypes[] = [
   {
     id: 'paint-clone',
     name: 'Paint Clone',
-    profilePic: '/src/assets/projectData/projectprofilepic/paint-clone-rect.png',
-    squareProfilePic: '/src/assets/projectData/projectprofilepic/paint-clone.png',
+    profilePic: paintCloneRectPath,
+    squareProfilePic: paintClonePath,
     category: ['frontEnd'],
     genre: ['html', 'css', 'javascript'],
     description: 'A web base customized paint board.',
@@ -92,8 +146,8 @@ const projectData: ProjectDataTypes[] = [
   {
     id: 'calculator',
     name: 'Calculator',
-    profilePic: '/src/assets/projectData/projectprofilepic/calculator-rect.png',
-    squareProfilePic: '/src/assets/projectData/projectprofilepic/calculator.png',
+    profilePic: calculatorRectPath,
+    squareProfilePic: calculatorPath,
     category: ['frontEnd'],
     genre: ['html', 'css', 'javascript'],
     description: 'A calculator built from scratch.',
@@ -103,8 +157,8 @@ const projectData: ProjectDataTypes[] = [
   {
     id: 'drag-n-drop-board',
     name: "Drag 'n' Drop Board",
-    profilePic: '/src/assets/projectData/projectprofilepic/drag-n-drop-board-rect.png',
-    squareProfilePic: '/src/assets/projectData/projectprofilepic/drag-n-drop-board.png',
+    profilePic: dragNDropBoardRectPath,
+    squareProfilePic: dragNDropBoardPath,
     category: ['frontEnd'],
     genre: ['html', 'css', 'javascript'],
     description: 'Create a board that can drag items within any column, and also modify text with that item.',
@@ -114,8 +168,8 @@ const projectData: ProjectDataTypes[] = [
   {
     id: 'math-sprint-game',
     name: 'Math Sprint Game',
-    profilePic: '/src/assets/projectData/projectprofilepic/math-sprint-game-rect.png',
-    squareProfilePic: '/src/assets/projectData/projectprofilepic/math-sprint-game.png',
+    profilePic: mathSprintGameRectPath,
+    squareProfilePic: mathSprintGamePath,
     category: ['frontEnd'],
     genre: ['html', 'css', 'javascript'],
     description: 'Create a Math game and it will store best scores in localstorage.',
@@ -125,8 +179,8 @@ const projectData: ProjectDataTypes[] = [
   {
     id: 'nasa-astronomy-picture-of-the-day',
     name: 'NASA Astronomy Picture of the Day',
-    profilePic: '/src/assets/projectData/projectprofilepic/nasa-astronomy-picture-of-the-day-rect.png',
-    squareProfilePic: '/src/assets/projectData/projectprofilepic/nasa-astronomy-picture-of-the-day.png',
+    profilePic: nasaAstronomyPictureOfTheDayRectPath,
+    squareProfilePic: nasaAstronomyPictureOfTheDayPath,
     category: ['frontEnd'],
     genre: ['html', 'css', 'javascript'],
     description: 'It takes the NASA API to present the APOD API and can store favorites images in localstorage.',
@@ -136,8 +190,8 @@ const projectData: ProjectDataTypes[] = [
   {
     id: 'spock-rock-game',
     name: 'Spock Rock Game',
-    profilePic: '/src/assets/projectData/projectprofilepic/spock-rock-game-rect.png',
-    squareProfilePic: '/src/assets/projectData/projectprofilepic/spock-rock-game.png',
+    profilePic: spockRockGameRectPath,
+    squareProfilePic: spockRockGamePath,
     category: ['frontEnd'],
     genre: ['html', 'css', 'javascript'],
     description: 'Using browser to play Rock-Paper-Scissors-Lizard-Spock.',
@@ -147,8 +201,8 @@ const projectData: ProjectDataTypes[] = [
   {
     id: 'form-validator',
     name: 'Form Validator',
-    profilePic: '/src/assets/projectData/projectprofilepic/form-validator-rect.png',
-    squareProfilePic: '/src/assets/projectData/projectprofilepic/form-validator.png',
+    profilePic: formValidatorRectPath,
+    squareProfilePic: formValidatorPath,
     category: ['frontEnd'],
     genre: ['html', 'css', 'javascript'],
     description: 'A page for user form and can be further implemented with back-end projects.',
@@ -158,8 +212,8 @@ const projectData: ProjectDataTypes[] = [
   {
     id: 'video-player',
     name: 'Video Player',
-    profilePic: '/src/assets/projectData/projectprofilepic/video-player-rect.png',
-    squareProfilePic: '/src/assets/projectData/projectprofilepic/video-player.png',
+    profilePic: videoPlayerRectPath,
+    squareProfilePic: videoPlayerPath,
     category: ['frontEnd'],
     genre: ['html', 'css', 'javascript'],
     description: 'A Self-build UI for video player.',
@@ -169,8 +223,8 @@ const projectData: ProjectDataTypes[] = [
   {
     id: 'bookmarks',
     name: 'Bookmarks',
-    profilePic: '/src/assets/projectData/projectprofilepic/bookmarks-rect.png',
-    squareProfilePic: '/src/assets/projectData/projectprofilepic/bookmarks.png',
+    profilePic: bookmarksRectPath,
+    squareProfilePic: bookmarksPath,
     category: ['frontEnd'],
     genre: ['html', 'css', 'javascript'],
     description: 'A bookmark website to store preference website links.',
@@ -180,8 +234,8 @@ const projectData: ProjectDataTypes[] = [
   {
     id: 'custom-countdown',
     name: 'Custom Countdown',
-    profilePic: '/src/assets/projectData/projectprofilepic/custom-countdown-rect.png',
-    squareProfilePic: '/src/assets/projectData/projectprofilepic/custom-countdown.png',
+    profilePic: customCountdownRectPath,
+    squareProfilePic: customCountdownPath,
     category: ['frontEnd'],
     genre: ['html', 'css', 'javascript'],
     description: 'Do a countdown clock and it will store the countdown information in localstorage as well.',
@@ -191,8 +245,8 @@ const projectData: ProjectDataTypes[] = [
   {
     id: 'music-player',
     name: 'Music Player',
-    profilePic: '/src/assets/projectData/projectprofilepic/music-player-rect.png',
-    squareProfilePic: '/src/assets/projectData/projectprofilepic/music-player.png',
+    profilePic: musicPlayerRectPath,
+    squareProfilePic: musicPlayerPath,
     category: ['frontEnd'],
     genre: ['html', 'css', 'javascript'],
     description: 'A Music Player making from scratch.',
@@ -202,8 +256,8 @@ const projectData: ProjectDataTypes[] = [
   {
     id: 'animated-navigation',
     name: 'Animated Navigation',
-    profilePic: '/src/assets/projectData/projectprofilepic/animated-navigation-rect.png',
-    squareProfilePic: '/src/assets/projectData/projectprofilepic/animated-navigation.png',
+    profilePic: animatedNavigationRectPath,
+    squareProfilePic: animatedNavigationPath,
     category: ['frontEnd'],
     genre: ['html', 'css', 'javascript'],
     description: 'An animated navigation showing css time delay skills.',
@@ -213,8 +267,8 @@ const projectData: ProjectDataTypes[] = [
   {
     id: 'light-dark-mode',
     name: 'Light Dark Mode',
-    profilePic: '/src/assets/projectData/projectprofilepic/light-dark-mode-rect.png',
-    squareProfilePic: '/src/assets/projectData/projectprofilepic/light-dark-mode.png',
+    profilePic: lightDarkModeRectPath,
+    squareProfilePic: lightDarkModePath,
     category: ['frontEnd'],
     genre: ['html', 'css', 'javascript'],
     description:
@@ -225,8 +279,8 @@ const projectData: ProjectDataTypes[] = [
   {
     id: 'picture-in-picture',
     name: 'Picture in Picture',
-    profilePic: '/src/assets/projectData/projectprofilepic/picture-in-picture-rect.png',
-    squareProfilePic: '/src/assets/projectData/projectprofilepic/picture-in-picture.png',
+    profilePic: pictureInPictureRectPath,
+    squareProfilePic: pictureInPicturePath,
     category: ['frontEnd'],
     genre: ['html', 'css', 'javascript'],
     description: 'Using picture-in-picture API to generate a sub screen of video.',
@@ -236,8 +290,8 @@ const projectData: ProjectDataTypes[] = [
   {
     id: 'infinite-scroll',
     name: 'Infinite Scroll',
-    profilePic: '/src/assets/projectData/projectprofilepic/infinite-scroll-rect.png',
-    squareProfilePic: '/src/assets/projectData/projectprofilepic/infinite-scroll.png',
+    profilePic: infiniteScrollRectPath,
+    squareProfilePic: infiniteScrollPath,
     category: ['frontEnd'],
     genre: ['html', 'css', 'javascript'],
     description: 'Scrolling the page and it continuously pop up new images from Unsplash.',
@@ -247,8 +301,8 @@ const projectData: ProjectDataTypes[] = [
   {
     id: 'quote-generator',
     name: 'Quote Generator',
-    profilePic: '/src/assets/projectData/projectprofilepic/quote-generator-rect.png',
-    squareProfilePic: '/src/assets/projectData/projectprofilepic/quote-generator.png',
+    profilePic: quoteGeneratorRectPath,
+    squareProfilePic: quoteGeneratorPath,
     category: ['frontEnd'],
     genre: ['html', 'css', 'javascript'],
     description: 'It randomly generate quotes, and you can tweet this quote as well.',
@@ -258,8 +312,8 @@ const projectData: ProjectDataTypes[] = [
   {
     id: 'joke-teller',
     name: 'Joke Teller',
-    profilePic: '/src/assets/projectData/projectprofilepic/joke-teller-rect.png',
-    squareProfilePic: '/src/assets/projectData/projectprofilepic/joke-teller.png',
+    profilePic: jokeTellerRectPath,
+    squareProfilePic: jokeTellerPath,
     category: ['frontEnd'],
     genre: ['html', 'css', 'javascript'],
     description: 'Press the button and a piece of joke will come out from the VoiceRSS API.',

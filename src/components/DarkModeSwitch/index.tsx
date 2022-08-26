@@ -1,11 +1,13 @@
 import React from 'react';
 import classNames from 'classnames';
-import style from './DarkModeSwitch.module.scss';
-
 import { useAppDispatch, useAppSelector } from '@/src/store/hooks';
 import { switchThemeMode } from '@/src/feature/switchThemeMode';
+import style from './DarkModeSwitch.module.scss';
 
 const DarkModeSwitch: React.FC = () => {
+  // image production path
+  const moonIconUrl = new URL('../../assets/icon-moon.png', import.meta.url).href;
+  const sunIconUrl = new URL('../../assets/icon-sun.png', import.meta.url).href;
   // redux tookit: dark mode
   const mode = useAppSelector((state) => state.switchThemeMode.mode);
   const dispatch = useAppDispatch();
@@ -24,11 +26,7 @@ const DarkModeSwitch: React.FC = () => {
       />
       <label className={classNames(style.label, 'dark:bg-purple-800')}>
         <span className={classNames(style.switch, 'dark:bg-black')}>
-          {isDarkMode ? (
-            <img src="/src/assets/icon-moon.png" loading="lazy" />
-          ) : (
-            <img src="/src/assets/icon-sun.png" loading="lazy" />
-          )}
+          {isDarkMode ? <img src={moonIconUrl} loading="lazy" /> : <img src={sunIconUrl} loading="lazy" />}
         </span>
       </label>
     </div>

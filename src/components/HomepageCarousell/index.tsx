@@ -10,20 +10,27 @@ type carousellImageData = {
   link?: string;
 };
 
+// image production path
+const civilToolsUrl = new URL('../../assets/projectData/projectprofilepic/civil-tools-rect.png', import.meta.url).href;
+const burgerBuilderUrl = new URL('../../assets/projectData/projectprofilepic/burger-builder-rect.png', import.meta.url)
+  .href;
+const roadRaceUrl = new URL('../../assets/projectData/projectprofilepic/road-race-rect.png', import.meta.url).href;
+
 const carousellData: Array<carousellImageData> = [
   {
     id: 'civil-tools',
-    imgSrc: '/src/assets/homeCarousell/civil-tools.png',
-    link: 'https://civil-structural-tools.herokuapp.com/',
+    imgSrc: civilToolsUrl,
+    link: '/projects?category=featureProjects',
   },
   {
     id: 'burger-builder',
-    imgSrc: '/src/assets/homeCarousell/burger-builder.png',
-    link: 'https://burger-builder-a6e21.web.app/',
+    imgSrc: burgerBuilderUrl,
+    link: '/projects?category=featureProjects',
   },
   {
     id: 'rust-road-race',
-    imgSrc: '/src/assets/homeCarousell/rust-road-race.png',
+    imgSrc: roadRaceUrl,
+    link: '/projects?category=featureProjects',
   },
 ];
 

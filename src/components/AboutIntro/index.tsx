@@ -4,6 +4,9 @@ import { useAppSelector } from '@/src/store/hooks';
 import style from './AboutIntro.module.scss';
 
 const AboutIntro: React.FC = () => {
+  // image production path
+  const udemyCourseUrl = new URL('../../assets/udemy-courses.png', import.meta.url).href;
+  const positivegridHomeUrl = new URL('../../assets/prositive-grid-home.png', import.meta.url).href;
   // redux tookit: dark mode
   const mode = useAppSelector((state) => state.switchThemeMode.mode);
   const isDarkMode = mode === 'dark';
@@ -20,7 +23,7 @@ const AboutIntro: React.FC = () => {
       </div>
       <div className="w-full bg-amber-900 text-white dark:bg-amber-700">
         <div className={style.paragraphTwo}>
-          <img src="/src/assets/udemy-courses.png" className={style.image} loading="lazy" />
+          <img src={udemyCourseUrl} className={style.image} loading="lazy" />
           <p className="p mt-4 text-justify md:mt-0">
             After doing self-learning from Udemy courses, I grab the modern web developement skills such as HTML, CSS,
             Javascript, React, etc. Also, practice product branstorming and learn new technologies though making side
@@ -30,11 +33,7 @@ const AboutIntro: React.FC = () => {
         </div>
       </div>
       <div className={style.paragraphThree}>
-        <img
-          src="/src/assets/prositive-grid-home.png"
-          className={classNames('order-1 md:order-2', style.image)}
-          loading="lazy"
-        />
+        <img src={positivegridHomeUrl} className={classNames('order-1 md:order-2', style.image)} loading="lazy" />
         <p className="p order-2 mt-4 text-justify md:order-1 md:mt-0">
           I am currently working at Positive Grid as a Front-End Developer. From this career I've learned about using
           Next.js and Typescript, increasing further usage of Tailwind CSS. But most of all, I 've dive into the
