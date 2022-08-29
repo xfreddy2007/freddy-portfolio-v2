@@ -8,8 +8,8 @@ const ContactPage: React.FC = () => {
       <Helmet>
         <title>Contact - Freddy Liu</title>
         <meta property="og:title" content="Contact - Freddy Liu" />
-        <meta property="og:url" content="https://www.freddyliu.io/" />
-        <link rel="canonical" href="https://www.freddyliu.io/" />
+        <meta property="og:url" content="https://www.freddyliu.me/" />
+        <link rel="canonical" href="https://www.freddyliu.me/" />
       </Helmet>
       <ContactContent />
     </div>

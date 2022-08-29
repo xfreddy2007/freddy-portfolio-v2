@@ -44,11 +44,13 @@ const App: React.FC = () => {
     return () => clearTimeout(timer);
   }, []);
 
+  // image production path
+  const officialSmoUrl = new URL('./assets/official-smo.png', import.meta.url).href;
+
   return (
     <Suspense fallback={<Loading />}>
       <Helmet>
-        <meta charSet="utf-8" />
-        {/* <meta property="og:image" content="https://assets.positivegrid.com/media/uploader/official-smo.jpg" /> */}
+        <meta property="og:image" content={officialSmoUrl} />
         <meta
           property="og:description"
           content="Fully passionate in Web Development. Problem solving, critical thinking, providing intuitive, responsive and creative designs for users."

@@ -9,8 +9,8 @@ const ProjectPage: React.FC = () => {
       <Helmet>
         <title>Projects - Freddy Liu</title>
         <meta property="og:title" content="Projects - Freddy Liu" />
-        <meta property="og:url" content="https://www.freddyliu.io/" />
-        <link rel="canonical" href="https://www.freddyliu.io/" />
+        <meta property="og:url" content="https://www.freddyliu.me/" />
+        <link rel="canonical" href="https://www.freddyliu.me/" />
       </Helmet>
       <h1 className="font-ralway h1 text-center font-black">Projects</h1>
       <ProjectSelectionBar />

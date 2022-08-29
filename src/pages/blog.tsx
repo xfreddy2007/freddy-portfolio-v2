@@ -7,8 +7,8 @@ const BlogPage: React.FC = () => {
       <Helmet>
         <title>Blogs - Freddy Liu</title>
         <meta property="og:title" content="Blogs - Freddy Liu" />
-        <meta property="og:url" content="https://www.freddyliu.io/" />
-        <link rel="canonical" href="https://www.freddyliu.io/" />
+        <meta property="og:url" content="https://www.freddyliu.me/" />
+        <link rel="canonical" href="https://www.freddyliu.me/" />
       </Helmet>
       <h1 className="h1">Coming Soon!</h1>
     </div>
