@@ -4,7 +4,7 @@ import ContactContent from '../components/ContactContent';
 
 const ContactPage: React.FC = () => {
   return (
-    <div className="mx-auto max-w-[1920px] bg-white pt-16 dark:bg-black dark:text-white">
+    <div className="mx-auto max-w-[1920px] pt-16">
       <Helmet>
         <title>Contact - Freddy Liu</title>
         <meta property="og:title" content="Contact - Freddy Liu" />

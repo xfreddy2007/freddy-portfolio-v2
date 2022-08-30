@@ -1,16 +1,17 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
+import BlogComponent from '../components/BlogComponent';
 
 const BlogPage: React.FC = () => {
   return (
-    <div className="mx-auto flex min-h-screen max-w-[1920px] items-center justify-center bg-white pt-16 dark:bg-black dark:text-white">
+    <div className="mx-auto min-h-screen w-full max-w-[1920px]">
       <Helmet>
         <title>Blogs - Freddy Liu</title>
         <meta property="og:title" content="Blogs - Freddy Liu" />
         <meta property="og:url" content="https://www.freddyliu.me/" />
         <link rel="canonical" href="https://www.freddyliu.me/" />
       </Helmet>
-      <h1 className="h1">Coming Soon!</h1>
+      <BlogComponent />
     </div>
   );
 };

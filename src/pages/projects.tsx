@@ -5,7 +5,7 @@ import ProjectTemplate from '../components/ProjectTemplate';
 
 const ProjectPage: React.FC = () => {
   return (
-    <div className="mx-auto max-w-[1920px] bg-white pt-16 pb-60 dark:bg-black dark:text-white md:pt-20 md:pb-64 xl:py-28 xl:pb-56">
+    <div className="mx-auto max-w-[1920px] pt-16 pb-60 md:pt-20 md:pb-64 xl:py-28 xl:pb-56">
       <Helmet>
         <title>Projects - Freddy Liu</title>
         <meta property="og:title" content="Projects - Freddy Liu" />

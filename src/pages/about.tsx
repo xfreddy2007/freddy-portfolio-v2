@@ -9,7 +9,7 @@ const aboutPicUrl = new URL('../assets/about_pic.jpeg', import.meta.url).href;
 
 const AboutPage: React.FC = () => {
   return (
-    <div className="mx-auto max-w-[1920px] bg-white dark:bg-black dark:text-white">
+    <div className="mx-auto max-w-[1920px]">
       <Helmet>
         <title>About me - Freddy Liu</title>
         <meta property="og:title" content="About me - Freddy Liu" />
