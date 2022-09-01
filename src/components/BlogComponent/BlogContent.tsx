@@ -51,4 +51,4 @@ const BlogContent: React.FC = () => {
   );
 };
 
-export default React.memo(BlogContent);
+export default BlogContent;
