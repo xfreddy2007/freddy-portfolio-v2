@@ -30,7 +30,7 @@ const App: React.FC = () => {
 
   // session for loading and welcome show
   useEffect(() => {
-    let timer: NodeJS.Timeout;
+    let timer: ReturnType<typeof setTimeout>;
     if (sessionStorage.getItem('visited') === 'true') {
       setIsLoaded(true);
       setIsWelcomed(true);
