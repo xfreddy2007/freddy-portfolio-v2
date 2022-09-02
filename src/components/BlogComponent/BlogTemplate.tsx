@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useAppSelector } from '@/src/store/hooks';
 import blogPosts from '@/src/assets/blogContent/blogPosts';
 import { MDXProvider } from '@mdx-js/react';

@@ -1,7 +1,6 @@
 type PageType = {
   id: string;
   page: string;
-  blog: any;
 };
 
 type BlogListType = {
@@ -14,14 +13,8 @@ const blogContent: BlogListType[] = [
     tab: 'Shopify',
     pages: [
       {
-        id: 'shopify-market',
-        page: 'Shopify Market',
-        blog: 'shopify-market',
-      },
-      {
-        id: 'shopify-app',
-        page: 'Shopify App',
-        blog: '',
+        id: 'shopify-hydrogen',
+        page: 'Shopify Hydrogen',
       },
     ],
   },
@@ -31,12 +24,10 @@ const blogContent: BlogListType[] = [
       {
         id: 'rust-beginners',
         page: 'Rust Beginners',
-        blog: '',
       },
       {
         id: 'rust-intermediate',
         page: 'Rust Intermediate',
-        blog: '',
       },
     ],
   },

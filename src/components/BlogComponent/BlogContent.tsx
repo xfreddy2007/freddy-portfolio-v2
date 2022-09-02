@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAppSelector, useAppDispatch } from '@/src/store/hooks';
 import { setActiveBlog } from '@/src/feature/blogDisplay';
+import useMediaMatch from '@/src/utils/hooks/useMediaMatch';
 import blogContent from '@/src/assets/blogContent/blogContent';
 import { ReactComponent as DownArrowIcon } from '@/src/assets/icon-down-arrow.svg';
 import style from './BlogContent.module.scss';
@@ -12,7 +13,16 @@ const BlogContent: React.FC = () => {
   // redux tookit: blog display
   const dispatch = useAppDispatch();
 
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
+  // desktop media
+  const isDesktop = useMediaMatch('(min-width: 1024px)');
+  useEffect(() => {
+    if (!isDesktop && isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+  }, [isOpen, isDesktop]);
 
   return (
     <div className={style.root} data-open={isOpen}>
@@ -20,9 +30,9 @@ const BlogContent: React.FC = () => {
         {blogContent.map((tab) => {
           return (
             <div key={tab.tab}>
-              <button className="mb-2 border-l-4 border-solid border-black pl-2 text-base font-bold transition-all duration-300 hover:pl-4 dark:border-white lg:text-xl">
+              <span className="mb-2 border-l-4 border-solid border-black pl-2 text-base font-bold dark:border-white lg:text-xl">
                 {tab.tab}
-              </button>
+              </span>
               <div className="ml-5 flex flex-col gap-2 lg:gap-4">
                 {tab.pages.map((blog) => {
                   return (
@@ -46,7 +56,7 @@ const BlogContent: React.FC = () => {
           onClick={() => setIsOpen((prev) => !prev)}
         />
       </div>
-      {isOpen && <div className={style.blurModal} />}
+      {isOpen && <div className={style.blurModal} onClick={() => setIsOpen(false)} />}
     </div>
   );
 };
