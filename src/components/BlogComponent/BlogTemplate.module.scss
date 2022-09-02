@@ -40,7 +40,7 @@
   }
 
   pre > code {
-    @apply rounded-lg;
+    @apply rounded-lg text-black;
   }
 
   p {
@@ -92,11 +92,6 @@
     @apply mt-4 mb-8;
   }
 
-  &[data-dark-mode='true'] {
-    pre > code {
-      @apply text-black;
-    }
-  }
   @include md {
     h1 {
       font-size: 2.5rem;

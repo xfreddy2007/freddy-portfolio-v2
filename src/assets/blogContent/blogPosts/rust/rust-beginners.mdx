@@ -51,7 +51,7 @@ After installation, and we can use Cargo to create a new project (with git and r
 
 ### Cargo.toml
 
-![Screen Shot 2022-07-03 at 3.34.04 PM.png](Rust%20Learning%20notes%20-%20Learn%20Rust%20by%20Building%20Real%20%2098a9c002be5340d7ad56c5acbfe3f041/Screen_Shot_2022-07-03_at_3.34.04_PM.png)
+![cargo-toml](https://user-images.githubusercontent.com/54787518/188123346-25054e87-d07e-4856-8307-5ac03f3a89c9.png)
 
 This file is similar like package.json in Javascript. We can specify the dependencies for our project, metadata for the project, and some compiler settings.
 
@@ -61,7 +61,7 @@ Crates registry: [https://crates.io/](https://crates.io/)
 
 If we want to import some of the crates, we just copy the crate name and version, and put it under the dependency section:
 
-![Screen Shot 2022-07-03 at 4.36.02 PM.png](Rust%20Learning%20notes%20-%20Learn%20Rust%20by%20Building%20Real%20%2098a9c002be5340d7ad56c5acbfe3f041/Screen_Shot_2022-07-03_at_4.36.02_PM.png)
+![cargo-deoendency](https://user-images.githubusercontent.com/54787518/188123077-d5be52e5-b899-4768-8333-48f712ffec09.png)
 
 (We import “rand” crate with version 0.8.5)
 
@@ -71,7 +71,7 @@ We can also use cargo to install rust binaries that can be used system wide.
 
 We install a package called **cargo expand**. After running build and run command cargo expand, we can find our toolchain is under a stable version. Thus, we need to install a nightly version (unstable version) in order to use the cargo expand package.
 
-![Screen Shot 2022-07-03 at 4.55.58 PM.png](Rust%20Learning%20notes%20-%20Learn%20Rust%20by%20Building%20Real%20%2098a9c002be5340d7ad56c5acbfe3f041/Screen_Shot_2022-07-03_at_4.55.58_PM.png)
+![cargo-expand](https://user-images.githubusercontent.com/54787518/188123089-e03a6f44-ba82-471b-bd5d-12decbeaf1ea.png)
 
 Solution: [https://stackoverflow.com/questions/48675235/error-the-option-z-is-only-accepted-on-the-nightly-compiler](https://stackoverflow.com/questions/48675235/error-the-option-z-is-only-accepted-on-the-nightly-compiler)
 
@@ -143,7 +143,7 @@ Rust has 4 basic data types:
 
 ### Integer Type
 
-![Screen Shot 2022-07-04 at 1.38.48 PM.png](Rust%20Learning%20notes%20-%20Learn%20Rust%20by%20Building%20Real%20%2098a9c002be5340d7ad56c5acbfe3f041/Screen_Shot_2022-07-04_at_1.38.48_PM.png)
+![integer-type](https://user-images.githubusercontent.com/54787518/188123100-f2e95c3d-1229-43f8-af9c-7f8af8516059.png)
 
 “u” means unsigned, while “i” means signed. Unsigned integer can only be positive, while signed integer can be positive or negative.
 
@@ -156,7 +156,7 @@ Each signed variant can store numbers from -(2^(n - 1)) to 2^(n - 1) - 1 inclus
 
 These are all the forms that we can write integers in Rust:
 
-![Screen Shot 2022-07-04 at 1.58.57 PM.png](Rust%20Learning%20notes%20-%20Learn%20Rust%20by%20Building%20Real%20%2098a9c002be5340d7ad56c5acbfe3f041/Screen_Shot_2022-07-04_at_1.58.57_PM.png)
+![integer-literals](https://user-images.githubusercontent.com/54787518/188123098-6bd931d2-9d1a-413a-8de8-5ce195fcaefe.png)
 
 Note that number literals that can be multiple numeric types allow a type suffix, such as `57u8`, to designate the type. Number literals can also use `_` as a visual separator to make the number easier to read, such as `1_000`, which will have the same value as if you had specified `1000`.
 
@@ -550,7 +550,7 @@ This feature prevents data races issues.
 
 If we move to the `.read_line()` function from the io standard library, we can find that this function returns a `Result` with type of integer.
 
-![Screen Shot 2022-07-05 at 9.49.29 PM.png](Rust%20Learning%20notes%20-%20Learn%20Rust%20by%20Building%20Real%20%2098a9c002be5340d7ad56c5acbfe3f041/Screen_Shot_2022-07-05_at_9.49.29_PM.png)
+![error-handling](https://user-images.githubusercontent.com/54787518/188123096-296bb088-0a86-459f-9ed0-56163650756d.png)
 
 The `Result` is in the core of the error handling in Rust. A Result can be in one of 2 states: success or error.
 
@@ -615,7 +615,7 @@ let server = Server::new("127.0.0.1:8080");
 
 In this line, we pass a string to a Server Struct, but compiler gives error.
 
-![Screen Shot 2022-07-06 at 8.17.43 PM.png](Rust%20Learning%20notes%20-%20Learn%20Rust%20by%20Building%20Real%20%2098a9c002be5340d7ad56c5acbfe3f041/Screen_Shot_2022-07-06_at_8.17.43_PM.png)
+![server-error](https://user-images.githubusercontent.com/54787518/188123101-56bde10e-a5c8-4c30-b0da-f5b52386d1c0.png)
 
 Let’s figure it out in String section.
 
