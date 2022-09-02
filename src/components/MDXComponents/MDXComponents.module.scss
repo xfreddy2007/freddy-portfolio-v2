@@ -1,0 +1,81 @@
+.h1 {
+  font-size: 2.5rem;
+  padding-bottom: 13px;
+  @apply mb-2 font-bold;
+}
+
+.h2 {
+  font-size: 2rem;
+  @apply mt-16 mb-5 border-b-2 pb-2 font-bold;
+}
+
+.h3 {
+  font-size: 1.5rem;
+  @apply mt-8 mb-2 font-semibold;
+}
+
+.link {
+  @apply break-all;
+  color: rgb(16, 154, 14);
+  &:hover {
+    @apply brightness-125;
+  }
+}
+
+.pre {
+  @apply my-4;
+}
+
+.pre > code {
+  @apply rounded-lg;
+}
+
+.p {
+  // mock Medium style
+  font-family: charter, Georgia, Cambria, 'Times New Roman', Times, serif;
+  @apply mb-2 break-words text-xl font-light tracking-wider;
+}
+
+.p + .p {
+  @apply mt-[1.5em];
+}
+
+.li > code {
+  @apply rounded-[5px] bg-gray-500 py-[1px] px-1 text-base text-white;
+}
+
+.p > code {
+  @apply rounded-[5px] bg-gray-500 p-1 text-base text-white;
+}
+
+.ol {
+  @apply my-12;
+}
+
+.ul {
+  @extend .ol;
+}
+
+.ol > li {
+  @apply ml-4 mb-2 list-decimal font-sans text-xl;
+}
+
+.ul > li {
+  @apply ml-4 mb-2 list-disc font-sans text-xl;
+}
+
+.tooltipText {
+  background: hsla(0, 0%, 0%, 0.75);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5em 1em;
+}
+
+.hr {
+  @apply mt-2 mb-2 h-[2px] bg-black;
+}
+
+.img {
+  @apply mt-4 mb-8;
+}

@@ -1,0 +1,176 @@
+.root {
+  @apply min-h-full w-full flex-1 px-5 py-16;
+  @include md {
+    @apply px-8;
+  }
+  @include lg {
+    @apply py-24 px-5;
+    width: unset;
+  }
+}
+
+.postContainer {
+  @apply min-h-full w-full;
+  h1 {
+    font-size: 1.5rem;
+    padding-bottom: 8px;
+    @apply mb-2 font-bold;
+  }
+
+  h2 {
+    font-size: 1.25rem;
+    @apply mt-12 mb-4 border-b-2 pb-2 font-bold;
+  }
+
+  h3 {
+    font-size: 1rem;
+    @apply mt-6 mb-2 font-semibold;
+  }
+
+  link {
+    @apply break-all;
+    color: rgb(16, 154, 14);
+    &:hover {
+      @apply brightness-125;
+    }
+  }
+
+  pre {
+    @apply my-4 rounded-lg bg-gray-200 p-4;
+  }
+
+  pre > code {
+    @apply rounded-lg;
+  }
+
+  p {
+    @apply mb-2 break-words text-sm font-light tracking-wider;
+    a {
+      @apply underline;
+    }
+  }
+
+  p + p {
+    @apply mt-[1.5em];
+  }
+
+  li > code {
+    @apply rounded-[5px] bg-gray-200 py-[1px] px-1 text-sm text-red-500;
+  }
+
+  p > code {
+    @apply rounded-[5px] bg-gray-200 p-1 text-sm text-red-500;
+  }
+
+  ol {
+    @apply my-12;
+  }
+
+  ul {
+    @extend .ol !optional;
+  }
+
+  ol > li {
+    @apply ml-4 mb-2 list-decimal font-sans text-base;
+    a {
+      @apply underline;
+    }
+  }
+
+  ul > li {
+    @apply ml-4 mb-2 list-disc font-sans text-base;
+    a {
+      @apply underline;
+    }
+  }
+
+  hr {
+    @apply mt-2 mb-2 h-[2px] bg-black;
+  }
+
+  img {
+    @apply mt-4 mb-8;
+  }
+
+  &[data-dark-mode='true'] {
+    pre > code {
+      @apply text-black;
+    }
+  }
+  @include md {
+    h1 {
+      font-size: 2.5rem;
+      padding-bottom: 13px;
+      @apply mb-2 font-bold;
+    }
+
+    h2 {
+      font-size: 2rem;
+      @apply mt-16 mb-5 border-b-2 pb-2 font-bold;
+    }
+
+    h3 {
+      font-size: 1.5rem;
+      @apply mt-8 mb-2 font-semibold;
+    }
+
+    link {
+      @apply break-all;
+      color: rgb(16, 154, 14);
+      &:hover {
+        @apply brightness-125;
+      }
+    }
+
+    pre {
+      @apply my-4 rounded-lg bg-gray-200 p-4;
+    }
+
+    pre > code {
+      @apply rounded-lg;
+    }
+
+    p {
+      @apply mb-2 break-words text-xl font-light tracking-wider;
+    }
+
+    p + p {
+      @apply mt-[1.5em];
+    }
+
+    li > code {
+      @apply rounded-[5px] bg-gray-200 py-[1px] px-1 text-base text-red-500;
+    }
+
+    p > code {
+      @apply rounded-[5px] bg-gray-200 p-1 text-base text-red-500;
+    }
+
+    ol {
+      @apply my-12;
+    }
+
+    ul {
+      @extend .ol !optional;
+    }
+
+    ol > li {
+      @apply ml-4 mb-2 list-decimal font-sans text-xl;
+    }
+
+    ul > li {
+      @apply ml-4 mb-2 list-disc font-sans text-xl;
+    }
+
+    hr {
+      @apply mt-2 mb-2 h-[2px] bg-black;
+    }
+
+    img {
+      @apply mt-4 mb-8;
+    }
+  }
+  @include lg {
+    @apply mx-auto max-w-[840px];
+  }
+}
