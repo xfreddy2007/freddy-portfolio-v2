@@ -3,10 +3,16 @@ import react from '@vitejs/plugin-react';
 import Pages from 'vite-plugin-pages';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import svgr from 'vite-plugin-svgr';
+import mdx from '@mdx-js/rollup';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), Pages(), tsconfigPaths(), svgr()],
+  plugins: [react(), Pages(), tsconfigPaths(), svgr(), mdx()],
+  resolve: {
+    alias: {
+      path: 'path-browserify',
+    },
+  },
   css: {
     modules: {
       scopeBehaviour: 'local',

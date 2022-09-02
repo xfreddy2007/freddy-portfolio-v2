@@ -1,6 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import BlogComponent from '../components/BlogComponent';
+import BlogComponent from '../../components/BlogComponent';
 
 const BlogPage: React.FC = () => {
   return (
