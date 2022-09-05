@@ -1,7 +1,7 @@
-import React, { SyntheticEvent } from 'react';
+import React from 'react';
 import ProjectTooltipTemplate from '../ProjectTooltipTemplate';
 import ReactDOMServer from 'react-dom/server';
-import diaMatch from '@/src/utils/hooks/useMediaMatch';
+import useMediaMatch from '@/src/utils/hooks/useMediaMatch';
 import { useAppDispatch } from '@/src/store/hooks';
 import { onClickSelectProject } from '@/src/feature/projectDisplay';
 import style from './ProjectBlock.module.scss';
