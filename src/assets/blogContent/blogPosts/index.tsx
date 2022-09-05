@@ -1,4 +1,5 @@
 import { ReactElement } from 'react';
+import ShopifyHydrogen from './shopify/shopify-hydrogen.mdx';
 import RustBeginners from './rust/rust-beginners.mdx';
 import RustIntermediate from './rust/rust-intermediate.mdx';
 
@@ -7,6 +8,7 @@ type BlogPostsType = {
 };
 
 const blogPosts: BlogPostsType = {
+  'shopify-hydrogen': <ShopifyHydrogen />,
   'rust-beginners': <RustBeginners />,
   'rust-intermediate': <RustIntermediate />,
 };

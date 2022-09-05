@@ -1,0 +1,192 @@
+# Shopify React Framework - Hydrogen 研究心得
+
+Hydrogen 這個 framework 是由 Shopify 自行開發，於 2021 底正式推出，算是非常新穎的框架。他主要的底層框架是由 vite + React + GraphQL。與傳統 Shopify 使用的 Liquid 語法不同，完全由 React 主導 DOM 的修改與渲染。接下來有許多 Hydrogen 所強調的開發模式與他提供的功能。
+
+# React Server Components (RSC)
+
+參考資料：
+
+- [https://reactjs.org/blog/2020/12/21/data-fetching-with-react-server-components.html](https://reactjs.org/blog/2020/12/21/data-fetching-with-react-server-components.html)
+- [https://chentsulin.medium.com/react-新概念-server-components-d632f9a18463](https://chentsulin.medium.com/react-%E6%96%B0%E6%A6%82%E5%BF%B5-server-components-d632f9a18463)
+
+在開始介紹 Hydrogen 之前，要先來介紹一下 **React Server Component (RSC)**。因為這次 Hydrogen 強調的最大的效能優化，就是基於 React Server Component 上的開發。
+
+一開始有一個介紹影片，由 React 內部的開發人員講述 server components：
+
+[https://www.youtube.com/watch?v=TQQPAU21ZUw](https://www.youtube.com/watch?v=TQQPAU21ZUw)
+
+起因：在我們開發現有的 React Component 時，我們都是走到 client side 才做渲染。在做 Data Fetching 從 server 拿資料時，會因為 request/response 的時間差，讓整個 UX 變得比較不好。假設同時三個 component 需要做 data fetching 的時候，也有可能因為順序上的影響，再進而拖慢整個時間。
+
+於是工程師想了一個辦法，就是把 fetching 的動作都在 server 端解決，然後再利用 props 往下餵下面的 children components. 當 Framework 要 Render Server Components 的時候，框架會把 Props 準備好發送到 Server 特定的 API Endpoint（例如：/react）去執行 render。這個聽起來好像跟之前的 SSR 作法差別不大啊？但 server component 有一些更厲害的地方。
+
+![client-component](https://user-images.githubusercontent.com/54787518/188353705-8fdf9cdc-f0cb-43b0-a0a1-f1bd122554eb.png)
+
+![server-component](https://user-images.githubusercontent.com/54787518/188353714-b2e61fae-73d4-46e6-9daf-cce712d45ef8.png)
+
+(上面是原本 client-side component 的 data fetching 流向，下面則是 server component 的 data fetching 的模式)
+
+**RSC 解決了以下幾個問題**：
+
+1. 因為 Server Components 在 Server 上 render ，Components 的程式碼 Bundle 不需要下載到 Client，也連帶著可以去避開下載只有 Server Components 會用到的套件。Bundle Size 可以有明顯的下降。
+2. Server Components 擁有 Node.js 的執行環境，所以可以輕鬆的取用後端接觸的到的完整資源，例如：檔案系統、資料庫……等等。這個感覺有點像以往在寫伺服器上的模板語言（erb, ejs…），執行環境裡可以接觸的到後端的變數、Model 等等東西。
+3. 可以避免 Client-Server 之間的 Waterfall 請求，典型的例子就是一層又一層的使用 useEffect 來呼叫 API 取得資料，Client-Server 之間多次來回會是很多不必要的浪費。
+
+**RSC 與傳統的 SSR(Server-side Rendering)的差別**：
+
+SSR 是用來在 Server 上把整個應用程式用 HTML 的方式 render 出來，可以加快初始頁面載入的速度。使用 SSR 來提供初始的 HTML，特別是能幫到網路較慢的使用者以及舊式不依賴 JavaScript 的搜尋引擎爬蟲，初始頁面載入之後，Client Side 的 React 會接手。另外值得一提的是，在重新跑 Server-Side Rendering 的情況下， Components 的 State 是無法保留的。
+
+然而，React Server Components 只是透過網路請求來重新 render 他負責的子 Tree，可以結合其他既有的 Client Components 來保留 State。
+
+**RSC 的缺點**：
+
+目前 RSC 是一個實驗性的專案，React 18 還沒有正式整合進去
+
+因 RSC 是一個新型的 component 開發模式，學習曲線上比較陡。
+
+Server Component 與 Client Component 各有一些限制：
+
+- Server Components 不能使用  `useState()`和  `useReducer()`等狀態相關的 Hooks，也不能使用 Render Lifecycle `useEffect()`、`useLayoutEffect()`以及任何的 DOM API。
+- Client Components 則是不能 Import Server Components 也不能取用 File System 等 Node.js 上的 API。用[副檔名來區分 Components](https://github.com/reactjs/rfcs/blob/235f27c12aa893efd2378ec3c4a9b0b221641861/text/0000-server-module-conventions.md)（`.client.js` 、`.server.js`以及通用的  `.js`）這種方法可能也會造成混淆。
+- 需要跟 Bundler、Server Framework 深度整合的部分也可能會造成設定上的負擔、增加不少的複雜度。
+
+# Hydrogen 介紹
+
+參考資料：
+
+- [https://chentsulin.medium.com/初窺-hydrogen-架構以及-react-server-components-7977e9eb0e63](https://chentsulin.medium.com/%E5%88%9D%E7%AA%BA-hydrogen-%E6%9E%B6%E6%A7%8B%E4%BB%A5%E5%8F%8A-react-server-components-7977e9eb0e63)
+- [https://juejin.cn/post/7046244851397951496](https://juejin.cn/post/7046244851397951496)
+
+Hydrogen Playground: [https://stackblitz.com/edit/shopify-hydrogen-ma3nt7?file=src%2Fcomponents%2FLayout.server.jsx&title=Hydrogen](https://stackblitz.com/edit/shopify-hydrogen-ma3nt7?file=src%2Fcomponents%2FLayout.server.jsx&title=Hydrogen)
+
+![hydrogen-structure](https://user-images.githubusercontent.com/54787518/188353710-0e4cf04f-b878-462b-83e9-6894e4ccf509.png)
+
+### 為「動態」而生的電商平台
+
+去年的 Shopify Unite 大會上的最後，CEO 第一次親自展示了如何使用 React 打破現有 Shopify theme 的做法，高度客製化 (custom storefront)。他利用 Hydrogen 這個框架做了一個展示頁面，一個可以 360 度拖曳展示商品的功能。
+
+[https://www.youtube.com/watch?v=a2YSgfwXc9c](https://www.youtube.com/watch?v=a2YSgfwXc9c)
+
+Shopify 強調一個重點 - **Dynamic commerce**。電商平台要能提高轉換率，不外乎兩大方向 － 高度客製化 (動態)及效能(快)。通常這兩個面向是對立的，舉例來說：
+
+- 為了達成效能快，提高 performance，讓頁面盡量以**靜態頁面**製作。但電商有很多的商品 sku，價格、圖片、標題常常在變動，作爲靜態頁面，更新如果不夠及時，也達不到所謂的**動態**的展示方式
+
+再者 Liquid 的 dynamic rendering 一直不算很理想，最大的致命傷，是 Liquid 的動態渲染引擎仍然**必須在 North America 的 server 端上做渲染**，對於其他區域的 (例如：歐洲、亞洲等等)電商影響較大。
+
+### Hydrogen 的優點
+
+- **Edge Computing：**在 client-side 要準備訪問頁面，發出 request 的時候，渲染的機制就不用透過北美的 server 去做渲染，而是可以就近在附近的節點直接計算後回傳 response。(舉例：假設在亞洲的用戶要訪問，渲染機制可以在香港的 server 節點處理，加快 response 回應的時間)
+- **Streaming Server-side Rendering：**
+  [https://shopify.dev/custom-storefronts/hydrogen/framework/streaming-ssr](https://shopify.dev/custom-storefronts/hydrogen/framework/streaming-ssr)
+  在選染的時候，會切成許多的 chunks，在讀取的時候會**同時並無順序**(loaded out of order in parallel to rendering)的渲染，會加快整個頁面的渲染完成。在 lighthouse 中主要解決了 TTFB，另外 Progressive hydration 的部分在 react runtime 底下可以跟著 HTML response 一起把 data 拉進來，在 client side 就不用在進行額外的 data request 產生的 rerender，或是因為 data request 產生的 blocking.
+- 開發及打包效率快：因 Hydrogen 是使用**vite**作為編譯工具，在支援 bundle 的 hot reload 上速度會提高很多
+- 支援許多現有主流 module：例如 react-router, Tailwindcss, GraphQL 等
+- Cache 機制：Hydrogen 主要分成兩種 Cache, **Sub-request caching**還有**Full-page caching**。如果頁面上有動態資料，可以使用 Sub-request caching，在設定上可以客製化 cache 的時間以及要重新 refresh 新的 cache 的間隔
+
+```jsx
+// useShopQuery 為Shopify提供的
+const { data } = useShopQuery({
+  query: QUERY,
+  cache: {
+    // Cache the data for one second.
+    maxAge: 1,
+    // Serve stale data for up to nine seconds while getting a fresh response in the background.
+    staleWhileRevalidate: 9,
+  },
+});
+```
+
+如果都是純靜態頁面的話，可以使用 Full-page caching 整頁 cache 起來：
+
+```jsx
+export default function MyProducts({ response }) {
+  response.cache({
+    // Cache the page for one hour.
+    maxAge: 60 * 60,
+    // Serve the stale page for up to 23 hours while getting a fresh response in the background.
+    staleWhileRevalidate: 23 * 60 * 60,
+  });
+}
+```
+
+- 內建非常多的 API, hooks 以及 Component 可以直接取用，與 Shopify 後台整合快速，資料方便取用。舉例用來查詢 Shopify 資訊的`useShopQuery`:
+
+```jsx
+import { useShopQuery } from '@shopify/hydrogen';
+import gql from 'graphql-tag';
+export default function Blog() {
+  const { data } = useShopQuery({
+    query: QUERY,
+    variables: {
+      handle: 'frontpage',
+    },
+  });
+  return <h1>{data.blog.articles.edges[0].node.title}</h1>;
+}
+const QUERY = gql`
+  query blogContent($handle: String!) {
+    blog: blogByHandle(handle: $handle) {
+      articles(first: 1) {
+        edges {
+          node {
+            id
+            title
+          }
+        }
+      }
+    }
+  }
+`;
+```
+
+上面可以看到只要 graphQL 的 query 位置設定好(blog 下 article 中文案的 title)，資料可以透過內建的這個 hook 被輕鬆地拿到，很方便。
+
+- 部署超快：Shopify Hydrogen 有推出自己專門的 cloud server - Oxygen (目前尚未啟用，預計今年會發表)，強調 deploy 時便會將發布的程式碼部署在所有雲端的 end point 上，最重要的是 - 支援 Branch Preview，遠端可以直接當測試站使用，不需另外再開測試站來使用
+
+# Hydrogen 開發
+
+參考資料：
+
+- [https://hydrogen.shopify.dev/](https://hydrogen.shopify.dev/)
+- [https://shopify.dev/custom-storefronts/hydrogen](https://shopify.dev/custom-storefronts/hydrogen)
+
+開發影片：
+
+[https://www.youtube.com/watch?v=HjN0vDK_Euw](https://www.youtube.com/watch?v=HjN0vDK_Euw)
+
+展示 demo 網頁：[https://shopify.supply/](https://shopify.supply/) 真的超級快，好可怕。
+
+### Hydrogen 運作流程
+
+### Hydrogen Deploy
+
+設定 Dockerfile, 搞定!
+
+目前先用我的個人 heroku 帳號 host: [https://pg-shopify-hydrogen.herokuapp.com/](https://pg-shopify-hydrogen.herokuapp.com/)
+
+### Hydrogen 內建預設 Package
+
+- End-to-end testing with [Playwright](https://playwright.dev/)
+- Unit testing with [Vitest](https://vitest.dev/) and [Testing Library](https://testing-library.com/)
+- Code formatting with [Prettier](https://prettier.io/)
+- Javascript linting with [ESLint](https://eslint.org/) and the Hydrogen [ESLint plugin](https://github.com/Shopify/hydrogen/tree/main/packages/eslint-plugin)
+- CSS linting with [Stylelint](https://stylelint.io/)
+- Tailwind
+
+### Hydrogen + Typescript
+
+已搞定 vite 編譯，現在可以直接用.tsx 結尾的副檔名做開發
+
+```tsx
+// ProductAddOns.tsx
+const ProductAddOns: React.FC = () => {
+  return <div>Typescript test</div>;
+};
+
+export default ProductAddOns;
+```
+
+編譯及 build 之後可以順利顯示：
+
+### Hydrogen 與 Next.js Integration
+
+參考資料：[https://shopify.dev/custom-storefronts/hydrogen/integrate-react-frameworks](https://shopify.dev/custom-storefronts/hydrogen/integrate-react-frameworks)
