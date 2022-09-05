@@ -1,0 +1,53 @@
+.root {
+  @apply fixed top-0 left-0 flex min-h-screen w-full -translate-x-[300px]  transition-transform duration-300;
+  &[data-open='true'] {
+    @apply translate-x-0;
+  }
+  @include lg {
+    @apply relative w-auto translate-x-0;
+    &[data-open='false'] {
+      @apply translate-x-0;
+    }
+  }
+}
+.contentBlock {
+  @apply font-source-code relative flex min-h-full w-[300px] flex-col gap-2 border-r-2 border-solid border-black bg-white pl-4 pr-10 pt-16;
+  &:after {
+    @apply absolute top-1/2 -right-[70px] z-10 h-[50px] w-[90px] -translate-y-1/2 -rotate-90 border-r border-b border-l border-solid border-black bg-white pt-4 text-center;
+    border-radius: 0 0 8px 8px;
+    content: 'Contents';
+  }
+  &[data-dark-mode='true'] {
+    @apply border-white bg-black;
+    &:after {
+      @apply border-white bg-black;
+    }
+  }
+  &[data-open='true'] {
+    &:after {
+      @apply hidden;
+    }
+  }
+  @include lg {
+    @apply gap-4 pt-24;
+    &:after {
+      @apply hidden;
+    }
+  }
+}
+.arrow {
+  @apply absolute top-1/2 -right-[26px] z-[15] h-[24px] w-[24px] -translate-y-1/2 -rotate-90 cursor-pointer;
+  &[data-dark-mode='true'] {
+    fill: #fff;
+  }
+  &[data-open='true'] {
+    @apply right-2 rotate-90;
+  }
+  @include lg {
+    @apply hidden;
+  }
+}
+.blurModal {
+  @apply min-h-full flex-1;
+  backdrop-filter: blur(5px);
+}

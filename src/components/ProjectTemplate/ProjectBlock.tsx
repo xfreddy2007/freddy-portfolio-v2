@@ -1,4 +1,4 @@
-import React, { SyntheticEvent } from 'react';
+import React from 'react';
 import ProjectTooltipTemplate from '../ProjectTooltipTemplate';
 import ReactDOMServer from 'react-dom/server';
 import useMediaMatch from '@/src/utils/hooks/useMediaMatch';

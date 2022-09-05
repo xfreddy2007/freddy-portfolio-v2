@@ -7,7 +7,7 @@ import HomepageQuote from '../components/HomepageQuote';
 
 const HomePage: React.FC = () => {
   return (
-    <div className="mx-auto max-w-[1920px] bg-white dark:bg-black dark:text-white">
+    <div className="mx-auto max-w-[1920px]">
       <Helmet>
         <title>Freddy Liu - Builds things that interest You!</title>
         <meta property="og:title" content="Freddy Liu - Builds things that interest You!" />

@@ -30,7 +30,7 @@ const App: React.FC = () => {
 
   // session for loading and welcome show
   useEffect(() => {
-    let timer: NodeJS.Timeout;
+    let timer: ReturnType<typeof setTimeout>;
     if (sessionStorage.getItem('visited') === 'true') {
       setIsLoaded(true);
       setIsWelcomed(true);
@@ -60,7 +60,7 @@ const App: React.FC = () => {
       {!isLoaded && <Loading />}
       {!isWelcomed && <Welcome />}
       <Header />
-      {useRoutes(routes)}
+      <div className="w-full bg-white dark:bg-black dark:text-white">{useRoutes(routes)}</div>
       <Footer />
     </Suspense>
   );

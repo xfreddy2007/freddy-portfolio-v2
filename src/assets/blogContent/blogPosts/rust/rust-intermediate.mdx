@@ -1,0 +1,1022 @@
+# Rust Advanced Topic - Ultimate Rust 2: Intermediate Concepts
+
+07/14/2022
+
+# Idiomatic Rust
+
+What does “idiomatic” means?
+
+> 1. expressions that are natural to a native speaker
+> 2. appropriate to the style of a particular group
+
+So it’s like we are writing Rust like someone who has used it every day for years.
+
+### Automation!
+
+The Rust community has distilled everything they could think of about writing idiomatic Rust into two tools:
+
+1. **rustfmt** (Rust format): this tool format the code for you. Instead of runing directly with `rustfmt`, `cargo fmt` will be used. `cargo fmt` is the command we will run to automatically reformat our code. It’s the de-facto rust style guide, but instead of having to memorize a thousand style guide rules, we just have to run it.
+   rustfmt has great defaults, and most people just use as is. But if not agree with some choices that rustfmt has made, we can customize for our project by putting a config file(`.rustfmt.toml`) at the root of the project.
+2. **clippy**: we can run `cargo clippy` to compile our codes and checks for over 450 specific types of problems. Generally, the problems will fall into one of the four categories:
+   1. Style: beyound syntactic style, clippy will let us know if there is a more idiomatic way to do something.
+   2. Correctness: clippy will warn if it finds that compiles but is outright wrong or very useless.
+   3. Complexity: clippy will warn if it thinks we should simplify our complex code. There are 2 favorable benefit. The first flavor is when clippy knows for sure that our code is too complex. We can ignore the warnings by using the `#[allow(YourWarning)]` attribute.
+   4. Performance: clippy will warn if it thinks we can rewrite the code to make it faster.
+
+# Documentation
+
+Documentation is only useful if it’s readable. We can use `cargo doc` to generate a good looking website for our documentation. But often used as the following:
+
+```bash
+$ cargo doc -—no-deps -—open
+```
+
+`--no-deps` makes it so we only generate our library’s documentation without generating all the documentation for all of our dependencies. `—-open` automatically opens the index page of the generated documentation in our default browser.
+
+Documentation is similar like our comment, but starts with `///` instead of `//`.
+
+```rust
+/// Number of pieces in the puzzle
+///
+/// This is a seperate paragraph
+pub const PUZZLE_PIECES: u32 = 42;
+```
+
+Documentation comments use the commentmark markdown syntax. The same flavor used by other popular sites like Github.
+
+A more advanced and fancy version:
+
+```rust
+/// Number of pieces in the puzzle
+///
+/// # History
+///
+/// This is a seperate paragraph.
+/// - Clickable link: [`PUZZLE_PIECES`]
+/// - We tried `7`, but this is better
+pub const PUZZLE_PIECES: u32 = 42;
+```
+
+Also, there are block documentation comments as well:
+
+```rust
+/**
+Number of pieces in the puzzle
+
+# History
+
+This is a seperate paragraph.
+- Clickable link: [`PUZZLE_PIECES`]
+- We tried `7`, but this is better
+**/
+pub const PUZZLE_PIECES: u32 = 42;
+```
+
+The rest of the marksown features arepretty much the same as standard markdown, with a couple exceptions. One notable exception is `intra-doc` links, which means hyperlinks to other parts of the documentation. (e.g. the `[PUZZLE_PIECES]` in the above code block.)
+
+```rust
+/// - [Clickable link](PUZZLE_PIECES)
+```
+
+The link can be anything in scope, and if the thing we want isn’t in scope, just use the absolute path to it in our parentheses.
+
+```rust
+/// [Spawn a thread](std::thread::spawn)
+```
+
+Those form of comment above is called an outer documentation comment, because we put it outside of the thing that we’re documenting.
+
+There is also an inner documentation comment, which we can use to document things we are inside of.
+
+The syntax is similar to the outer documentation comment, with an `!` mark after the `//`. The block style is done by adding ! mark to the inside of regular block comments.(`/*! !*/`)
+
+### Usage
+
+For structs, we document the struct as a whole ar the top, but we document fields seperately.
+
+```rust
+/// This is a Puzzle
+pub struct Puzzle {
+	/// Number of pieces
+	pub num_pieces: u32,
+	/// Descriptive name
+	pub name: String,
+}
+```
+
+The doc of the Puzzle will be on the top of the page, while the doc for each field doc will be down in this section for that particular field.
+
+We don’t usually document the implementation block itself because there usually isn’t anything to say about the group of functions and methods as a whole that we wouldn’t have already said in the struct documentation.
+
+If we did add docucmentation to the implementation block, it would appear below the list of fields, and above the list of methods and functions.
+
+We do definitely want to document each associated function and method by adding a documentation comment above the definition of each function and method inside the implementation block.
+
+```rust
+impl Puzzle {
+	/// Make a new puzzle!
+	pub fn new() -> {
+		Self {
+			num_pieces: PUZZLE_PIECES,
+			name: "Forest Lake".into(),
+		}
+	}
+}
+```
+
+# Publishing
+
+This is a topic about how to publish a crate, or package, on crate.io. Whatever we publish will be permanent.
+
+We can use `cargo publish` to publish our crate.
+
+# Closures
+
+A closure is an anonymous function that can borrow or capture some data from the scope it is nested in.
+
+```rust
+|params| expr
+|params| { expr1 ; expr2 }
+```
+
+Let’s give an exmaple.
+
+```rust
+let add = |x, y| x + y;
+add(1, 2); // returns 3
+```
+
+Closure will automatically borrow a reference to values in the enclosing scope.
+
+```rust
+let s = "strawberry";
+
+let f = || {
+	println!("{}", s);
+};
+
+f(); // prints strawberry
+```
+
+Closure also support move semntics by adding the keyword `move` before the closure.
+
+```rust
+let f = move || {
+	println!("{}", s);
+};
+```
+
+This will make the closure move any variables it uses into itself and take ownership of them. Now `s` is owned by the closure, and will only get dropped when the closure itself goes out of scope and gets dropped. So we could send this closure over to another thread or return it from a function without needing to worry about when `s` gets dropped.
+
+If we still need access to the `s` variable outside the scope, then we can make a clone of `s` and pass the cloned value to the move closure instead.
+
+```rust
+let s = "strawberry";
+let s2 = s.clone();
+
+let f = move || {
+	println!("{}", s2);
+};
+```
+
+If we want to pass closure to or from functions, then we will need to specify the type of the closure in one of the following three traits from `std::ops`.
+
+- Fn
+- FnMut
+- FnOnce
+
+# Iterators
+
+We say that iterators are used for loops, for instance:
+
+```rust
+let v = vec![6, 7, 8, 9];
+
+for num in v {
+	printlin!("{}", num);
+}
+```
+
+We use the vector `v` as an iterator, but it isn’t actually used directly by the `for` loop. The `for` loop operates on any iterators, and if it’s not an iterator, it calls the `into_iter()` method, which returns an actual iterator.
+
+```rust
+let v = vec![6, 7, 8, 9];
+
+for num in v.into_iter() {
+	printlin!("{}", num);
+}
+```
+
+`into_iter()` is a method of the `IntoIterator` trait. Anything that implements `IntoIterator` will be converted into an iterator by a for loop automatically. This method returns an iterator which takes ownership of the collection it is implemented on. After the vector is used in a for loop, the vector is no longer can be accesed (because of the ownership is taken).
+
+We can rewrite the above code with a functional programming style:
+
+```rust
+let v = vec![6, 7, 8, 9];
+v.into_iter().for_each(|num| println!("{}", num));
+```
+
+There are a lot better writing with this style. First, iterators are typically faster than for loop. Another advantage is that we can take advantage of iterator adaptors.
+
+An iterator adaptor is a tool in the functional programming paradigm which takes an iterator and outputs a different iterator that will take some action on values as they pass through it. Many of the iterator trait’s method are iterator adaptors.
+
+`map()` is a function to transform each item in some way. `filter()` to remove some values that don’t meet a condition.
+
+```rust
+let = vec![6, 7, 8];
+let total: i32 = v
+	.into_iter() // 6, 7, 8
+	.map(|x: i32| x * 3) // 18, 21, 24
+	.filter(|y: &i32| *y % 2 == 0) // 18, 24
+	.for_each(|z| println!("{}", z));
+```
+
+The difference between these two method is that `map()`’s closure takes the ownership of its value, while `filter()`’s closure only takes an immutable reference. So we have to dereference it(`*y`) before we use the integer in our expression.
+
+Commonly, iterators adaptors come with an iterator consumer in the end of the chain. An iterator consumer is something that actually consumes the final iterator in some way causing the chain of iterator adaptors to do their processing.
+
+For instance, `for_each()` is an iterator consumer that consumes each value and passes it to a closure whose return value is discarded.
+
+sum() is another iterator consumer, but careful to give return type to the variable so the code will compile successfully.
+
+```rust
+let = vec![6, 7, 8];
+let total: i32 = v
+	.into_iter() // 6, 7, 8
+	.map(|x: i32| x * 3) // 18, 21, 24
+	.filter(|y: &i32| *y % 2 == 0) // 18, 24
+	.sum(); // 42
+```
+
+If we don’t assign the result to a value, like the following code:
+
+```rust
+v.into_iter() // 6, 7, 8
+	.map(|x: i32| x * 3) // 18, 21, 24
+	.filter(|y: &i32| *y % 2 == 0) // 18, 24
+	.sum(); // ERROR!!
+```
+
+It may cause error if the return type of the block isn’t known or is also generic.
+
+```rust
+.sum();
+// ^^^ cannot infer type for type parameter `S` declared on the associated function `sum`
+```
+
+Rust compiler also give us a solution: use the turbofish(`::<>`) to specify the type argument.
+
+This syntax is used to specify the type of the generic parameter or parameters for a generic function or method. The wierdest part is that it goes between the method or function name and the argument list. (`.sum::<i32>()`)
+
+`collect()` is a very commonly used iterator consumer. It will gather all the items and put them into a new collection. However, collect() does not know what type of value it’s going to collect, so we have to specify it. (`Vec<i32>`)
+
+```rust
+let total: Vec<i32> = v
+	.into_iter() // 6, 7, 8
+	.map(|x: i32| x * 3) // 18, 21, 24
+	.filter(|y: &i32| *y % 2 == 0) // 18, 24
+	.collect(); // vec![18, 24]
+```
+
+collect only need to know the container contains what kind of type. It already know the type of the items. So we can replace the `i32` with an `_`. (`Vec<_>`)
+
+Also, we can use turbofish syntax to give the type to `collect()` method.
+
+```rust
+let total = v
+	.into_iter() // 6, 7, 8
+	.map(|x: i32| x * 3) // 18, 21, 24
+	.filter(|y: &i32| *y % 2 == 0) // 18, 24
+	.collect::<Vec<_>>(); // vec![18, 24]
+```
+
+If we don’t want to destroy the collection, we can use other methods:
+
+- `v.into_iter()`: consumes `v`, returns own items.
+- `v.iter()`: returns immutable references.
+- `v.iter_mut()`: returns mutable references.
+
+There are syntatic sugar for three of those method:
+
+- `v.into_iter()`: `for _ in v`
+- `v.iter()`: `for _ in &v`
+- `v.iter_mut()`: `for _ in &mut v`
+
+The `drain()` method is used to empty out the values in the collection, while the `drain()` method in hash map returns the key value pair in the hash map.
+
+# Commont Traits
+
+### What can implement a trait?
+
+There are 4 things that can implement a trait:
+
+- structs
+- enums
+- closures
+- functions
+
+Closures and functions only implement a few advanced traits, so we are focusing on the other two.
+
+### Some derivable traits
+
+We may see this kind of syntax, and it is a derived trait.
+
+```rust
+#[derived(Debug)]
+```
+
+`Debug` is a commonly used derivable trait. As long as everything inside our struct or enum is `Debug`, then we can derive `Debug` for our struct or enum. All primitives and most library are already debuged. The debug trait is used for debug formatting and pretty debug formatting.
+
+```rust
+println!("{:?}", puzzle); // Normal Debug
+println!("{:#?}", puzzle); // Pretty Debug
+```
+
+Normal Debug formatting attempts to create a one-line description of the struct or enum that looks really similar to its definition.
+
+```rust
+// Original code
+#[derive(Debug)]
+pub struct Puzzle {
+	pub num_pieces: u32,
+	pub name: String,
+}
+
+println!("{:?}", puzzle);
+
+// terminal debug info
+// Puzzle { num_pieces: 500, name: "Draconic Equestrain" }
+```
+
+And for the same code, if we use pretty debug formatting, we will get something like this:
+
+```rust
+// Original code
+#[derive(Debug)]
+pub struct Puzzle {
+	pub num_pieces: u32,
+	pub name: String,
+}
+
+println!("{:?}", puzzle);
+
+// terminal debug info
+// Puzzle {
+//	 num_pieces: 500,
+//   name: "Draconic Equestrain",
+// }
+```
+
+Another common trait is `Clone`. Implementing this trait allows our value to be cloned by calling the clone method.
+
+```rust
+// Original code
+#[derive(Clone, Debug)]
+pub struct Puzzle {
+	pub num_pieces: u32,
+	pub name: String,
+}
+
+let puzzle2 = puzzle.clone();
+```
+
+Closely related to `Clone` is the `Copy` trait, which is a special marker trait. The difference between these two is that Copy can only be implemented on primitive types, or they just copy the pointer of the instance(no actual value inside the pointer).
+
+### Manually Implement traits
+
+There are 3 easy steps to manually implmenting a trait.
+
+1. Bring the Trait inti Scope: remeber to import the trait when we try to implement.
+2. Boilerplate: Find a correct way to implement wanted function in the implementation, usually on documentation.
+3. Implementation: Actually implement the right function. There are some commonly used and want to implement.
+
+   - `Default` trait: it can be derived, but gives us zero numbers, empty string, and empty collections, which is not what we want. So we will implement it manually for step two.
+
+   ```rust
+   impl Default for Puzzle {
+   	fn default() -> Self {
+   		Puzzle {
+   			num_pieces: PUZZLE_PIECES,
+   			name: "Forest Lake".to_string(),
+   		}
+   	}
+   }
+   ```
+
+   Why are we using this trait? Because some cases we want to customize some fields of a struct, but want the rest of the fields to be default values.
+
+   ```rust
+   let puzzle = Puzzle {
+   	num_pieces: 3000,
+   	..Default::default()
+   };
+   ```
+
+   The `..` operator is called struct update syntax.
+
+   - `PartialEq/Eq` trait:
+     - `PartialEq` tr does the actual calculations to test for equality.
+     - `Eq` trait is a marker trait that we can implement if the equality logic is relfexive, transitive and symmetric.
+
+   ```rust
+   impl PartialEq for Puzzle {
+   	fn eq(&self, other: &Self) -> bool {
+   		(self.num_pieces == other.num_pieces) && (self.name == other.name)
+   	}
+   }
+   ```
+
+   - `From/Into` trait: If we implement `From` trait, then `Into` gets automatically implemented for us. They are like one of another by reversed syntax. But Into gets more idiomatic, so we will be using this trait a lot.
+
+   ```rust
+   // Example use
+   From<T> for U
+   Into<U> for T
+
+   // Common use
+   Fomr<Puzzle> for String
+   Into<String> for Puzzle
+   ```
+
+   A more practical example:
+
+   ```rust
+   // From
+   impl From<Puzzle> for String {
+   	fn from(puzzle: Puzzle) -> Self {
+   		puzzle.name
+   	}
+   }
+
+   let puzzle = Puzzle::default();
+   let s = String::from(puzzle);
+   // and this works fine
+   let t: String = puzzle.into();
+   ```
+
+   Go for a Into example
+
+   ```rust
+   pub fn show<T: Into<String>>(s: T) {
+   	println!("{}", s.into());
+   }
+
+   let puzzle = Puzzle::default();
+   show(puzzle);
+   // puzzle has been consumed
+   ```
+
+   An important thing is that both `From` and `Into` consume the Puzzle. We can just pas a reference to the trait, but the following code should alse adjust:
+
+   ```rust
+   impl From<&Puzzle> for String {
+   	fn from(puzzle: &Puzzle) -> Self {
+   		puzzle.name.clone() // need to clone the string
+   	}
+   }
+   ```
+
+   This might still need to clone so fields in the struct, but we can avoid cloning other fields such as an image with 10M size, and it would take a lot of time to clone it every time.
+
+   As the adjustment above, we can still use our function:
+
+   ```rust
+   pub fn show<T: Into<String>>(s: T) {
+   	println!("{}", s.into());
+   }
+
+   let puzzle = Puzzle::default();
+   show(&puzzle);
+   // puzzle is still available
+   ```
+
+   But this time the show funciton only consumes the immutable reference of the puzzle instance, and `puzzle` is still available for accessing.
+
+# Errors (Creating and Handling)
+
+## Creating Errors
+
+There are something that needed to be remembered:
+
+- Errors should be `enum` type
+- Should group our errors as variants of as few enums as makes sense. We should group the similar errors into same group, and don’t be afraid to make a long list of variants if it make sense.
+- Should only return OUR errors from our public library. We don’t want to pass errors from the external dependencies. Wec should convert them to our public error type. Two reason for this:
+  - This gives the external dependencies the ability to break our public API
+  - It prevents us from changing our own library’s backend implementation without breaking our own public API
+    There is one exception to this rule is that when we receive a standard library error. For instance, we may want to pass a io error such as cannot open a file to user, other than our own error, but sometimes it’s okay to use our own version of error from converting these io errors. This depends!
+- Enum should be non-exhaustive.
+  ```rust
+  #[non_exhaustive]
+  pub enum PuzzleError {
+  	WonFit(u16),
+  	MissingPiece,
+  }
+  ```
+  We don’t want to break user’s code. This attribute makes it so we cannot do a match expression without a wildcard, so the following match expression wouldn’t compile.
+  ```rust
+  // Nope!
+  match error {
+  	PuzzleError::WontFit(_) => {}
+  	PuzzleError::MissingPiece => {}
+  }
+  ```
+  If we allow matching without a wildcard, then anytime we add a new error variant, all the code that look like this would break for our users. Really BAD!!!
+  So a user of our library is forced to always include a default arm for their match expressions just in case there are new variants in the future.
+  ```rust
+  // OK!
+  match error {
+  	PuzzleError::WontFit(_) => {}
+  	PuzzleError::MissingPiece => {}
+  	_ => {}
+  }
+  ```
+- Implement the `Debug`, `Display`, `Error` traits in this order. Because the `Error` trait is defined to be a subtrait of `Debug` and `Display`. Sample codes are in the following.
+
+  ```rust
+  use std::error::Error;
+  use std::fmt::{Display, Formatter, Result};
+
+  #[derive(Debug)]
+  #[non_exhaustive]
+  pub enum PuzzleError {
+  	WontFit(u16),
+  	MissingPiece,
+  }
+
+  impl Display for PuzzleError {
+  	fn fmt (&self, f: &mut Formatter) -> Result {
+  		use PuzzleError*; // import all the variants of PuzzleError into the local scope of the method
+  		match self {
+  			MissingPiece => write!(f, "Missing a piece"),
+  			WontFit(n) => write!(f, "Piece {} doesn't fit!", n),
+  		}
+  	}
+  }
+
+  impl Error for PuzzleError {}
+  ```
+
+  `use PuzzleError*` this is the few times that is okay to use `*` in a use statement, when we want to bring all the variants of an enum into local scope.
+  However, Implementing the `Debug`, `Display`, `Error` traits is a lot of work. So there is another way to do this → Use **thiserror** package.
+  There is an example code.
+
+  ```rust
+  use thiserror::Error;
+
+  #[derive(Debug, Error)]
+  #[non_exhaustive]
+  pub enum PuzzleError {
+  	// the {0} is the first index of the tuple data
+  	#[error("Piece {0} doesn't fit!")]
+  	WontFit(u16),
+  	#[error("Missing a piece")]
+  	MissingPiece,
+  }
+  ```
+
+  This derive Error trait are already implemented the Display and std Error trait. To know what string to return for the Display trait, we need to add `#[error(”…”)]` annotations to our variants.
+
+## Handling Errors
+
+We are familiar with the Result Enum that gives an error and ok term.
+
+```rust
+#[must_use]
+enum Result<T, E> {
+	Ok(T),
+	Err(E),
+}
+```
+
+So what kind of errors are we handling? The non-recoverable errors, which won’ be safely proceed any further for the program.
+
+The `panic` macro crashes the program.
+
+```rust
+// Manually panic
+panic!("Your computer is on fire");
+
+// Same thing if result is a Result::Err
+result.expect("Your computer is on fire");
+
+// Same thing, but without a message
+result.unwrap();
+```
+
+We should only use a `panic` if we are certain that there is no other reasonable option because why are we crashing the program?
+
+**DO NOT** try to catch `panic`. They are not meant to be caught unless we are doing something exotic, like writing a testing framework.
+
+If an error is recoverable, we should either handle it or return it.
+
+The `if let` syntax is really useful.
+
+```rust
+if let Err(e) = my_result {
+	println!("Warning: {}", e);
+}
+```
+
+What about when we don’t know what to do with an error? In that case, we should return the error to the caller to handle it.
+
+```rust
+fn poem() -> Result<String, io::Error> {
+	let file = match File::open("pretty_words.txt") {
+		Ok(f) => f,
+		Err(e) => return Err(e),
+	};
+	// do stuff with file
+}
+```
+
+This pattern is so common that Rust has a easy way to do this approach with a `?` at the end of the statement:
+
+```rust
+fn poem() -> Result<String, io::Error> {
+	let file = File::open("pretty_words.txt")?;
+	// do stuff with file
+}
+```
+
+This is so nice. However, if we are dealing with multiple error types, how do we handle them? We may handle any error that is not our own type and convert it to a variant of our library’s error type, and we need to do that with our own match expression.
+
+We will be manually handling other libraries’ error until they’re converted to our error type and then using the `?` operator for our own errors that are flying up and down our libraries call stack.
+
+Is this worth working? NO! we can implement the power of traits.
+
+A useful crate called `anyhow` generates the special Result type, which does the whole thing for us.
+
+```rust
+use anyhow::{Context, Result};
+use puzzles::Puzzle;
+use std::fs::File;
+
+fn get_puzzle(filename: &str) -> Result<Puzzle> {
+	let fh = File::open(filename)
+			.with_context(|| format!("couldn't open the puzzle file {}", filename))?;
+	let puzzle = Puzzle::from_file(fh).context("couldn't convert data into a puzzle")?;
+	Ok(puzzle)
+}
+
+fn main() -> Result<()> {
+	let puzzle = get_puzzle("puzzle.dat").context("Couldn't get the first puzzle")?;
+	println!("Playing puzzle: {}", puzzle.name);
+	Ok(())
+}
+```
+
+This crate helps us to trace the error from the highest level(`main` function) to the lowest (`get_puzzle` function), and it manually formats the io Error for us with the `Display` trait. Super cool!
+
+# Tests
+
+## Unit Tests
+
+We usually put our unit test code in the same submodule of which we want to test.
+
+```rust
+pub fn snuggle(bunnies: u128) -> u128 {
+	bunnies * 8
+}
+
+#[cfg(test)]
+mod test {
+	use super::*;
+
+	#[test]
+	fn snuggling_bunnies_multiply() {
+		assert_eq!(snuggle(2), 16);
+	}
+}
+```
+
+The `#[cfg(test)]` attribute tells the compiler that we only want to compile this module when we’re running tests.
+
+Three parts of the test:
+
+- test attribute: This attribute tells `cargo` that the function it is applied to should be run by the test runner.
+- function signature: Function can be private, any name, and the function should have no parameters and return nothing or a `Result`.
+- funtion body: the actual test code goes here. In the above example, we are using `assert_eq!()` macro.
+  `assert_eq!()` macro takes two arguments of the same type that implement the `PartialEq` trait.
+  `asser_ne!()` macro is the not equal macro. Similar to `asser_eq!()` but with not equal condition.
+  `assert!()` macro covers all the rest of the logical conditions by forcing us to do the comparison ourselves.
+
+What tool are we using for test? `cargo test`!
+
+There are two definitions for crate:
+
+1. crate = package, the developers use this phrase to talk to others.
+2. crate = a library or a binary, which usually use by the cargo tools recognition.
+
+cargo runs a doc-test with tests that writes inside the documentation. Doc-tests are typically in the form of documented examples, so the convention is to put them in an Example section and then put the actual code down in a section fenced by tripple backticks
+
+````rust
+/// # Example
+///
+/// ```
+/// # use hello::snuggle;
+/// let bunnies = snuggle(5);
+/// assert_eq!(bunnies, 40);
+/// ```
+pub fn snuggle(bunnies: u128) -> u128 {
+	bunnies * 8
+}
+````
+
+As the above says, we can return a Result in the test.
+
+```rust
+#[test]
+fn bunny_result() -> Result<(), ParseIntError> {
+	let num_bunnies: u64 = "four".parse()?;
+	assert_eq!(num_bunnies, 4);
+	Ok(())
+}
+```
+
+We don’t care about the success case. We force the test to give a error, this test fails.
+
+## Integration Tests
+
+We put the integration tests in the same directory which lives at the same level of `src` directory.
+
+Usually these tests has a lot sophisticated than unit tests cause they test the inetgration of some functions, components working together.
+
+## Benchmarks （Performance Testing）
+
+Rust has a little bit on benchmarks, but not many developers would do this. So there is another approach with this - Criterion. This is how everybody do their benchmarks right now. In Cargo.toml file, we can specify the crate:
+
+```rust
+[package]
+name = "hello"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+
+[dev-dependencies]
+criterion = { version = "0.3", feature = ["html_reports"]}
+
+[[bench]]
+name = "snuggle_speed"
+harness = false
+```
+
+The devlopment dependencies will be compiled for developement subcommands like `cargo test` and `cargo bench`. So we can use extra libraries for tests or benchmarks that don’t get compiled into our release project.
+
+The `[[]]` syntax means we can have more than one section for this. `harness` set to `false` means we don’t use the default benchmark tool and instead we use criterion.
+
+We put the bench files under the bench directory at the same level of the `src` directory. Here is the example code.
+
+```rust
+use criterion::{black_box, criterion_group, criterion_main, Criterion};
+use hello::snuggle; // the function we want to do benchmarks
+
+pub fn snuggle_benchmark(c: &mut Criterion) {
+	c.bench_function("snuggle 2", |b| b.iter(|| snuggle(black_box(2))));
+}
+
+criterion_group!(benches, snuggle_benchmark);
+criterion_main!(benches)
+```
+
+We can run `cargo bench` to run this benchmark. It gives a lot information, and if we look at the generated html file, we will get other statistic reports. Super cool!!
+
+# Logging
+
+There is an official library called `log`, which forms the foundation for all Rust logging. There are 5 levels of logging, each with its own corresponding macro. In order of descending priority:
+
+```rust
+use log::{error, warn, info, debug, trace};
+
+error!("Serious stuff");
+warn!("Pay attention");
+info!("Useful info");
+debug!("Extra info");
+trace!("All the things")
+```
+
+These macros require a message argument, but can also optionally take a first `target` argument, if we want to specify this argument.
+
+```rust
+warn!(target: "puzzle", "Pay attention");
+```
+
+Take the puzzle as the example, we can add logging to it:
+
+```rust
+use log::{error, info};
+
+impl Puzzle {
+	/// Make a new puzzle!
+	pub fn new() -> Self {
+		let puzzle = Default::default();
+		info!("Created a puzzle with new(): {:?}", puzzle);
+		puzzle
+	}
+	/// Load a puzzle from a file
+	pub fn from_file(_fh: File) -> Result<Self, PuzzleError> {
+		error!("This file is missing a piece!");
+		Err(PuzzleError::MissingPiece)
+	}
+}
+```
+
+The `log` library defines a common interface via traits that all basic loggers should conform to, so that simple logging from different libraries and applications will all be compatible.
+
+Just like the plumbling, the logger is plumbling. No matter how sophisticated the plumbling goes, it still needs somewhere to send the water out, and thats the same idea for logging.
+
+We can find lots of logger through the crates, depends where we want to put those errors or infos.
+
+# Multithreading
+
+Rust has a portable API wrapping native operating system threads, so all the code work across any major platform that supports native threads, including but not limiting macOS, Linux, and Windows.
+
+Multithreading saves time, which are also refer to as Parallel Processing. Parallel Processing is when we want to spend time processing things on multiple CPUs are the same time.
+
+```rust
+use std::thread;
+
+fn main() {
+	let handle = thread::spawn(move || {
+		// do stuff in a a child thread
+	});
+
+	// do stuff in the main thread
+
+	// wait until child thread has exited
+	handle.join().unwrap();
+}
+```
+
+Threads are’t free. Creating a new thread allocated some RAM for the thread’s own stack, usually a couple megabytes. Whenever a CPU switches from running one thread to another, it has to do an expensive context switch. So the more threads we have trying to share a CPU core, the more overhead we will have. Even so, threads are great for using CPU and memory in parallel because they can run simultaneously on different cores.
+
+If we just want to continue doing some work while we are waiting for something like disk I/O or network I/O, then we will use `async/await`, which is a much more efficient approach for concurrently waiting for things on a single thread.
+
+Let’s give an exmaple of cooking a spaghetti. We need 3 tasks: cook the spaghetti, cook the sauce, and serve the table.
+
+```rust
+use log::{error, info};
+use std::{thread, time::Duration};
+
+fn sleep(seconds: f32) {
+	thread::sleep(Duration::from_secs_f32(seconds));
+}
+
+pub mod dad { // dad's contribution
+	use super::{info, sleep}
+
+	pub fn cook_spaghetti() -> bool {
+		info!("Cooking the spaghetti...");
+		sleep(4.0);
+		info!("Spaghetti is ready!");
+		true
+	}
+}
+```
+
+And the mom contribution:
+
+```rust
+pub mod mom {
+	use super::{info, sleep};
+
+	pub fn cook_sauce_and_set_table() {
+		sleep(1.0);
+		info!("Cooking the sauce...");
+		sleep(2.0);
+		info!("Sauce si ready! Setting the table...");
+		sleep(2.0);
+		info!("Table is set!");
+	}
+}
+```
+
+Let’s look at the main function:
+
+```rust
+fn main() {
+	env_logger::init();
+
+	let handle = thread::spawn(|| dad::cook_spaghetti());
+
+	mom::cook_sauce_and_set_table();
+
+	if handle.join().unwrap_or(false) {
+		info!("Spaghetti time! Yum!")
+	} else {
+		error!("Dad messed up the spashetti. Order pizza instead?");
+	}
+}
+```
+
+The Dad contribution is run at the child thread, where Mom contribution is run at the main thread. We can return something from the child thread to make sure that the child thread has finished its job.
+
+# Channels
+
+Channels are tools that can be used for communications between threads. The standard library has a channel implementation in the `std::sync::mpsc`, but it’s not recommended to use this because of some poor design choices made by the Rust core team.
+
+They find another way to create a new library called `crossbeam::channel`. They are faster, more efficient and way more features in them.
+
+A channel is a one-way queue that threads can use to send one type of value to another thread. Being able to send values through channel, it has to satisfy the `Send` trait. Send is a marker trait. Only instead of implementing it ourselves, the compiler will automatically implement it for anything that will be safe to send between threads. All primitives are Send. In face, most Standard library types are Send.
+
+There are two flavors of Send:
+
+- `channel::bounded`: A bounded channel has a fixed capacity. Once the channel is full, the sending thread will block if it tries to send another value through the channel. The sending thread will resume once a receiver pulls something off of the channel. This is a great way to apply backpressure and make sure that one of our threads isn’t generating more work for others than they can handle.
+- `channel::unbounded`: This channel will allow the size to grow indefinitely. This type of channel is great if we have burty loads, but we are confident they will never be so high that we’ll run out of memory.
+
+Both types of channels can have multiple receviers. Only one receiver will get the value that was sent, which receivers will get the value is undefined.
+
+Channels can have multiple senders. Whichever sender tries to send first gets its item into the channel first. And finally, we can have multiple senders and multiple receivers at the same time, but the flow only goes in one direction. If we want bidirectional communication, we can use multiple channels, but should be very careful with this. If our channel flow is cyclical, we have the potential to deadlock.
+
+For example, if each of the threads in the cyclical flow sent values fast enough to fill up the bounded channels and then blocked waiting for the channel to regain capacity, then neither thread could get unblock to receive something off of the receiving end of the other channel.
+
+Let’s give an exmaple of channels:
+
+```rust
+// Cargo.toml
+
+[package]
+name = "cafeteria"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+crossbeam = "0.8" // add crossbeam to the dependency section
+```
+
+```rust
+// main.rs
+
+use crossbeam::channel::{self, Receiver, Sender};
+use std::{thread, time::Duration};
+
+#[derive(Debug)]
+enum Lunch {
+	Soup,
+	Salad,
+	Sandwich,
+	HotDog,
+}
+```
+
+This example uses only unbounded channels, which we won’t be able to produce enough lunches to run out of memory.
+
+Here is a function represents a cafeteria worker. Each child thread we spawn wil run this function.
+
+```rust
+fn cafeteria_worker(name: &str, orders: Receiver<&str>, lunches: Sender<Lunch>) {
+	for order in orders {
+		println!("{} receives an order for {}", name, order);
+		let lunch = match &order {
+			x if x contains("soup") => Lunch::Soup,
+			x if x contains("salad") => Lunch::Salad,
+			x if x contains("sandwich") => Lunch::Sandwich,
+			_ => Lunch::HotDog,
+		};
+		for _ in 0..order.len() {
+			thread::sleep(Duration::from_secs_f32(0.1))
+		}
+		println!("{} sends a {:?}", name, lunch);
+		if lunches.send(lunch).is_err() {
+			// this is to handle the edge case of too many lunch orders, but we are
+			// using unbounded channels, so it will be fine
+			break;
+		}
+	}
+}
+```
+
+Then the main function:
+
+```rust
+fn main() {
+	let (orders_tx, orders_rx) = channel::unbounded();
+	let orders_rx2 = orders_rx.clone();
+	let (lunches_tx, lunches_rx) = channel::unbounded();
+	let lunches_tx2 = lunches_tx.clone();
+
+	let alice_handle = thread::spawn(|| cafeteria_worker("alice", order_rx2, lunches_tx2));
+	let zack_handle = thread::spawn(|| cafeteria_worker("Zack", order_rx, lunches_tx));
+
+	for order in vec!["polish dog", "caesar salad", "onion soup", "reuben sandwich"] {
+		println!("ORDER: {}", order);
+		let _ = orders_tx.send(order);
+	}
+	drop(orders_tx);
+
+	for lunch in luches_rx {
+		println!("Order Up! -> {:?}", lunch);
+	}
+
+	let _ = alice_handle.join();
+	let _ = zack_handle.join();
+}
+```
+
+The `drop` function in the main function is cool. It drops the unused variable, or let them goes out of scope.
+
+We give 2 workers, considered as 2 thread, doing the “serving” stuff. We clone the order reveiver cause we have 2 workers, and clone the sender of lunches cause we have 2 workers to serve the lunch.
+
+# Project - Rust Game Engine
+
+This game engine is wrapped over a real Rust Game Engine - [Bevy](https://bevyengine.org/).

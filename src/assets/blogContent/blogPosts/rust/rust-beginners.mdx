@@ -1,0 +1,1344 @@
+# Rust Learning notes - Learn Rust by Building Real Application
+
+07/01/2022
+
+# What is Rust?
+
+> Rust is **blazing fast** and **memory-efficient**: with no runtime or garbage collector.”
+> “Rust’s rich **type system** and **ownership model** guarantee memory-safety and thread-safety”
+
+Rust is a modern systems programming language.
+
+- **Memory safe (wrt/ C, C++)**
+
+⇒ Compiling would be failure if the memory usage is wrong.
+
+⇒ Python, Java, Golang are also memory-safe, but under a garbage collector to achieve this approach.
+
+- **No Null type or no pointers**
+
+⇒ Rust uses very rich type system to represent the absence of a value.
+
+⇒ The referencing, no pointers or no point are exceptions.
+
+- **No Exceptions**
+
+⇒ Rust uses very rich type system to enforce proper error handling.
+
+- **Modern package manager**
+
+⇒ **Cargo** a.k.a MPM for Rust is similar to MPM for Javascript compare to C/C++ workflow of writing endless make files and linker issues.
+
+⇒ Compiling Rust = add list of your dependencies to a manifest file and typing `Cargo build` in the terminal.
+
+- **No Data Race**
+
+⇒ A game changer for writing complex asynchronies codes.
+
+## Garbage Collector
+
+[Garbage Collector](https://www.notion.so/Garbage-Collector-9c66dab06cf34b79ab5eadfb64fd7cf5)
+
+### Additional source
+
+[Linker & Compiler](https://www.notion.so/Linker-Compiler-93b0769347ee41a4be56285e6baa01fc)
+
+# Rust setup
+
+Documentation: [https://doc.rust-lang.org/stable/book/](https://doc.rust-lang.org/stable/book/)
+
+After installation, and we can use Cargo to create a new project (with git and rust environment setup)
+
+### Cargo.toml
+
+![cargo-toml](https://user-images.githubusercontent.com/54787518/188123346-25054e87-d07e-4856-8307-5ac03f3a89c9.png)
+
+This file is similar like package.json in Javascript. We can specify the dependencies for our project, metadata for the project, and some compiler settings.
+
+**Crates**: Packages in rust world. We can list those crates we need in the dependency section.
+
+Crates registry: [https://crates.io/](https://crates.io/)
+
+If we want to import some of the crates, we just copy the crate name and version, and put it under the dependency section:
+
+![cargo-deoendency](https://user-images.githubusercontent.com/54787518/188123077-d5be52e5-b899-4768-8333-48f712ffec09.png)
+
+(We import “rand” crate with version 0.8.5)
+
+We can use `cargo build` to create a built file consists of all dependencies, and use `cargo run` to run file that we just built.
+
+We can also use cargo to install rust binaries that can be used system wide.
+
+We install a package called **cargo expand**. After running build and run command cargo expand, we can find our toolchain is under a stable version. Thus, we need to install a nightly version (unstable version) in order to use the cargo expand package.
+
+![cargo-expand](https://user-images.githubusercontent.com/54787518/188123089-e03a6f44-ba82-471b-bd5d-12decbeaf1ea.png)
+
+Solution: [https://stackoverflow.com/questions/48675235/error-the-option-z-is-only-accepted-on-the-nightly-compiler](https://stackoverflow.com/questions/48675235/error-the-option-z-is-only-accepted-on-the-nightly-compiler)
+
+Install nightly toolchain:
+
+```rust
+$ rustup install nightly
+```
+
+Or Switch to nightly toolchain as default toolchain:
+
+```rust
+$ rustup default nightly
+```
+
+Till now, we can move on to the next chapter!
+
+# Memory Management
+
+Memory management is important in Rust. There are some memory management in this language:
+
+- The Stack
+- The Heap
+- Pointers
+- Smart Pointers
+
+### The Stack
+
+> A special region of the process memory that stores variables created by each function.
+
+The memory created by each function is called a stack frame, where the local variables live for every function. For every function call a new stack frame is allocated on top of the current one. Only the function which creates the stack frame can access to it. This is what gives **scope** to our functions.
+
+The size of every variable on the stack has to be known at compile time. If we want to put an array in the stack, we have to specify how many elements in the array.
+
+When a function exits, it’s stack frame is released, which means we don’t have to worry about deallocating the memory.
+
+### The Heap & Pointer
+
+> A region of the process memory that is **not** automatically managed.
+
+- It has no size restrictions. It is only limited by the amount of physical resources of the system.
+- It is accessible by any function, anywhere in the program.
+- Heap allocations are expensive and we should avoid them when possible. If we allocate and deallocate a lot of blocks on the heap, eventually it will get fragmented. This cause it much harder to efficiently find the necessary space for new allocations.
+
+We allocate a memory in heap, which creates a memory for it, and also we only store the associated memory address of the heap in the stack. When we actually want to access the value, we just follow the address, and we find the value in the heap. This address is called a **pointer**, and the following (go to the address and get the value) is called dereferencing.
+
+- It’s important that we always need to deallocate the memory that we have allocated on the heap.
+
+### The Smart Pointer
+
+> A wrapper around the raw pointer adding additional capabilities to it.
+
+There are many kinds of smart pointer, but most commonly used is to free memory. Old pointers which lose after the function exit, causing memory leak.
+
+As the same in the upper example, now we dose not only store the address in the stack but wrap the address in a smaller, smart pointer. So when the stack frame from the function goes out, the scope and the smart pointer is destroyed, it will make sure to go ahead and deallocate the memory it was pointing to. No longer the memory leak will happen.
+
+# Rust basic concepts
+
+example project: Build a Command Line Application
+
+## Basic Data Types (Scalar Types)
+
+Rust has 4 basic data types:
+
+- Booleans
+- Characters
+- Integers
+- Floating-point
+
+### Integer Type
+
+![integer-type](https://user-images.githubusercontent.com/54787518/188123100-f2e95c3d-1229-43f8-af9c-7f8af8516059.png)
+
+“u” means unsigned, while “i” means signed. Unsigned integer can only be positive, while signed integer can be positive or negative.
+
+The number after represents the size of the integer, from 8-bit to 128-bit. Another 2 special kind of numbers are **usize** and **isize**. Their size base on the architecture, which are 32-bit or 64-bit, respectively.
+
+Each signed variant can store numbers from -(2^(n - 1)) to 2^(n - 1) - 1 inclusive, where *n*
+ is the number of bits that variant uses. So an `i8` can store numbers from -(2^7) to 2^7 - 1, which equals -128 to 127. Unsigned variants can store numbers from 0 to 2^(n - 1), so a `u8` can store numbers from 0 to 2^8 - 1, which equals 0 to 255.
+
+**Integer Literals**
+
+These are all the forms that we can write integers in Rust:
+
+![integer-literals](https://user-images.githubusercontent.com/54787518/188123098-6bd931d2-9d1a-413a-8de8-5ce195fcaefe.png)
+
+Note that number literals that can be multiple numeric types allow a type suffix, such as `57u8`, to designate the type. Number literals can also use `_` as a visual separator to make the number easier to read, such as `1_000`, which will have the same value as if you had specified `1000`.
+
+**When to use which type?**
+
+It’s a good start to use default integer type: Integer types default to `i32`. The primary situation in which you’d use `isize` or `usize` is when indexing some sort of collection.
+
+### Floating-point Type
+
+Float has 2 types: `f32` and `f64`. The default type is `f64` because on modern CPUs it’s roughly the same speed as `f32` but is capable of more precision. All floating-point types are **signed**.
+
+```rust
+fn main() {
+    let x = 2.0; // f64
+    let y: f32 = 3.0; // f32
+}
+```
+
+Floating-point numbers are represented according to the IEEE-754 standard. The `f32` type is a single-precision float, and `f64` has double precision.
+
+### Boolean Type
+
+As in most other programming languages, a Boolean type in Rust has two possible values: `true`
+ and `false`. Booleans are one byte in size. The Boolean type in Rust is specified using `bool`.
+
+```rust
+fn main() {
+    let t = true;
+    let f: bool = false; // with explicit type annotation
+}
+```
+
+### Character Type
+
+Some examples of declaring `char` values:
+
+```rust
+fn main() {
+    let c = 'z';
+    let z: char = 'ℤ'; // with explicit type annotation
+    let heart_eyed_cat = '😻';
+}
+```
+
+Note that we specify `char` literals with single quotes, as opposed to string literals, which use double quotes. Rust’s `char` type is four bytes in size and represents a Unicode Scalar Value, which means it can represent a lot more than just ASCII. Unicode Scalar Values range from `U+0000` to `U+D7FF` and `U+E000` to `U+10FFFF` inclusive. However, a “character” isn’t really a concept in Unicode, so your human intuition for what a “character” is may not match up with what a `char` is in Rust.
+
+## Compound Types
+
+Compound types can group multiple values into one type. Rust has two primitive compound types: tuples and arrays.
+
+### Tuple Type
+
+A tuple is a general way of grouping together a number of values with a variety of types into one compound type. Tuples have a fixed length: once declared, they cannot grow or shrink in size.
+
+We create a tuple by writing a comma-separated list of values inside parentheses. Each position in the tuple has a type, and the types of the different values in the tuple don’t have to be the same.
+
+```rust
+fn main() {
+    let tup: (i32, f64, u8) = (500, 6.4, 1);
+}
+```
+
+The variable `tup` binds to the entire tuple, because a tuple is considered a single compound element. To get the individual values out of a tuple, we can use pattern matching to destructure a tuple value:
+
+```rust
+fn main() {
+    let tup = (500, 6.4, 1);
+    let (x, y, z) = tup;
+    println!("The value of y is: {y}");
+}
+```
+
+We can also access a tuple element directly by using a period (`.`) followed by the index of the value we want to access.
+
+```rust
+fn main() {
+    let x: (i32, f64, u8) = (500, 6.4, 1);
+    let five_hundred = x.0;
+    let six_point_four = x.1;
+    let one = x.2;
+}
+```
+
+The tuple without any values has a special name, **unit**. This value and its corresponding type are both written `()` and represent an empty value or an empty return type. Expressions implicitly return the unit value if they don’t return any other value.
+
+### Array Type
+
+Every element of an array must have **the same type**. Arrays in Rust have a fixed length.
+
+```rust
+fn main() {
+    let a = [1, 2, 3, 4, 5];
+}
+```
+
+Arrays are useful when you want your data allocated on the stack rather than the heap, or when you want to ensure you always have a fixed number of elements. An array isn’t as flexible as the vector type, though. A vector is a similar collection type provided by the standard library that *is*
+ allowed to grow or shrink in size.
+
+However, arrays are more useful when you know the number of elements will not need to change.
+
+You write an array’s type using square brackets with the type of each element, a semicolon, and then the number of elements in the array.
+
+```rust
+fn main() {
+	let a: [i32; 5] = [1, 2, 3, 4, 5];
+}
+```
+
+You can also initialize an array to contain the same value for each element by specifying the initial value, followed by a semicolon, and then the length of the array in square brackets.
+
+```rust
+fn main() {
+	let a = [3; 5];
+}
+```
+
+An array is a single chunk of memory of a known, fixed size that can be allocated on the stack. You can access elements of an array using indexing.
+
+```rust
+fn main() {
+    let a = [1, 2, 3, 4, 5];
+    let first = a[0];
+    let second = a[1];
+}
+```
+
+A reference to an array is actually called a slice. We will discuss more about in Slice type.
+
+### Slice Type
+
+Slices let you reference a contiguous sequence of elements in a collection rather than the whole collection. A slice is a kind of reference, so it does not have ownership.
+
+A string slice is a reference to part of a `String`.
+
+Generally Other types like Array can have a slice as well.
+
+```rust
+let a = [1, 2, 3, 4, 5];
+let slice = &a[1..3];
+```
+
+This slice has the type `&[i32]`. It works the same way as string slices do, by storing a reference to the first element and a length.
+
+## Functions
+
+The `main` function, which is the entry point of many programs.
+
+Rust use snake case (e.g. stack_fn, go_to_home) conventional style for function and variable names.
+
+Rust doesn’t care where you define your functions, only that they’re defined somewhere in a scope that can be seen by the caller.
+
+### Parameters
+
+When a function has parameters, you can provide it with concrete values for those parameters. Technically, the concrete values are called arguments, but in casual conversation, people tend to use the words parameter and argument interchangeably for either the variables in a function’s definition or the concrete values passed in when you call a function.
+
+In function signatures, you **must** declare the type of each parameter. This is a deliberate decision in Rust’s design: requiring type annotations in function definitions means the compiler almost never needs you to use them elsewhere in the code to figure out what type you mean. The compiler is also able to give more helpful error messages if it knows what types the function expects.
+
+### **Statements and Expressions**
+
+**Statements** are instructions that perform some action and do not return a value. **Expressions**
+ evaluate to a resulting value.
+
+Creating a variable and assigning a value to it with the `let` keyword is a statement.
+
+```rust
+fn main() {
+    let y = 6;
+}
+```
+
+Function definitions are also statements; the entire preceding example is a statement in itself.
+
+Statements do not return values. Therefore, you can’t assign a `let` statement to another variable.
+
+```rust
+fn main() {
+	let x = let y = 6; // this will cause error
+}
+```
+
+Unlike other languages such as C and Ruby, where the assignment returns the value of the assignment. In those languages, you can write `x = y = 6` and have both `x` and `y` have the value `6`; that is not the case in Rust.
+
+Expressions evaluate to a value and make up most of the rest of the code that you’ll write in Rust. Expressions can be part of statements. In the above exmaple, the `6` in the statement `let y = 6;` is an expression that evaluates to the value `6`. Calling a function is an expression. Calling a macro is an expression. A new scope block created with curly brackets is an expression.
+
+```rust
+fn main() {
+    let y = {
+        let x = 3;
+        x + 1
+    };
+    println!("The value of y is: {y}");
+}
+```
+
+This expression:
+
+```rust
+{
+    let x = 3;
+    x + 1
+}
+```
+
+is a block that, in this case, evaluates to `4`.
+
+### Return Values
+
+Functions can return values to the code that calls them. We don’t name return values, but we must declare their type after an arrow (`->`).
+
+```rust
+fn calculate_weight_on_mars(weight: f32) -> f32 {
+    return 50.0;
+}
+
+// Or more concise way of writing
+fn calculate_weight_on_mars(weight: f32) -> f32 {
+    50.0
+}
+```
+
+## Macros
+
+Macros comes with an exclamation mark (!), and they are used for metaprogramming.
+
+```rust
+fn main() {
+    println!("Hello, world!");
+}
+
+// prints Hello, world! on the console
+```
+
+A macro can be code with a variable number of parameters and with different types.
+
+As the example with `println!()`, we can assign a variable number of arguments. We can call it with a single string, or call it with a string that contains curly braces.
+
+```rust
+fn main() {
+    println!("Number: {}, String: {}", 100, "abcd");
+}
+
+// prints Number: 100, String: abcd on the console
+```
+
+## Variables/Mutability
+
+To define a variable is to use `let` keyword at the front of our variable name.
+
+```rust
+fn main() {
+    let mars_weight = calculate_weight_on_mars(100.0);
+    println!("Weight on Mars: {} kg", mars_weight);
+}
+```
+
+As we can see, we did not define the type of `mars_weight`, but it still compile correctly. This is the Rust compiler is smart enough that it will find the implicit type (where the function return type) and get the right type for the variable.
+
+We can still give the type of the variable as well:
+
+```rust
+fn main() {
+    let mars_weight: f32 = calculate_weight_on_mars(100.0);
+    println!("Weight on Mars: {} kg", mars_weight);
+}
+```
+
+All variables in Rust are **immutable**. This is one of many nudges Rust gives you to write your code in a way that takes advantage of the safety and easy concurrency that Rust offers.
+
+But still, there are ways to make variables mutable. We can make them mutable by adding `mut`
+ in front of the variable name. Adding `mut` also conveys intent to future readers of the code by indicating that other parts of the code will be changing this variable’s value.
+
+```rust
+fn main() {
+    let mut x = 5;
+    println!("The value of x is: {x}");
+    x = 6;
+    println!("The value of x is: {x}");
+}
+```
+
+## Standard Library
+
+Like other languages, Rust provides a variety of data structures (hash map, vector, I/O, etc.). This is an external crate for Rust, but it is default imported in the Rust environment.
+
+## Memory Ownership
+
+Ownership is a set of rules that governs how a Rust program manages memory. Rust uses a third approach: memory is managed through a system of ownership with a set of rules that the compiler checks. If any of the rules are violated, the program won’t compile. None of the features of ownership will slow down your program while it’s running.
+
+There are 3 ownership rules in Rust:
+
+- Each value in Rust is owned by a variable.
+- When the owner goes out of scope, the value will be deallocated.
+- There can only be **ONE** owner at a time.
+
+Let’s get the exmaple:
+
+```rust
+fn main() {
+    let mut input = String::new();
+    io::stdin().read_line(&mut input);
+    let mars_weight = calculate_weight_on_mars(100.0);
+    println!("Weight on Mars: {} kg", mars_weight);
+}
+```
+
+In the code block, we define a variable called `input`. So as the rule one says, the value `String` is owned by the variable `input`. The `Stinrg` lives on the heap because its size is not known at the compile time and on the stack. We only store a pointer to the heap, plus some metadata like the size of the string.
+
+When this `input` goes out of scope, the string on the heap will be deallocated, pretty much similar to smart pointer. So the `String` is a type of smart pointer. Rust compiler will call the `drop` function on the string when its owner goes out of the scope.
+
+When the function exits (goes out of scope), the `drop` function on the string will be invoked automatically by the compiler. This `drop` function is pretty much similar to the destructor in other languages.
+
+According to rule 3, if we want 2 pointers live at the same time.
+
+```rust
+fn main() {
+    let mut input = String::new();
+		let mut s = input;
+    io::stdin().read_line(&mut input);
+    let mars_weight = calculate_weight_on_mars(100.0);
+    println!("Weight on Mars: {} kg", mars_weight);
+}
+
+// input and s are 2 pointers all point to String.
+```
+
+The compiler will cause issue, because when the function exits, the pointers will deallocate twice.
+
+This is called a double free, and it can lead to memory corruption. It’s very common in C programs, and it has led to some very serious security vulnerablilities.
+
+⇒ Rust guarantee 1 owner at a time to eliminate this double free problem. The ownership of the `String` is moved from `input` to the variable `s`. So after `s` is defined, compiler will not let us use the variable `input` anymore. This `String` cannot be copied cause it’s a reference.
+
+There are some types can be copied, such as integers, floats known as basic or simple types. Others like complex types that lives on the heap (which need a pointer to reference it) cannot be copied.
+
+Same happened to the function:
+
+```rust
+fn main() {
+    let mut input = String::new();
+    some_fn(input);
+    io::stdin().read_line(&mut input);
+    let mars_weight = calculate_weight_on_mars(100.0);
+    println!("Weight on Mars: {} kg", mars_weight);
+}
+
+fn some_fn(s: String) {}
+```
+
+If we run the code, it will not compile correctly. The ownership of `String` is moved to `s` in the parameter of function `some_fn`. So after the function goes out of scope, the `String` will be deallocated. If we were to use the string down the io macro, the pointer is no longer valid.
+
+This sounds inconvenient if we cannot use a variable after passing it to other function. So Rust provide a feature called **Borrowing** to solve this.
+
+## Reference & Borrowing
+
+To be able to pass variables to functions without transfering ownership, Rust has a feature called References. It allow us to refer to a value without taking ownership of it.
+
+We add an ampersand (&) before the type. The `s` variable will not be dropped cause `s` is not the owner of the string, we just borrow the string.
+
+```rust
+fn main() {
+    let mut input = String::new();
+    some_fn(&input);
+    io::stdin().read_line(&mut input);
+    let mars_weight = calculate_weight_on_mars(100.0);
+    println!("Weight on Mars: {} kg", mars_weight);
+}
+
+fn some_fn(s: &String) {}
+```
+
+Like variables, references are **immutable** as well. So we have another type called mutable references.
+
+```rust
+fn main() {
+    let mut input = String::new();
+    some_fn(&mut input);
+    io::stdin().read_line(&mut input);
+    let mars_weight = calculate_weight_on_mars(100.0);
+    println!("Weight on Mars: {} kg", mars_weight);
+}
+
+fn some_fn(s: &mut String) {
+	s.push_str("a");
+}
+```
+
+We can have many imutable references at the same time, or ONE mutable referece at the same time.
+
+This feature prevents data races issues.
+
+## Error Handling
+
+If we move to the `.read_line()` function from the io standard library, we can find that this function returns a `Result` with type of integer.
+
+![error-handling](https://user-images.githubusercontent.com/54787518/188123096-296bb088-0a86-459f-9ed0-56163650756d.png)
+
+The `Result` is in the core of the error handling in Rust. A Result can be in one of 2 states: success or error.
+
+There is a method on the `Result`, which is called `unwrap()`. If we call `unwrap()`, it will make sure that if the Result was an error, it will terminate the program. If the Result was successful, it will yield the contents of the Result.
+
+# Rust Advance Topic
+
+Sample Project: Build a HTTP server
+
+- Learning Rust → Server Performance
+
+[HTTP server](https://www.notion.so/HTTP-server-d46b1edd6f164485b953aae40ce0f999)
+
+## Structs
+
+```rust
+fn main() {
+    let server = Server::new("127.0.0.1:8080");
+    server.run();
+}
+```
+
+A server is a `Struct` in Rust. `Struct` is a custom data type that groups together related data. Kind of like a `class` in OOP language.
+
+Unlike other OOP language that puts the properties and methods all in a block. Rust has an implementation block for the `Struct` that holds all the actual functionality.
+
+```rust
+struct Server {
+    addr: String,
+}
+
+impl Server {
+
+}
+```
+
+There are 2 types of functionality that we can associate with the Struct. It’s either a method or an associated function.
+
+Methods: very similar to normal functions, but they are defined in the context of a `Struct`. Very similar to the methods on Objects in OOP languages. Methods in Rust always take a special first parameter called `self`, which represents the instance of the `Struct` the method being called on.
+
+Associated Function: they are associated with the `Struct` type, but they don’t need an instance of a Struct. Pretty similar to static function in other languages. For exmaple, `new` is not a method but an associated function because we can call it directly on the Struct type, not on an instance of a Struct. We use `::` to access associated functions.
+
+```rust
+impl Server {
+    fn new(addr: String) -> Self {
+        Self {
+            addr
+        }
+    }
+
+    fn run(self) {
+
+    }
+}
+```
+
+The `new()` is an associated function here, and it takes an argument of a String. `run()` is a method, and it take a `self` for its argument. Note that this `self` still follows the ownership rule. If we use like the above example, the self ownership will be transfered to the `run()` method, and be deallocated when `run()` exits. We can pass a reference (`run(&self)`) or a mutable reference (`run(&mut self)`) here to avoid ownership transfer, but we won’t need another function to use `self` anymore, so it’s okay to pass the ownership.
+
+```rust
+let server = Server::new("127.0.0.1:8080");
+```
+
+In this line, we pass a string to a Server Struct, but compiler gives error.
+
+![server-error](https://user-images.githubusercontent.com/54787518/188123101-56bde10e-a5c8-4c30-b0da-f5b52386d1c0.png)
+
+Let’s figure it out in String section.
+
+## Strings
+
+Rust has 2 types of strings.
+
+- `&str`: this is called a string slice. A string slice is an immutable reference to a part of a `String`. A string slice is a view inside of an existing `String`.
+- `std::string::String`: This is the standard string buffer that allocate on the heap.
+
+The string slice make it memory-efficient to just create a new pointer of a part of the existing associated `String` instead of copying them.
+
+```rust
+let string_literal = "1234";
+```
+
+If we define a variable like above, the `string_literal` is a string slice that hold the entire string (Yeap, a part of string can be the hold String.). But why does Rust use string slice out of the normal string?
+
+⇒ The original string can be expanded or they can shrink dynamically at runtime, but string slices are immutable. We specify it at the compile time.
+
+```rust
+let string_slice = &string[10..];
+```
+
+Generally speaking, we will not want to slice strings with literal indices like above. The reason is that all strings in Rust are UTF-8 encoding. We cannot be sure that one character in the string will always take up one byte. As we know, all ASCII characters, which is the English alphabet, the numbers and the most common symbols are also encoded in UTF-8, and they all take one byte.
+
+The syntax above (`[10..]`) really means that “Give me everything after the 10th byte” instead of “Give me everything after the 10th character”.
+
+Rust Strings can **only** store valid UTF-8 encoded characters.
+
+## Enums (Enumerations)
+
+Enums are special types which have a finite set of values, and they are called `variants`.
+
+```rust
+struct Request {
+    path: String,
+    query_string: String,
+    method: Method,
+}
+enum Method {
+    GET,
+    DELETE,
+    POST,
+    PUT,
+    HEAD,
+    CONNECT,
+    OPTIONS,
+    TRACE,
+    PATCH,
+}
+```
+
+We can see that we create an Enum instance called `Method`, to hold all the possible values we will get from the HTTP method. Every variant in Enums can hold a data type if they receive a variable. Those data types can be different from each other. The allocated memory of this Method will be determined by the largest possible data type of the variant in the Enum instance.
+
+```rust
+enum Method {
+    GET(String),
+    DELETE(u64),
+    POST,
+    PUT,
+    HEAD,
+    CONNECT,
+    OPTIONS,
+    TRACE,
+    PATCH,
+}
+
+// define variable
+let get = Method::GET("1234".to_string());
+let delete = Method::DELETE(100);
+```
+
+### Optional Enums
+
+We might have no query string passing case, but how to represent `null` value in Rust?
+
+Rust does not support `null` values, but still want to represent the absense of a value. It dose that in a completely type-safe way, using a special enum from the standard library called **Option**.
+
+```rust
+struct Request {
+    path: String,
+    query_string: Option<String>,
+    method: Method,
+}
+
+// Option definition
+pub enum Option<T> {
+	None,
+	Some(T),
+}
+```
+
+Rust compiler will know that it can be a type of the `T` type, so it will allocated the associate memory for it.
+
+## Modules
+
+As other languages, we won’t store every line of code in one file, so we seperate by some sort of grouping conditions. Rust has a feature like any other languages called Module.
+
+Modules also control the visibility of items, which is whether an item can be used by the outside code. That means it’s public or is an internal implementation detail and not available for outside use.
+
+By default, everything in a module is private, or cannot be accessed outside the module.
+
+Every single file is considered as a module. If we want to import a module, just type `mod [filename.rs]`, and do not follow up with the body of the module.
+
+```rust
+// main.rs
+use server::Server;
+use http::request::Request;
+
+mod server;
+
+fn main() {
+    let server = Server::new("127.0.0.1:8080".to_string());
+    server.run();
+}
+
+// server.rs
+pub struct Server {
+  addr: String,
+}
+
+impl Server {
+  pub fn new(addr: String) -> Self {
+      Self { addr }
+  }
+
+  pub fn run(self) {
+      println!("Listening on {}", self.addr);
+  }
+}
+```
+
+We can use folder to create a module with submodule, with import purpose, we have to specity in a `mod.rs` file to wrapper them in this file, otherwise the `main.rs` cannot find the directory.
+
+```rust
+// mod.rs
+pub use request::Request;
+pub use method::Method;
+
+pub mod request;
+pub mod method;
+
+// request.rs
+use super::method::Method;
+
+pub struct Request {
+    path: String,
+    query_string: Option<String>,
+    method: Method,
+}
+
+// method.rs
+pub enum Method {
+    GET,
+    DELETE,
+    POST,
+    PUT,
+    HEAD,
+    CONNECT,
+    OPTIONS,
+    TRACE,
+    PATCH,
+}
+
+// main.rs
+use server::Server;
+use http::Request;
+use http::Method;
+
+mod http;
+mod server;
+```
+
+## Result Enum
+
+Result Enum is the main error handling type in Rust. Where Rust differs from other languages is in that it requires us to acknowledge the possibility of an error and take action before the code will compile successfully.
+
+```rust
+let listener = TcpListener::bind(&self.addr);
+```
+
+In the above example, the bind associate function return a `Result` type.
+
+This requirement makes the program more robust by ensuring that we handle errors appropriately.
+
+Rust groups errors in 2 categories:
+
+- recoverable: e.g. file not found?
+- unrecoverable: like generally a symptom of a book. e.g. trying to access an index beyond the end of an array.
+
+Most languages do not distinguish these 2 errors, but handling them in the same way using exceptions. Rust does not support exceptions. Instead, it has the `Result Enum` for handling recoverable errors.
+
+We can turn the recoverable errors to unrecoveralbe errors if we want to shut down the program.
+
+To do that, we can call a function called `unwrap()`.
+
+```rust
+let listener = TcpListener::bind(&self.addr).unwrap();
+```
+
+## Loop
+
+While loop
+
+```rust
+while true {
+	//...
+}
+```
+
+Rust has a type of loop specific for infinite loop:
+
+```rust
+loop {
+	//...
+}
+```
+
+As any other languages, loop has some common features such as `break`, `coutinue`, etc. One cool feature of loops in Rust is that they can be labled. For instance, if we have nested loops, and we want to `break` or `continue` the outer loop in a specific inner loop iteration, we can have syntax like this:
+
+```rust
+'outer: loop {
+      loop {
+        break 'outer;
+      }
+    }
+```
+
+## Control Flow
+
+Like any other languages, Rust has a statement expression control flow `if/else`.
+
+```rust
+if res.is_err() {
+	continue;
+}
+```
+
+Also, like switch in Javascript, there is a similar syntax to do the same operator, and it’s called `match`:
+
+```rust
+match listener.accept() {
+	Ok((stream, addr)) => {
+		println!("OK");
+	},
+	Err(e) => println!("Failed to establish a connection: {}", e),
+}
+```
+
+An important thing to mention about matching on Enums is that the code will not compile unless we have covered all the possible variants.
+
+The variants will need to pass the exact variable to the condition. For instance, when the listener response `Ok`, it will return a TCP stream and the address, compounded in a tuple. We can use destructure to name each variable in the tuple (`(stream, addr)`).
+
+If we do not want to use the variables in the condition, we can pass an `_` for it, and the comiler will know that we do not need the variable.
+
+If we do not care the error case, we can just put an `_` as a pattern here. This will act as a `catch_all` pattern that will catch all the variance that we have not matched manually.
+
+```rust
+match listener.accept() {
+	Ok((stream, addr)) => {
+		println!("OK");
+	},
+	_ => println!("Failed to establish a connection"),
+}
+```
+
+In the above case, the `_` will catch the error case. But if it’s an Enum with more variance, it will catch all of the variance that are not matched explicitly. Much like the `default` switch case in Javascript.
+
+Match dose not work only on Enums. It can be used as a regular switch statement.
+
+```rust
+match "abcd" {
+	"abcd" => println!("OK"),
+	"a" | "b" => println!("Soso"),
+	_ => println!("no match"),
+}
+```
+
+## Traits & Type Conversion
+
+### Trait
+
+Trait is very similar to an interface in other languages. A trait defines functionality a particular type has and can share with other types. We can use traits to define shared behavior in an abstract way. We can use trait bounds to specify that a generic type can be any type that has certain behavior.
+
+A type’s behavior consists of the methods we can call on that type. Different types share the same behavior if we can call the same methods on all of those types.
+
+```rust
+pub trait Summary {
+    fn summarize(&self) -> String;
+}
+```
+
+### Type Conversion
+
+In the server exmaple, we want to convert the request bytes to a `[u8]` array that contains all the request we are going to handle.
+
+The `std` library has a associate function called `TryFrom` which satisfy our goal. TryFrom is a trait that handles a success type with some functions and an error type with some functions as well.
+
+We can use the following syntax to define a trait that we want for each type in a trait.
+
+```rust
+impl TryFrom<&[u8]> for Request {
+    type Error = String;
+    fn try_from(value: &[u8]) -> Result<Self, Self::Error> {}
+}
+```
+
+An interesting things in the TryFrom documentation is that if we implementing `TryFrom<T> for U`, it comes the same result as `TryInto<U> for T`.
+
+When we use the TryInto trait, that means we are adding extra functionality to a type that already exists in a seperate crate that we did not implement.
+
+They can be implemented for existing types from other crates. (Very useful!)
+
+> Note: If we want to access the other module, we can use super to go one level up to the parent module. But we can also use `crate` keyword to access to the root module. (We implement the 2 module in the `main.rs` file.)
+
+```rust
+// main.rs
+mod http;
+mod server;
+
+// server.rs
+use crate::http::Request;
+```
+
+We can implement our customized try_from function. Because this try_from function require a byte slice type and &buffer is the pointer of the whole array. Therefore, we need to slice the entire array. 2 ways to do that:
+
+```rust
+Request::try_from(&buffer as &[u8]);
+Request::try_from(&buffer[..]);
+```
+
+We can use `try_into` for the same purpose:
+
+```rust
+let res: &Result<Request, _> = &buffer[..].try_into();
+```
+
+Note that if we just type `&buffer[..].try_into()`, the compiler will not sure what type of `&buffer[..]` will pass in the the `try_into` function. So we need to explicit the type for them, and we defined a variable with explicit type `&Result<Request, _>`. (We do not care about the error so use `_` to let the compiler ignore it.)
+
+## Custom Errors
+
+As the functionality of traits, we can implement our custom errors to the `Error` trait in the `std` library. Although we don’t have to create a custom error, but by implementing the error trait, it will force us to meet some basic expectations for error types.
+
+If we look at the source code of Error trait, we can see a new syntax.
+
+```rust
+pub trait Error: Debug + Display {
+	// ...
+}
+```
+
+What this means is that the error trait can only be implemented for types that already implement `Debug` and the `Display` trait.
+
+### Display trait
+
+The display trait is used when we are formatting a string. For exmaple, in `println!()`, when we pass a parameter into the `{}`, whatever we pass as a parameter has to implement the display trait.
+
+```rust
+println!("Received a request: {}", String::from_utf8_lossy(&buffer));
+```
+
+Here we pass a string, and the String struct implement the display trait. We can use a different formatter. If we add `:?` inside the `{}`, then it means that we want to use the debug formatter. If we type like this, it will actulally invoke the implementation of the debug trait and not the implementation fo display trait.
+
+```rust
+println!("Received a request: {:?}", String::from_utf8_lossy(&buffer));
+```
+
+This can be useful in many cases where we want to log to our developer, console the debug data from some type, but we can use the display implementation to actually print something that’s user facing.
+
+```rust
+impl Display for ParseError {
+    fn fmt(&self, f: &mut Formatter) -> Result {}
+}
+```
+
+We can see that the `fmt` funciton returns a Result with no generic type. It’s not the result that we are using, but it is a special type alliance for the format result that actually points to the actual result.
+
+## More Error Handling
+
+```rust
+match str::from_utf8(buf) {
+	Ok(request) => {}
+	Err(_) => return Err(ParseError::InvalidEncoding),
+}
+
+// More common way to write
+match str::from_utf8(buf).or(Err(ParseError::InvalidEncoding)) {
+	Ok(request) => {},
+	Err(e) => return Err(e),
+}
+```
+
+the `.or()` return a Result if the `str::from_utf8(buf)` gets an error. This pattern is so common in Rust, so there is a special syntax built in the language. We can put a `?` after the statement, and it does pretty much the same as the match statement did.
+
+```rust
+str::from_utf8(buf).or(Err(ParseError::InvalidEncoding))?;
+```
+
+The difference between these two is that the ? syntax will try to convert the error type that it receives if is does not match the error type that the function is supposed to return. If we just use the following code, the compiler will pop a error, cause it cannot convert the error from the From trait (there is no parser in the From trait).
+
+```rust
+str::from_utf8(buf)?; // error
+
+// cause the ? cannot convert the Utf8Error
+pub const fn from_utf8(v: &[u8]) -> Result<&str, Utf8Error>
+```
+
+To do that, we have to implement the From trait for out ParseError parser.
+
+```rust
+impl From<Utf8Error> for ParseError {
+	fn from(_: Utf8Error) -> Self {
+		Self::InvalidEncoding
+	}
+}
+```
+
+And the compiler no longer pop error for the `Utf8Error` parsing.
+
+## Lifetimes (VERY IMPORTANT!!!)
+
+In the exmaple, we try to get the `method`, `path`, and `query string` from the buffer we received from the client. we can get the string slice instead of a std::String type will save some memory use.
+
+However, if we want to access the `path` variable after the buffer memory is freed. This problem is known as **dangling references** or **use after free** because we aretrying to use memory after we have freed it. Another saying is that the request has a longer lifertime than the buffer.
+
+Rust is good at this because dangling references would not happen, while some languages such as C/C++ would have to deal with it. High level languages use garbage collector to not deallocate the buffer while there are valid references to it. This may cost some of the performance.
+
+In Rust, during compile time, the compiler will statically check all the references and unsure there is no dangling exists. And we have to give a lifetime specifier to explicitly annotate some of our references with lifetimes so that the compiler can figure out what they are pointing into.
+
+### Concepts
+
+Lifetime is a unique feature in Rust. There is no other mainstream language that supports explicit lifetimes.
+
+Lifetimes are another kind of generic that we’ve already been using, and they ensure that references are valid as long as we need them to be. Every reference in Rust has a lifetime, which is the scope for which that reference is valid. Most of the time, lifetimes are implicit and inferred, just like most of the time, types are inferred. We only must annotate types when multiple types are possible.
+
+in the exmaple, when we are giving a generic type to the struct `Request`, cause we care dealing with multiple types. We add like a generic type annotation `<>` but begins with `‘` (in this example, we use `‘buffer`).
+
+```rust
+pub struct Request<'buf> {
+	path: &'buf str,
+	query_string: Option<&'buf str>,
+	method: Method,
+}
+```
+
+That this `‘buf` is the lifetime name of the Request instance. In other implementation, we have to specify the name so the compiler will know what lifetime is connected to.
+
+We need to declare it on the `impl` keyword first, and then after the struct name we are implementing.
+
+```rust
+impl<'buf> TryFrom<&[u8]> for Request<'buf> {
+	// ...
+}
+```
+
+Now if we compile the code, we got an error: cannot infer an appropriate lifetime for lifetime parameter in function call due to conflicting requirements. And comes more info: the lifetime cannot outlive the anonymous lifetime #1 defined on the method body at …
+
+```rust
+fn try_from(buf: &[u8]) -> Result<Self, Self::Error> {
+	// ...
+}
+```
+
+The compiler hase some lifetime for this function body, and the lifetime of the functioning body would be the lifetime of all the local variables because all of these variables will be freed once this function returns and its stack frame is deallocated.
+
+Internally, the compiler has lifetimes for every variable in the code.
+
+```rust
+fn try_from(buf: &[u8]) -> Result<Self, Self::Error> {
+	let request = str::from_utf8(buf)?;
+	// ...
+}
+```
+
+The `try_from` function receives an argument `buf`, which is only the pointer to a variable that is not owned by the function. The `from_utf8` function receives this buf parameter, and returns a string slice, which is another pointer into whatever the buffer was pointing to, the buffer variable in `server.rs` file.
+
+```rust
+let mut buffer = [0; 1024];
+```
+
+In this `get_next_word` funciton, we don’t have to be explicit with the lifetimes because the compiler will figure out that there is a single lifetime for this function, which is the lifetime of the parameter that was passed (`request: &str`). So the references that it returns (`Option<(&str, &str)>`) will have the same lifetime as the reference that was passed as a parameter.
+
+```rust
+fn get_next_word(request: &str) -> Option<(&str, &str)> {
+	for (i, c) in request.chars().enumerate() {
+		if c == ' ' || c == '\r' {
+			return Some((&request[..i], &request[i + 1..]));
+		}
+	}
+	None
+}
+```
+
+If we actually pass a second parameter to this function, then the compiler would not know which returned references lifetime will match to which.
+
+```rust
+fn get_next_word(request: &str, b: &str) -> Option<(&str, &str)> { // lifetime error
+	// ...
+}
+```
+
+And we have to explicitly give the lifetime to both parameters and the return type:
+
+```rust
+fn get_next_word<'a, 'b>(request: &'a str, b: &'b str) -> Option<(&'a str, &'a str)> {
+	for (i, c) in request.chars().enumerate() {
+		if c == ' ' || c == '\r' {
+			return Some((&request[..i], &request[i + 1..]));
+		}
+	}
+}
+```
+
+The way that the compiler can figure this out, which is also a nice way to think about lifetimes in general is that **the lifetimes are part of the type of the variable**.
+
+We can replace the self to the instance itself, and give it a explicit lifetime. We can now see it obviously.
+
+```rust
+fn try_from<'a>(buf: &'a [u8]) -> Result<Request<'buf>, Request<'buf>::Error>
+```
+
+So in the above example, the compiler does not know that whatever we return is actually bound to the parameter that it recevied because they have two different lifetimes, and it starts to infer lifetimes for all of the variables.
+
+```rust
+let request = str::from_utf8(buf)?;
+```
+
+If we look at the `from_utf8` function, we can see that the compiler has implicitly infer the lifetime of the parameter is the same as the return type. We are giving it the buffer and it’s pretty much just casting this to a string slice, but the string slice that it returns just to have the same lifetime as the buffer. It cannot outlive the buffer because then it would be a dangling reference because the compiler knows that the parameter that we pass in this concrete case has the lifetime `‘a`, but the result has the lifetime `‘buf`, bcause it can infer that from the rest of the function body, and there is a lifetime mismatch.
+
+To fix this, we have to explicitly name the lifetime for the function to `‘buf` instead of a anonymous lifetime name.
+
+```rust
+impl<'buf> TryFrom<&'buf [u8]> for Request<'buf> {
+	type Error = ParseError;
+	// GET /search?name=abc&sort=1 HTTP/1.1\r\n...HEADERS...
+	fn try_from(buf: &'buf [u8]) -> Result<Self, Self::Error> {
+		// ...
+	}
+	// ...
+}
+```
+
+To sum up, Lifetime is a very powerful feature in Rust to guarantee memory safety, and the lifetime parameters that we explicitly specify does not allow us to choose how long of value lives. It only allow us to communicate to the compiler that some references are related to the same memory, and are expected to share the same lifetime.
+
+## Hash map
+
+As other languages, Rust has hash map data structure as well. In the std library, we can import `use std::collections::HashMap` to achieve this.
+
+```rust
+pub struct QueryString<'buf> {
+  data: HashMap<&'buf str, Value<'buf>>,
+}
+
+pub enum Value<'buf> {
+  Single(&'buf str),
+  Multiple(Vec<&'buf str>),
+}
+
+impl<'buf> QueryString<'buf> {
+  pub fn get(&self, key: &str) -> Option<&Value> {
+    self.data.get(key)
+  }
+}
+```
+
+As we can see, Hash map should init with a key, value pair type. In this case, we all specify with `&str` type. As usual, the lifetime should explicitly give to each reference. Also, the implementation needed to be specified the lifetime as well.
+
+In the query string, we may get a single string or a bunch of string parameters, and we have to put them in an array. In the Value enum, we cannot give an array type for the Multiple case, cause we don’t know the exact length of the array. To give a dynamic runtime size array, we have to assign a Vector type for it.
+
+## Derive Attribute
+
+The Rust compiler can actually provide basic implementation for some traits. The debug trait is one of those.
+
+```rust
+#[derive(Debug)]
+pub struct Request<'buf> {
+	path: &'buf str,
+	query_string: Option<QueryString<'buf>>,
+	method: Method,
+}
+```
+
+We add the `#[derive(// YourTrait)]` before the struct. It’s pretty similar as the silence linter in the `main.rs` file.
+
+```rust
+#![allow(dead_code)]
+```
+
+With the `!` mark (bank), the attribute will be applied to the item it’s declare within. In this case, it will applied to all modules and the submodules. If there is no `!` mark, then it will only applied to the expression that follows it.
+
+## Copy & Clone
+
+Copy in Rust means to copy the value in the stack. In general, the basic type will have the exact value byte store in the stack. However, something like String, where we store the pointer to the String on the heap, if we do use copy, it will just copy the pointer rather than the string stored in the heap.
+
+To get the actual value, we need another method called Clone. It does the deep copy for us. Not only copy the pointer, but the actual values in the heap.
+
+We can implement the `Copy` and `Clone` trait for the StatusCode enum.
+
+```rust
+#[derive(Copy, Clone)]
+pub enum StatusCode {
+  Ok = 200,
+  BadRequest = 400,
+  NotFound = 404,
+}
+```
+
+## Dynamic vs Static Dispatch
+
+In the send function, we take a parameter which is a type of `TcpStream`. In this implementation, we want to make it better to be more generic by changing the parameter type from a concrete `TcpStream` to anything that implements the right trait.
+
+It will be more flexible with unit test, if we pass a vector instead of `TcpStream` and it still works.
+
+```rust
+pub fn send(&self, stream: &mut TcpStream) -> IoResult<()> {
+    let body = match &self.body {
+      Some(b) => b,
+      None => "",
+    };
+    write!(
+      stream,
+      "HTTP/1.1 {} {}\r\n\r\n{}",
+      self.status_code,
+      self.status_code.reason_phrase(),
+      body,
+    )
+  }
+```
+
+We can use a `Write` trait instead of `TcpStream`, but the compiler will give us a warning. We have to specify with the `dyn` syntax to it, which stands for dynamic dispatch.
+
+```rust
+pub fn send(&self, stream: &mut dyn Write) -> IoResult<()> {
+	// ...
+}
+```
+
+The compiler knows that this function receives a parameter htat has the `Write` function because this funcion will implement the `Write` trait. However, the compiler does not know exactly which `Write` function to call.
+
+In the trait, there is only the signature for the Write function, but the actual implementation for the `Write` function will be in the `TcpStream` or in the file or in the vector. All of the implementation have the different implementations of the `Write` function and we can pass anyone of these types as a parameter to this function. The compiler has to figure out exactly which implemetation of the `Write` function to call.
+
+This is called dynamic dispatch because the concrete function implementation to be called will be resolved at runtime, and this is achieved by creating a mapping between the concrete implementations of the trait and the trait itself. This mapping is called the V Table, and it is just a table with function pointers.
+
+Rust provides another method to solve this, and it is called static dispatch. Instead of being dynamic, which means that it’s resolved at runtime, it’s static, which means that it’s resolved at compile time.
+
+Just replace the `dyn` syntax with `impl`, and we applied static dispatch.
+
+```rust
+pub fn send(&self, stream: &mut impl Write) -> IoResult<()> {
+	// ...
+}
+```
+
+We can say that this function accepts any parameter that implements the Write trait and the compiler will make sure to resolve all the concrete implementations that we will use. To do that, at compile time, the compiler will look at every single place where this function is called and more specifically it will look at every parameter that can be passed to this function.
+
+Every time we call the function, it will “copy” the function, but with the concrete type we are passing to the parameter. So no runtime cost, and no V Table.
+
+Downside of static dispatch is that it cost more time to compile, and use more binaries.
+
+## Custom Trait
+
+We want to create a handler to handle the request format. So we create a custom trait for it.
+
+Now anyone who implements this trait can still override the method in the trait. Any implementers of the `Handler` trait can provide their own implementation of the handle by the request. If they don’t, this implementation will be used.
+
+```rust
+pub trait Handler {
+  fn handle_request(&mut self, request: &Request) -> Response {
+    dbg!(request);
+    Response::new(StatusCode::Ok, Some("<h1>IT WORKS!!!</h1>".to_string()))
+  }
+  fn hanfle_bad_request(&mut self, e: &ParseError) -> Response {
+    println!("Failed to parse a request: {}", e);
+    Response::new(StatusCode::BadRequest, None)
+  };
+}
+```
+
+## Environment Variables
+
+We can give a environment variable to able to serve a static HTML or Javascript file like a real server. In the `main.rs` file, we need to import the `std::env` module.
+
+```rust
+use std::env;
+fn main {
+	let public_path = env::var("PUBLIC_PATH").unwrap();
+}
+```
+
+We need to specify the environment variable before we start the program locally.
+
+```bash
+$ PUBLIC_PATH=$(pwd)/public cargo run
+```
+
+`$(pwd)` means the current directory.
+
+But it’s a lot of hassle to always set on environment favorable when we want to run our server for development purposes. It would be nicer if we can provide a default path in case the public path environement variable was not provided. This will speed up the local developement on our project.
+
+Fortunately, Cargo help us to store envirnoment variables during compile time as metatdata. One of these environment variables contains the full path to the directory that contains the `cargo.toml` file.
+
+```bash
+let default_path = env!("CARGO_MANIFEST_DIR");
+```
+
+This `CARGO_MANIFEST_DIR` variable name indicates the root directory of your project, no matter which local environment are we using.
+
+## Serve Static Files
+
+We can pass the path as a parameter, to capture the related file name. It seems like it’s very bady, but we have introduced directory traversal vulnerability to out server.
+
+```bash
+"/" => Response::new(StatusCode::Ok, self.read_file("index.html")),
+"/hello" => Response::new(StatusCode::Ok, Some("<h1>Hello</h1>".to_string())),
+path => match self.read_file(path) {
+    Some(contents) => Response::new(StatusCode::Ok, Some(contents)),
+    None => Response::new(StatusCode::NotFound, None),
+},
+```
+
+Directory traversal is a web security vulnerability that allows an attacker to read arbitary files from the system where the server is running. The attacker can reach to any files that is in the project, even the other files in the server, without our validation. That’s really a bad issue.
+
+We can use a simple function that runs the `realpath` functionality, and it returns the canonical version of the path.
+
+(realpath: If we paste any file directory starts with `..` or even more “ups”, we can parse them to only show the path that starts with `/`. e.g. `/../../http/method` will become `/http/method`)

@@ -31,7 +31,7 @@ const NavigationList: React.FC<NavigationListProps> = ({ isOpen, setIsOpen }) =>
       </div>
       <div className={classNames('navigation-list__z-index font-raleway h1 dark:text-white', style.tab)}>
         <span className={style.text} onClick={() => setIsOpen(false)}>
-          <Link to="/blog">Blog</Link>
+          <Link to="/blogs">Blogs</Link>
         </span>
       </div>
       <div className={classNames('navigation-list__z-index font-raleway h1 dark:text-white', style.tab)}>
