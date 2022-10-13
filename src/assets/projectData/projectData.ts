@@ -19,8 +19,6 @@ const burgerBuilderPath = new URL('./projectprofilepic/burger-builder.png', impo
 const burgerBuilderRectPath = new URL('./projectprofilepic/burger-builder-rect.png', import.meta.url).href;
 const roadRacePath = new URL('./projectprofilepic/road-race.png', import.meta.url).href;
 const roadRaceRectPath = new URL('./projectprofilepic/road-race-rect.png', import.meta.url).href;
-const smartBrainPath = new URL('./projectprofilepic/smart-brain.png', import.meta.url).href;
-const smartBrainRectPath = new URL('./projectprofilepic/smart-brain-rect.png', import.meta.url).href;
 const roboFriendsPath = new URL('./projectprofilepic/robo-friends.png', import.meta.url).href;
 const roboFriendsRectPath = new URL('./projectprofilepic/robo-friends-rect.png', import.meta.url).href;
 const pongGamePath = new URL('./projectprofilepic/pong-game.png', import.meta.url).href;
@@ -75,7 +73,7 @@ const projectData: ProjectDataTypes[] = [
     category: ['featureProjects', 'frontEnd'],
     genre: ['typescript', 'next.js', 'tailwind', 'reacthooks', 'css-in-js'],
     description: 'A place where has a bunch of helper calculation tools for civil and structural engineers.',
-    link: 'https://civil-structural-tools.herokuapp.com/',
+    link: 'https://civil-structural-tools.vercel.app/',
     github: 'https://github.com/xfreddy2007/civil-structural-tools',
   },
   {
@@ -98,17 +96,6 @@ const projectData: ProjectDataTypes[] = [
     genre: ['rust'],
     description: 'A road dodging simple game made of Rust programming laguage and Rusty game engine.',
     github: 'https://github.com/xfreddy2007/Road-race',
-  },
-  {
-    id: 'smart-brain',
-    name: 'Smart Brain Detector',
-    profilePic: smartBrainRectPath,
-    squareProfilePic: smartBrainPath,
-    category: ['featureProjects', 'fullStack'],
-    genre: ['javascript', 'react', 'node.js', 'postgresql'],
-    description: 'An App which you can detect your face within an image.',
-    link: 'https://smart-brain-freddy.herokuapp.com',
-    github: 'https://github.com/xfreddy2007/Smart-brain',
   },
   {
     id: 'robo-friends',
