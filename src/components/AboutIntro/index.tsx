@@ -48,7 +48,7 @@ const AboutIntro: React.FC = () => {
         </h2>
         <p className="p my-2 text-center">Although not much experienced, but grow right off the bat rapidly.</p>
         <p className="p my-2 text-center">If you are interested, please keep in touch!</p>
-        <a href="https://www.cakeresume.com/freddy-liu" target="_blank" rel="noreferrer">
+        <a href="https://drive.google.com/file/d/1S6CCMalEPTOXUAvVDw1kXEC-iFCQsmLr/view?usp=sharing" target="_blank" rel="noreferrer">
           <div className={style.button} data-dark-mode={isDarkMode}>
             Resume
           </div>
