@@ -14,7 +14,7 @@ const HomepageInfo: React.FC = () => {
         <span>Problem solving, critical thinking,</span>
         <span>providing intuitive, responsive and creative designs for users.</span>
       </p>
-      <a href="https://www.cakeresume.com/freddy-liu" target="_blank" rel="noreferrer">
+      <a href="https://drive.google.com/file/d/1S6CCMalEPTOXUAvVDw1kXEC-iFCQsmLr/view?usp=sharing" target="_blank" rel="noreferrer">
         <div className={style.button} data-dark-mode={isDarkMode}>
           Resume
         </div>
